@@ -1,4 +1,4 @@
-function SiteHeader(): JSX.Element  {
+function Header(): JSX.Element  {
   return (
     <header className="header">
       <div className="container">
@@ -30,4 +30,4 @@ function SiteHeader(): JSX.Element  {
   );
 }
 
-export default SiteHeader;
+export default Header;
