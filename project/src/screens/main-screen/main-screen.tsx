@@ -1,21 +1,22 @@
-import SiteHeader from '../site-header/site-header';
-import SiteCitiesTabs from '../site-cities-tabs/site-cities-tabs';
-import Places from '../places/places';
-import { MainScreenProps } from '../../types/main-screen';
+import SiteHeader from '../../components/header/header';
+import SiteCitiesTabs from '../../components/cities-tabs/cities-tabs';
+import Places from '../../components/places/places';
 
-function MainScreen(props : MainScreenProps):JSX.Element {
-  const stayPlacesAmount = props.stayPlacesAmount;
+type Cards = {
+  cards: number[]
+};
 
+function MainScreen({cards} : Cards): JSX.Element {
   return (
     <div className="page page--gray page--main">
-      {SiteHeader()}
+      <SiteHeader/>
 
       <main className="page__main page__main--index">
         <h1 className="visually-hidden">Cities</h1>
-        {SiteCitiesTabs()}
+        <SiteCitiesTabs/>
         <div className="cities">
           <div className="cities__places-container container">
-            {Places(stayPlacesAmount)}
+            <Places cards={cards}/>
             <div className="cities__right-section">
               <section className="cities__map map"></section>
             </div>

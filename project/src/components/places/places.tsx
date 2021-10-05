@@ -1,18 +1,18 @@
-import Sorting from '../main-screen/sorting/sorting';
+import Sorting from '../sorting/sorting';
 import PlaceCard from '../place-card/place-card';
 
-function Places(stayPlacesAmount: number):JSX.Element {
+type Cards = {
+  cards: number[]
+};
+
+function Places({cards}: Cards): JSX.Element {
   return (
     <section className="cities__places places">
       <h2 className="visually-hidden">Places</h2>
-      <b className="places__found">{stayPlacesAmount} places to stay in Amsterdam</b>
-      {Sorting()}
+      <b className="places__found">{cards.length} places to stay in Amsterdam</b>
+      <Sorting/>
       <div className="cities__places-list places__list tabs__content">
-        {PlaceCard()}
-        {PlaceCard()}
-        {PlaceCard()}
-        {PlaceCard()}
-        {PlaceCard()}
+        {cards.map((card: number) => <PlaceCard key={card}/>)}
       </div>
     </section>
   );

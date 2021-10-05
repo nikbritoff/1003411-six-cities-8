@@ -1,4 +1,4 @@
-function Sorting():JSX.Element  {
+function Sorting(): JSX.Element  {
   return(
     <form className="places__sorting" action="#" method="get">
       <span className="places__sorting-caption">Sort by</span>
