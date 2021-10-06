@@ -1,10 +1,10 @@
 import { Switch, Route, BrowserRouter } from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from '../../const';
-import MainScreen from '../../screens/main-screen/main-screen';
+import Main from '../../screens/main/main';
 import Login from '../../screens/login/login';
 import Favorites from '../../screens/favorites/favorites';
 import Property from '../../screens/property/property';
-import NotFoundScreen from '../../screens/not-found-screen/not-found-screen';
+import NotFound from '../../screens/not-found/not-found';
 import PrivateRoute from '../private-route/private-route';
 
 type Cards = {
@@ -16,7 +16,7 @@ function App({cards} : Cards): JSX.Element {
     <BrowserRouter>
       <Switch>
         <Route exact path={AppRoute.Main}>
-          <MainScreen cards={cards}/>
+          <Main cards={cards}/>
         </Route>
         <Route exact path={AppRoute.Login}>
           <Login/>
@@ -32,7 +32,7 @@ function App({cards} : Cards): JSX.Element {
           <Property/>
         </Route>
         <Route>
-          <NotFoundScreen/>
+          <NotFound/>
         </Route>
       </Switch>
     </BrowserRouter>

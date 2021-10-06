@@ -7,7 +7,7 @@ type Cards = {
   cards: number[]
 };
 
-function MainScreen({cards} : Cards): JSX.Element {
+function Main({cards} : Cards): JSX.Element {
   return (
     <div className="page page--gray page--main">
       <Header/>
@@ -33,4 +33,4 @@ function MainScreen({cards} : Cards): JSX.Element {
   );
 }
 
-export default MainScreen;
+export default Main;
