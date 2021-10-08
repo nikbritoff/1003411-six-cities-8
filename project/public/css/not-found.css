@@ -8,6 +8,10 @@
 }
 
 .page__main--not-found {
+  background-image: url("../img/background-not-found.gif");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
   flex-grow: 1;
 }
 
@@ -22,7 +26,8 @@
 
 .not-found__title {
   display: block;
-  margin-bottom: 5px;
+  color: #ffffff;
+  margin-bottom: 20px;
   font-size: 32px;
   line-height: 1.1875;
 }
