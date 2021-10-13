@@ -6,17 +6,19 @@ import Favorites from '../../screens/favorites/favorites';
 import Property from '../../screens/property/property';
 import NotFound from '../../screens/not-found/not-found';
 import PrivateRoute from '../private-route/private-route';
+import { Offer } from '../../types/offer';
+// }
 
-type Cards = {
-  cards: number[],
-};
+type AppScreenProps = {
+  offers: Offer[],
+}
 
-function App({cards} : Cards): JSX.Element {
+function App({offers}: AppScreenProps): JSX.Element {
   return (
     <BrowserRouter>
       <Switch>
         <Route exact path={AppRoute.Main}>
-          <Main cards={cards}/>
+          <Main offers={offers}/>
         </Route>
         <Route exact path={AppRoute.Login}>
           <Login/>

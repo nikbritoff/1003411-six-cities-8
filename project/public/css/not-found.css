@@ -8,6 +8,7 @@
 }
 
 .page__main--not-found {
+  background-color: lightgrey;
   background-image: url("../img/background-not-found.gif");
   background-position: center;
   background-repeat: no-repeat;
