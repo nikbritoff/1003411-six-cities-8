@@ -7,7 +7,6 @@ import Property from '../../screens/property/property';
 import NotFound from '../../screens/not-found/not-found';
 import PrivateRoute from '../private-route/private-route';
 import { Offer } from '../../types/offer';
-// }
 
 type AppScreenProps = {
   offers: Offer[],
@@ -26,8 +25,8 @@ function App({offers}: AppScreenProps): JSX.Element {
         <PrivateRoute
           exact
           path={AppRoute.Favorites}
-          render={() => <Favorites />}
-          authorizationStatus={AuthorizationStatus.NoAuth}
+          render={() => <Favorites offers={offers}/>}
+          authorizationStatus={AuthorizationStatus.Auth}
         >
         </PrivateRoute>
         <Route exact path={AppRoute.Room}>
