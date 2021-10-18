@@ -1,6 +1,4 @@
 import { Offer } from '../../types/offer';
-import { useHistory } from 'react-router';
-import { AppRoute } from '../../const';
 import { Link } from 'react-router-dom';
 
 type Card = {
@@ -10,8 +8,6 @@ type Card = {
 
 
 function PlaceCard({offer, onMouseEnter}: Card): JSX.Element {
-  const history = useHistory();
-
   return (
     <article className="cities__place-card place-card" onMouseEnter={() => onMouseEnter(offer)}>
       {offer.isPremium ? <div className="place-card__mark"><span>Premium</span></div> : ''}
@@ -40,7 +36,7 @@ function PlaceCard({offer, onMouseEnter}: Card): JSX.Element {
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to={AppRoute.Room + offer.id} onClick={() => history.push(AppRoute.Room + offer.id)}>
+          <Link to={`/offer/${offer.id}`}>
             {offer.title}
           </Link>
         </h2>

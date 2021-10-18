@@ -1,20 +1,25 @@
 import { useState, FormEvent, ChangeEvent } from 'react';
 
 function PropertyNewReview(): JSX.Element {
-  const [rating, setRating] = useState(0);
-  const [review, setReview] = useState('');
+  const [comment, setComment] = useState<{ [key: string]: string}>({
+    rating: '0',
+    review: '',
+  });
 
 
   const handleSubmit = (evt: FormEvent<HTMLFormElement>):void => {
     evt.preventDefault();
   };
 
-  const handleChange = (evt: ChangeEvent<HTMLInputElement>):void => {
-    setRating(Number(evt.target.value));
-  };
-
-  const handleChangeText = (evt: ChangeEvent<HTMLTextAreaElement>): void => {
-    setReview(evt.target.value);
+  const handleChange = ({target}: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>):void => {
+    const {name, value} = target;
+    setComment((prevState : {[p: string]: string}) => ({
+      ...prevState,
+      [name]: value,
+    }));
+    // setComment(({
+    //   [name]: value,
+    // });
   };
 
   return (
@@ -56,7 +61,15 @@ function PropertyNewReview(): JSX.Element {
           </svg>
         </label>
       </div>
-      <textarea className="reviews__textarea form__textarea" id="review" name="review" placeholder="Tell how was your stay, what you like and what can be improved" onInput={handleChangeText}></textarea>
+      <textarea
+        className="reviews__textarea form__textarea"
+        id="review"
+        name="review"
+        value={comment.review}
+        placeholder="Tell how was your stay, what you like and what can be improved"
+        onChange={handleChange}
+      >
+      </textarea>
       <div className="reviews__button-wrapper">
         <p className="reviews__help">
           To submit review please make sure to set <span className="reviews__star">rating</span> and describe your stay with at least <b className="reviews__text-amount">50 characters</b>.
