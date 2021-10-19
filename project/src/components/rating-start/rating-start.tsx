@@ -7,16 +7,21 @@ type RatingStarProps = {
 }
 
 function RatingStar({title, id, handleChange}: RatingStarProps): JSX.Element {
+  const elementID = `${id}-star${id > 1 ? 's' : ''}`;
   return (
     <>
       <input className="form__rating-input visually-hidden"
         name="rating"
         value={id}
-        id={`${id}-star${id > 1 ? 's' : ''}`}
+        id={elementID}
         type="radio"
         onChange={handleChange}
       />
-      <label htmlFor="4-stars" className="reviews__rating-label form__rating-label" title={title}>
+      <label
+        htmlFor={elementID}
+        className="reviews__rating-label form__rating-label"
+        title={title}
+      >
         <svg className="form__star-image" width="37" height="33">
           <use xlinkHref="#icon-star"></use>
         </svg>
