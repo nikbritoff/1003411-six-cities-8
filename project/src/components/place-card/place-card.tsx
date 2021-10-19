@@ -1,6 +1,7 @@
 import { Offer } from '../../types/offer';
 import { Link } from 'react-router-dom';
 import { convertRating } from '../../utils/common';
+import CardMark from '../card-mark/card-mark';
 import classNames from 'classnames';
 
 type CardProps = {
@@ -11,7 +12,7 @@ type CardProps = {
 function PlaceCard({offer, onMouseEnter}: CardProps): JSX.Element {
   return (
     <article className="cities__place-card place-card" onMouseEnter={() => onMouseEnter(offer.id)}>
-      {offer.isPremium ? <div className="place-card__mark"><span>Premium</span></div> : ''}
+      {offer.isPremium ? <CardMark/> : null}
       <div className="cities__image-wrapper place-card__image-wrapper">
         <a href="/#">
           <img className="place-card__image" src={offer.previewImage} width="260" height="200" alt={offer.title}/>
