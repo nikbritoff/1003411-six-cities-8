@@ -2,12 +2,13 @@ import Header from '../../components/header/header';
 import SiteCitiesTabs from '../../components/cities-tabs/cities-tabs';
 import PlacesList from '../../components/places-list/places-list';
 import Sorting from '../../components/sorting/sorting';
+import { Offer } from '../../types/offer';
 
-type Cards = {
-  cards: number[]
-};
+type Offers = {
+  offers: Offer[]
+}
 
-function Main({cards} : Cards): JSX.Element {
+function Main({offers} : Offers): JSX.Element {
   return (
     <div className="page page--gray page--main">
       <Header/>
@@ -19,9 +20,9 @@ function Main({cards} : Cards): JSX.Element {
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{cards.length} places to stay in Amsterdam</b>
+              <b className="places__found">{offers.length} places to stay in Amsterdam</b>
               <Sorting/>
-              <PlacesList list={cards}/>
+              <PlacesList list={offers}/>
             </section>
             <div className="cities__right-section">
               <section className="cities__map map"></section>
