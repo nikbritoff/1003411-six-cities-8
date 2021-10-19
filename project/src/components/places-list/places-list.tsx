@@ -7,14 +7,14 @@ type Offers = {
 }
 
 function PlacesList({list}: Offers): JSX.Element {
-  const [activeCard, setActiveCard] = useState({});
-  const onMouseEnterHandler = (offer: Offer) => {
-    setActiveCard(offer);
+  const [, setActiveCard] = useState({});
+  const handleMouseMove = (id: number) => {
+    setActiveCard(id);
   };
 
   return (
     <div className="cities__places-list places__list tabs__content">
-      {list.map((card: Offer) => <PlaceCard key={card.id} offer={card} onMouseEnter={onMouseEnterHandler} />)}
+      {list.map((card: Offer) => <PlaceCard key={card.id} offer={card} onMouseEnter={handleMouseMove} />)}
     </div>
   );
 }

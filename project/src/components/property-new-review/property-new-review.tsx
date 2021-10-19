@@ -17,9 +17,6 @@ function PropertyNewReview(): JSX.Element {
       ...prevState,
       [name]: value,
     }));
-    // setComment(({
-    //   [name]: value,
-    // });
   };
 
   return (

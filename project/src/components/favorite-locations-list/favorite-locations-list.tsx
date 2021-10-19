@@ -1,32 +1,33 @@
 import FavoriteLocationItems from '../favorite-location-items/favorite-location-items';
-import {Offer} from '../../types/offer';
-import { offers } from '../../mock/offers';
-import FavoriteCard from '../favorite-card/favorite-card';
+import { Offer } from '../../types/offer';
 
 type Offers = {
   list: Offer[]
 }
 
-const getFavoriteLocationsList = ({list}: Offers): string[] => {
-  const locationsList: string[] = [];
+const getFavoriteLocationsList = ({ list }: Offers): { [key: string]: Offer[] } => {
+  const locationsList: {
+    [key: string]: Offer[]
+  } = {};
   list.forEach((offer) => {
-    if (!locationsList.includes(offer.city.name) && offer.isFavorite) {
-      locationsList.push(offer.city.name);
+    if (offer.isFavorite) {
+      if (offer.city.name in locationsList) {
+        locationsList[offer.city.name].push(offer);
+      } else {
+        locationsList[offer.city.name] = [];
+        locationsList[offer.city.name].push(offer);
+      }
     }
   });
 
   return locationsList;
 };
 
-function FavoriteLocationsList({list}: Offers): JSX.Element {
-  const locationsList = getFavoriteLocationsList({list});
-  console.log(locationsList);
-
+function FavoriteLocationsList({ list }: Offers): JSX.Element {
+  const locationsList = getFavoriteLocationsList({ list });
   return (
     <ul className="favorites__list">
-      {locationsList.map((destination: string) => <FavoriteLocationItems key={destination} destination={destination} offers={list}/>)}
-      {/* <FavoriteLocationItems/>
-      <FavoriteLocationItems/> */}
+      {Object.keys(locationsList).map((destination: string) => <FavoriteLocationItems key={destination} destination={destination} offers={locationsList[destination]} />)}
     </ul>
   );
 }

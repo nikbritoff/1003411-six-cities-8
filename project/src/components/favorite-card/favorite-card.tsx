@@ -1,4 +1,5 @@
 import { Offer } from '../../types/offer';
+import { convertRating } from '../../utils/common';
 
 type FavoriteCardProp = {
   offer: Offer,
@@ -9,7 +10,7 @@ function FavoriteCard({offer}: FavoriteCardProp): JSX.Element {
     <article className="favorites__card place-card">
       <div className="favorites__image-wrapper place-card__image-wrapper">
         <a href="/#">
-          <img className="place-card__image" src={offer.previewImage} width="150" height="110" alt="Place"/>
+          <img className="place-card__image" src={offer.previewImage} width="150" height="110" alt={offer.title}/>
         </a>
       </div>
       <div className="favorites__card-info place-card__info">
@@ -27,14 +28,14 @@ function FavoriteCard({offer}: FavoriteCardProp): JSX.Element {
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{width: `${offer.rating * 100 / 5}%`}}></span>
+            <span style={{width: `${convertRating(offer.rating)}%`}}></span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
         <h2 className="place-card__name">
           <a href="/#">{offer.title}</a>
         </h2>
-        <p className="place-card__type">{offer.type}</p>
+        <p className="place-card__type">{offer.type.split('').map((char, index) => index === 0 ? char.toUpperCase() : char)}</p>
       </div>
     </article>
   );
