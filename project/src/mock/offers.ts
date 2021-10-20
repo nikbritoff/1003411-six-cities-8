@@ -5,6 +5,40 @@ const nanoid = customAlphabet('1234567890', 5);
 
 export const offers: Offer[] = [
   {
+    bedrooms: 5,
+    city: {
+      location: {
+        latitude: 52.370216,
+        longitude: 4.895168,
+        zoom: 10,
+      },
+      name: 'Amsterdam',
+    },
+    description: 'A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam.',
+    goods: ['Washing machine'],
+    host: {
+      avatarUrl: 'img/1.png',
+      id: Number(nanoid()),
+      isPro: false,
+      name: 'James',
+    },
+    id: Number(nanoid()),
+    images: ['img/3.png', 'img/4.png'],
+    location: {
+      latitude: 52.3909553943508,
+      longitude: 4.85309666406198,
+      zoom: 8,
+    },
+    isFavorite: false,
+    isPremium: false,
+    maxAdults: 5,
+    previewImage: 'img/apartment-02.jpg',
+    price: 5000,
+    rating: 3.5,
+    title: 'Studio at great location',
+    type: 'apartment',
+  },
+  {
     bedrooms: 3,
     city: {
       location: {
@@ -25,8 +59,8 @@ export const offers: Offer[] = [
     id: Number(nanoid()),
     images: ['img/1.png', 'img/2.png'],
     location: {
-      latitude: 52.35514938496378,
-      longitude: 4.673877537499948,
+      latitude: 52.369553943508,
+      longitude: 4.85309666406198,
       zoom: 8,
     },
     isFavorite: true,

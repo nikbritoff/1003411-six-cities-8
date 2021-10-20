@@ -3,10 +3,20 @@ import SiteCitiesTabs from '../../components/cities-tabs/cities-tabs';
 import PlacesList from '../../components/places-list/places-list';
 import Sorting from '../../components/sorting/sorting';
 import { Offer } from '../../types/offer';
+import Map from '../../components/map/map';
 
 type Offers = {
   offers: Offer[]
 }
+
+const CITY = {
+  location: {
+    latitude: 52.370216,
+    longitude: 4.895168,
+    zoom: 10,
+  },
+  name: 'Amsterdam',
+};
 
 function Main({offers} : Offers): JSX.Element {
   return (
@@ -25,7 +35,9 @@ function Main({offers} : Offers): JSX.Element {
               <PlacesList list={offers}/>
             </section>
             <div className="cities__right-section">
-              <section className="cities__map map"></section>
+              <section className="cities__map map">
+                <Map city={CITY}/>
+              </section>
             </div>
           </div>
         </div>
