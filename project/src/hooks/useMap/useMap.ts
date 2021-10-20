@@ -1,5 +1,6 @@
 import {useEffect, useState, MutableRefObject} from 'react';
 import {Map, TileLayer} from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 
 type City = {
   location: {
