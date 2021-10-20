@@ -1,16 +1,17 @@
 import { Offer } from '../../types/offer';
 import PlaceCard from '../place-card/place-card';
-import {useState} from 'react';
+// import {useState} from 'react';
 
-type Offers = {
-  list: Offer[]
+type PlaceListProps = {
+  list: Offer[],
+  handleMouseMove: (id: number) => void,
 }
 
-function PlacesList({list}: Offers): JSX.Element {
-  const [, setActiveCard] = useState({});
-  const handleMouseMove = (id: number) => {
-    setActiveCard(id);
-  };
+function PlacesList({list, handleMouseMove}: PlaceListProps): JSX.Element {
+  // const [, setActiveCard] = useState({});
+  // const handleMouseMove = (id: number) => {
+  //   setActiveCard(id);
+  // };
 
   return (
     <div className="cities__places-list places__list tabs__content">

@@ -4,6 +4,7 @@ import PlacesList from '../../components/places-list/places-list';
 import Sorting from '../../components/sorting/sorting';
 import { Offer } from '../../types/offer';
 import Map from '../../components/map/map';
+import { useState } from 'react';
 
 type Offers = {
   offers: Offer[]
@@ -19,6 +20,12 @@ const CITY = {
 };
 
 function Main({offers} : Offers): JSX.Element {
+  const [selectedOfferID, setActiveCard] = useState(0);
+  // console.log(selec)
+  const handleMouseMove = (id: number) => {
+    setActiveCard(id);
+  };
+
   return (
     <div className="page page--gray page--main">
       <Header/>
@@ -32,11 +39,11 @@ function Main({offers} : Offers): JSX.Element {
               <h2 className="visually-hidden">Places</h2>
               <b className="places__found">{offers.length} places to stay in Amsterdam</b>
               <Sorting/>
-              <PlacesList list={offers}/>
+              <PlacesList list={offers} handleMouseMove={handleMouseMove}/>
             </section>
             <div className="cities__right-section">
               <section className="cities__map map">
-                <Map city={CITY} offers={offers}/>
+                <Map city={CITY} offers={offers} selectedPoint={selectedOfferID}/>
               </section>
             </div>
           </div>

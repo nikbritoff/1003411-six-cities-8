@@ -15,6 +15,7 @@ type MapProps = {
     name: string,
   },
   offers: Offer[],
+  selectedPoint: number | undefined,
 };
 
 const defaultCustomIcon = leaflet.icon({
@@ -29,7 +30,7 @@ const currentCustomIcon = leaflet.icon({
   iconAnchor: [20, 40],
 });
 
-function Map({city, offers}: MapProps): JSX.Element {
+function Map({city, offers, selectedPoint}: MapProps): JSX.Element {
   const mapRef = useRef(null);
   const map = useMap(mapRef, city);
 
@@ -43,11 +44,14 @@ function Map({city, offers}: MapProps): JSX.Element {
 
         marker
           .setIcon(
-            defaultCustomIcon          )
+            // defaultCustomIcon
+            selectedPoint !== undefined && point.id === selectedPoint ? currentCustomIcon : defaultCustomIcon,
+          )
           .addTo(map);
       });
     }
-  }, [map, offers]);
+  // }, [map, offers]);
+  }, [map, offers, selectedPoint]);
 
   return (<div style={{height: '100%'}} ref={mapRef}></div>);
 }
