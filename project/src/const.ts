@@ -19,10 +19,7 @@ export const RATING_TITLES = [
   'perfect',
 ];
 
-// export const RATING_TITLES = {
-//   '1': 'terribly',
-//   '2': 'badly',
-//   '3': 'not bad',
-//   '4': 'good',
-//   '5': 'perfect',
-// };
+export const URL_MARKER_DEFAULT = 'https://assets.htmlacademy.ru/content/intensive/javascript-1/demo/interactive-map/pin.svg';
+export const URL_MARKER_CURRENT = 'https://assets.htmlacademy.ru/content/intensive/javascript-1/demo/interactive-map/main-pin.svg';
+// export const URL_MARKER_DEFAULT = '../public/img/pin.svg';
+// export const URL_MARKER_CURRENT = '../public/img/pin-active.svg';
