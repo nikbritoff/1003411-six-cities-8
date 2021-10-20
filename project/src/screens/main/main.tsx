@@ -21,9 +21,11 @@ const CITY = {
 
 function Main({offers} : Offers): JSX.Element {
   const [selectedOfferID, setActiveCard] = useState(0);
-  // console.log(selec)
   const handleMouseMove = (id: number) => {
     setActiveCard(id);
+  };
+  const handleMouseMoveOut = () => {
+    setActiveCard(0);
   };
 
   return (
@@ -39,7 +41,7 @@ function Main({offers} : Offers): JSX.Element {
               <h2 className="visually-hidden">Places</h2>
               <b className="places__found">{offers.length} places to stay in Amsterdam</b>
               <Sorting/>
-              <PlacesList list={offers} handleMouseMove={handleMouseMove}/>
+              <PlacesList list={offers} handleMouseMove={handleMouseMove} handleMouseMoveOut={handleMouseMoveOut}/>
             </section>
             <div className="cities__right-section">
               <section className="cities__map map">

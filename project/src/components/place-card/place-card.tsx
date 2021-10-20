@@ -7,11 +7,12 @@ import classNames from 'classnames';
 type CardProps = {
   offer: Offer,
   onMouseEnter: (id: number) => void,
+  handleMouseMoveOut: () => void,
 }
 
-function PlaceCard({offer, onMouseEnter}: CardProps): JSX.Element {
+function PlaceCard({offer, onMouseEnter, handleMouseMoveOut}: CardProps): JSX.Element {
   return (
-    <article className="cities__place-card place-card" onMouseEnter={() => onMouseEnter(offer.id)}>
+    <article className="cities__place-card place-card" onMouseEnter={() => onMouseEnter(offer.id)} onMouseLeave={() => handleMouseMoveOut()}>
       {offer.isPremium ? <CardMark/> : null}
       <div className="cities__image-wrapper place-card__image-wrapper">
         <a href="/#">
