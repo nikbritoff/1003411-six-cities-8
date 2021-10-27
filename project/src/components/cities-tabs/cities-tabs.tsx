@@ -1,42 +1,37 @@
-function SiteCitiesTabs(): JSX.Element  {
+import { CITIES } from '../../const';
+import CityTab from '../city-tab/city-tab';
+import { connect, ConnectedProps } from 'react-redux';
+import { Dispatch} from 'redux';
+import { Actions } from '../../types/action';
+import { State } from '../../types/state';
+import { changeCity } from '../../store/action';
+
+const mapStateToProps = ({currentCity}: State) => ({
+  currentCity,
+});
+
+const mapDispatchToProps = (dispatch: Dispatch<Actions>) => ({
+  onChangeCity(city: string) {
+    dispatch(changeCity(city));
+  },
+});
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+
+type PropsFromRedux = ConnectedProps<typeof connector>;
+type ConnectedComponentProps = PropsFromRedux;
+
+function SiteCitiesTabs({currentCity, onChangeCity}: ConnectedComponentProps): JSX.Element  {
   return (
     <div className="tabs">
       <section className="locations container">
         <ul className="locations__list tabs__list">
-          <li className="locations__item">
-            <a className="locations__item-link tabs__item" href="/#">
-              <span>Paris</span>
-            </a>
-          </li>
-          <li className="locations__item">
-            <a className="locations__item-link tabs__item" href="/#">
-              <span>Cologne</span>
-            </a>
-          </li>
-          <li className="locations__item">
-            <a className="locations__item-link tabs__item" href="/#">
-              <span>Brussels</span>
-            </a>
-          </li>
-          <li className="locations__item">
-            <a className="locations__item-link tabs__item tabs__item--active" href="/#">
-              <span>Amsterdam</span>
-            </a>
-          </li>
-          <li className="locations__item">
-            <a className="locations__item-link tabs__item" href="/#">
-              <span>Hamburg</span>
-            </a>
-          </li>
-          <li className="locations__item">
-            <a className="locations__item-link tabs__item" href="/#">
-              <span>Dusseldorf</span>
-            </a>
-          </li>
+          {CITIES.map((city: string) => <CityTab city={city} key={city} currentCity={currentCity} onChangeCity={onChangeCity}/>)}
         </ul>
       </section>
     </div>
   );
 }
 
-export default SiteCitiesTabs;
+export { SiteCitiesTabs };
+export default connector(SiteCitiesTabs);
