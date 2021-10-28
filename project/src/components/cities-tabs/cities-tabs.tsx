@@ -5,6 +5,7 @@ import { Dispatch} from 'redux';
 import { Actions } from '../../types/action';
 import { State } from '../../types/state';
 import { changeCity } from '../../store/action';
+import { City } from '../../types/city';
 
 const mapStateToProps = ({currentCity}: State) => ({
   currentCity,
@@ -26,7 +27,7 @@ function SiteCitiesTabs({currentCity, onChangeCity}: ConnectedComponentProps): J
     <div className="tabs">
       <section className="locations container">
         <ul className="locations__list tabs__list">
-          {CITIES.map((city: string) => <CityTab city={city} key={city} currentCity={currentCity} onChangeCity={onChangeCity}/>)}
+          {CITIES.map((city: City) => <CityTab city={city.name} key={city.name} currentCity={currentCity} onChangeCity={onChangeCity}/>)}
         </ul>
       </section>
     </div>

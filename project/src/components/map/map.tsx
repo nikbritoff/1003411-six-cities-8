@@ -4,16 +4,10 @@ import { Marker } from 'leaflet';
 import useMap from '../../hooks/useMap/useMap';
 import { URL_MARKER_DEFAULT, URL_MARKER_CURRENT } from '../../const';
 import { Offer } from '../../types/offer';
+import { City } from '../../types/city';
 
 type MapProps = {
-  city: {
-    location: {
-      latitude: number,
-      longitude: number,
-      zoom: number,
-    },
-    name: string,
-  },
+  city: City,
   offers: Offer[],
   selectedPoint: number | undefined,
 };
@@ -44,13 +38,11 @@ function Map({city, offers, selectedPoint}: MapProps): JSX.Element {
 
         marker
           .setIcon(
-            // defaultCustomIcon
             selectedPoint !== undefined && point.id === selectedPoint ? currentCustomIcon : defaultCustomIcon,
           )
           .addTo(map);
       });
     }
-  // }, [map, offers]);
   }, [map, offers, selectedPoint]);
 
   return (<div style={{height: '100%'}} ref={mapRef}></div>);
