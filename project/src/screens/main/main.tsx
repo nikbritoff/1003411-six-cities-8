@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { State } from '../../types/state';
 import { connect, ConnectedProps } from 'react-redux';
 import { CITIES } from '../../const';
+import { City } from '../../types/city';
 
 const mapStateToProps = ({currentCity, offersList}: State) => ({
   currentCity,
@@ -43,9 +44,7 @@ function Main({offersList, currentCity} : ConnectedComponentProps): JSX.Element 
               <PlacesList list={offers} handleMouseMove={handleMouseMove} handleMouseMoveOut={handleMouseMoveOut}/>
             </section>
             <div className="cities__right-section">
-              <section className="cities__map map">
-                <Map city={CITIES.find((location) => location.name === currentCity)} offers={offers} selectedPoint={selectedOfferID}/>
-              </section>
+              <Map city={CITIES.find((location) => location.name === currentCity) as City} offers={offers} selectedPoint={selectedOfferID}/>
             </div>
           </div>
         </div>

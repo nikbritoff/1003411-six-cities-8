@@ -5,6 +5,7 @@ import useMap from '../../hooks/useMap/useMap';
 import { URL_MARKER_DEFAULT, URL_MARKER_CURRENT } from '../../const';
 import { Offer } from '../../types/offer';
 import { City } from '../../types/city';
+import {TileLayer} from 'leaflet';
 
 type MapProps = {
   city: City,
@@ -30,6 +31,13 @@ function Map({city, offers, selectedPoint}: MapProps): JSX.Element {
 
   useEffect(() => {
     if (map) {
+      map.setView(
+        {
+          lat: city.location.latitude,
+          lng: city.location.longitude,
+        },
+        city.location.zoom,
+      );
       offers.forEach((point) => {
         const marker = new Marker({
           lat: point.location.latitude,
@@ -43,9 +51,26 @@ function Map({city, offers, selectedPoint}: MapProps): JSX.Element {
           .addTo(map);
       });
     }
-  }, [map, offers, selectedPoint]);
+    return () => {
+      if (map) {
+        map.eachLayer((mark) => mark.remove());
+        const layer = new TileLayer(
+          'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
+          {
+            attribution:
+              '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+          },
+        );
+        map.addLayer(layer);
+      }
+    };
+  }, [map, offers, selectedPoint, city]);
 
-  return (<div style={{height: '100%'}} ref={mapRef}></div>);
+  return (
+    <section className="cities__map map">
+      <div style={{height: '100%'}} ref={mapRef}></div>
+    </section>
+  );
 }
 
 export default Map;
