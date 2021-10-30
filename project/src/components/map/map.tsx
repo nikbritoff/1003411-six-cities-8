@@ -5,7 +5,7 @@ import useMap from '../../hooks/useMap/useMap';
 import { URL_MARKER_DEFAULT, URL_MARKER_CURRENT } from '../../const';
 import { Offer } from '../../types/offer';
 import { City } from '../../types/city';
-import {TileLayer} from 'leaflet';
+// import {TileLayer} from 'leaflet';
 
 type MapProps = {
   city: City,
@@ -52,17 +52,18 @@ function Map({city, offers, selectedPoint}: MapProps): JSX.Element {
       });
     }
     return () => {
-      if (map) {
-        map.eachLayer((mark) => mark.remove());
-        const layer = new TileLayer(
-          'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
-          {
-            attribution:
-              '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-          },
-        );
-        map.addLayer(layer);
-      }
+      // console.log(map);
+      // if (map) {
+      //   map.eachLayer((mark) => mark.remove());
+      //   const layer = new TileLayer(
+      //     'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
+      //     {
+      //       attribution:
+      //         '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+      //     },
+      //   );
+      //   map.addLayer(layer);
+      // }
     };
   }, [map, offers, selectedPoint, city]);
 

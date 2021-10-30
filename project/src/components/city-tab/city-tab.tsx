@@ -1,9 +1,10 @@
 import cn from 'classnames';
+import { City } from '../../types/city';
 
 type CityTabProps = {
-  city: string,
-  currentCity: string,
-  onChangeCity: (city: string) => void,
+  city: City,
+  currentCity: City,
+  onChangeCity: (city: City) => void,
 }
 
 
@@ -11,14 +12,14 @@ function CityTab({city, currentCity, onChangeCity}: CityTabProps): JSX.Element {
   return (
     <li className="locations__item">
       <a
-        className={cn('locations__item-link tabs__item', {'tabs__item--active' : city === currentCity})}
+        className={cn('locations__item-link tabs__item', {'tabs__item--active' : city.name === currentCity.name})}
         href="/#"
         onClick={(evt) => {
           evt.preventDefault();
           onChangeCity(city);
         }}
       >
-        <span>{city}</span>
+        <span>{city.name}</span>
       </a>
     </li>
   );

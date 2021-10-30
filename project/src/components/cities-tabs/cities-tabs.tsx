@@ -12,7 +12,7 @@ const mapStateToProps = ({currentCity}: State) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<Actions>) => ({
-  onChangeCity(city: string) {
+  onChangeCity(city: City) {
     dispatch(changeCity(city));
   },
 });
@@ -27,7 +27,7 @@ function SiteCitiesTabs({currentCity, onChangeCity}: ConnectedComponentProps): J
     <div className="tabs">
       <section className="locations container">
         <ul className="locations__list tabs__list">
-          {CITIES.map((city: City) => <CityTab city={city.name} key={city.name} currentCity={currentCity} onChangeCity={onChangeCity}/>)}
+          {CITIES.map((city: City) => <CityTab city={city} key={city.name} currentCity={currentCity} onChangeCity={onChangeCity}/>)}
         </ul>
       </section>
     </div>
