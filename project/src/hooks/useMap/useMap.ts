@@ -17,6 +17,7 @@ function useMap(
 ): Map | null {
   const [map, setMap] = useState<Map | null>(null);
   const {location} = city;
+
   useEffect(() => {
     if (mapRef.current !== null && map === null) {
       const instance = new Map(mapRef.current, {
@@ -26,7 +27,6 @@ function useMap(
         },
         zoom: location.zoom,
       });
-
       const layer = new TileLayer(
         'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
         {
@@ -36,7 +36,6 @@ function useMap(
       );
 
       instance.addLayer(layer);
-
       setMap(instance);
     }
   }, [mapRef, map, city, location.latitude, location.longitude, location.zoom]);

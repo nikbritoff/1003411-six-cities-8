@@ -137,7 +137,7 @@ export const offers: Offer[] = [
     previewImage: 'img/apartment-03.jpg',
     price: 200,
     rating: 4,
-    title: 'Best in Hamburg',
+    title: 'Best',
     type: 'apartment',
   },
 ];
