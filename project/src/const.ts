@@ -11,6 +11,12 @@ export enum AuthorizationStatus {
   Unknown = 'UNKNOWN',
 }
 
+export enum APIRoute {
+  Hotels = '/hotels',
+  Login = '/login',
+  Logout = '/logout',
+}
+
 export const RATING_TITLES = [
   'terribly',
   'badly',
@@ -18,8 +24,6 @@ export const RATING_TITLES = [
   'good',
   'perfect',
 ];
-
-export const DEFAULT_CITY = 'Paris';
 
 export const CITIES = [
   {

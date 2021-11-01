@@ -6,13 +6,30 @@ import Favorites from '../../screens/favorites/favorites';
 import Property from '../../screens/property/property';
 import NotFound from '../../screens/not-found/not-found';
 import PrivateRoute from '../private-route/private-route';
-import { Offer } from '../../types/offer';
+import { State } from '../../types/state';
+import { ConnectedProps, connect } from 'react-redux';
+import LoadingScreen from '../loading-screen/loading-screen';
 
-type AppScreenProps = {
-  offers: Offer[],
-}
+const isCheckedAuth = (authorizationStatus: AuthorizationStatus): boolean =>
+  authorizationStatus === AuthorizationStatus.Unknown;
 
-function App({offers}: AppScreenProps): JSX.Element {
+const mapStateToProps = ({authorizationStatus, isDataLoaded}: State) => ({
+  authorizationStatus,
+  isDataLoaded,
+});
+
+const connector = connect(mapStateToProps);
+
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+function App({authorizationStatus, isDataLoaded}: PropsFromRedux): JSX.Element {
+
+  if (isCheckedAuth(authorizationStatus) || !isDataLoaded) {
+    return (
+      <LoadingScreen />
+    );
+  }
+
   return (
     <BrowserRouter>
       <Switch>
@@ -40,4 +57,5 @@ function App({offers}: AppScreenProps): JSX.Element {
   );
 }
 
-export default App;
+export { App };
+export default connector(App);
