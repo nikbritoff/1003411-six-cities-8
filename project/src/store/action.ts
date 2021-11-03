@@ -1,7 +1,7 @@
-import { ActionType, ChangeCityAction, LoadOffersAction } from '../types/action';
+import { ActionType, ChangeCityAction, ChangeSortingStatusAction, LoadOffersAction, RedirectToRouteAction } from '../types/action';
 import { City } from '../types/city';
 import { Offer } from '../types/offer';
-import { AuthorizationStatus } from '../const';
+import { AppRoute, AuthorizationStatus, SortingStatus } from '../const';
 
 export const changeCity = (city: City): ChangeCityAction => ({
   type: ActionType.ChangeCity,
@@ -21,3 +21,13 @@ export const requireAutorization = (authStatus: AuthorizationStatus) => ({
 export const requireLogout = () => ({
   type: ActionType.RequireLogout,
 } as const);
+
+export const redirectToRoute = (route: AppRoute): RedirectToRouteAction => ({
+  type: ActionType.RedirectToRoute,
+  payload: route,
+} as const);
+
+export const changeSortingStatus = (sortingStatus: SortingStatus): ChangeSortingStatusAction => ({
+  type: ActionType.ChangeSortingStatus,
+  payload: sortingStatus,
+});

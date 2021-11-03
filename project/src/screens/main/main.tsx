@@ -3,10 +3,12 @@ import SiteCitiesTabs from '../../components/cities-tabs/cities-tabs';
 import CitiesBoard from '../../components/cities-board/cities-board';
 import { State } from '../../types/state';
 import { connect, ConnectedProps } from 'react-redux';
+import { sortOffers } from '../../utils/common';
 
-const mapStateToProps = ({currentCity, offersList}: State) => ({
+const mapStateToProps = ({currentCity, offersList, sortingStatus}: State) => ({
   currentCity,
   offersList,
+  sortingStatus,
 });
 
 const connector = connect(mapStateToProps);
@@ -14,8 +16,9 @@ const connector = connect(mapStateToProps);
 type PropsFromRedux = ConnectedProps<typeof connector>;
 type ConnectedComponentProps = PropsFromRedux;
 
-function Main({offersList, currentCity} : ConnectedComponentProps): JSX.Element {
+function Main({offersList, currentCity, sortingStatus} : ConnectedComponentProps): JSX.Element {
   const offers = offersList.filter((offer) => offer.city.name === currentCity.name);
+  sortOffers(sortingStatus, offers);
 
   return (
     <div className="page page--gray page--main">

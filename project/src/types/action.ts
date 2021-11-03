@@ -3,13 +3,15 @@ import { Offer } from './offer';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { AxiosInstance } from 'axios';
 import  { State } from '../types/state';
-import { AuthorizationStatus } from '../const';
+import { AppRoute, AuthorizationStatus, SortingStatus } from '../const';
 
 export enum ActionType {
   ChangeCity = 'main/changeCity',
   LoadOffers = 'data/loadOffers',
   RequireAuthorization = 'user/requireAuthorization',
   RequireLogout = 'user/requireLogout',
+  RedirectToRoute = 'mail/redirectToRoute',
+  ChangeSortingStatus = 'data/changeSortingStatus',
 }
 
 export type ChangeCityAction = {
@@ -27,12 +29,28 @@ export type RequireAuthorizationAction = {
   payload: AuthorizationStatus;
 }
 
-export type requireLogoutAction = {
+export type RequireLogoutAction = {
   type: ActionType.RequireLogout;
 }
 
+export type RedirectToRouteAction = {
+  type: ActionType.RedirectToRoute;
+  payload: AppRoute;
+}
 
-export type Actions = ChangeCityAction | LoadOffersAction | RequireAuthorizationAction | requireLogoutAction;
+export type ChangeSortingStatusAction = {
+  type: ActionType.ChangeSortingStatus;
+  payload: SortingStatus;
+}
+
+
+export type Actions =
+  ChangeCityAction |
+  LoadOffersAction |
+  RequireAuthorizationAction |
+  RequireLogoutAction |
+  RedirectToRouteAction |
+  ChangeSortingStatusAction;
 
 export type ThunkActionRessult<R = Promise<void>> = ThunkAction<R, State, AxiosInstance, Actions>;
 export type ThunkAppDispatch = ThunkDispatch<State, AxiosInstance, Actions>;

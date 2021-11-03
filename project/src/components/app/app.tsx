@@ -1,4 +1,4 @@
-import { Switch, Route, BrowserRouter } from 'react-router-dom';
+import { Switch, Route, Router as BrowserRouter } from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from '../../const';
 import Main from '../../screens/main/main';
 import Login from '../../screens/login/login';
@@ -9,6 +9,7 @@ import PrivateRoute from '../private-route/private-route';
 import { State } from '../../types/state';
 import { ConnectedProps, connect } from 'react-redux';
 import LoadingScreen from '../loading-screen/loading-screen';
+import browserHistory from '../../browser-history';
 
 const isCheckedAuth = (authorizationStatus: AuthorizationStatus): boolean =>
   authorizationStatus === AuthorizationStatus.Unknown;
@@ -31,7 +32,7 @@ function App({authorizationStatus, isDataLoaded}: PropsFromRedux): JSX.Element {
   }
 
   return (
-    <BrowserRouter>
+    <BrowserRouter history={browserHistory}>
       <Switch>
         <Route exact path={AppRoute.Main}>
           <Main/>
@@ -43,11 +44,15 @@ function App({authorizationStatus, isDataLoaded}: PropsFromRedux): JSX.Element {
           exact
           path={AppRoute.Favorites}
           render={() => <Favorites offers={[]}/>}
-          authorizationStatus={AuthorizationStatus.Auth}
         >
         </PrivateRoute>
-        <Route exact path={AppRoute.Room}>
-          <Property/>
+        <Route
+          exact
+          path={AppRoute.Room}
+          // render={() => <Property id={AppRoute.Room}/>}
+          render={() => <Property/>}
+        >
+          {/* <Property/> */}
         </Route>
         <Route>
           <NotFound/>
