@@ -4,11 +4,16 @@ import CitiesBoard from '../../components/cities-board/cities-board';
 import { State } from '../../types/state';
 import { connect, ConnectedProps } from 'react-redux';
 import { sortOffers } from '../../utils/common';
+import Loading from '../../components/loading/loading';
+import LoadingFailed from '../../components/loading-failed/loading-failed';
 
-const mapStateToProps = ({currentCity, offersList, sortingStatus}: State) => ({
+const mapStateToProps = ({currentCity, offersList, sortingStatus, offersLoading, offersSuccess, offersError}: State) => ({
   currentCity,
   offersList,
   sortingStatus,
+  offersLoading,
+  offersError,
+  offersSuccess,
 });
 
 const connector = connect(mapStateToProps);
@@ -16,9 +21,17 @@ const connector = connect(mapStateToProps);
 type PropsFromRedux = ConnectedProps<typeof connector>;
 type ConnectedComponentProps = PropsFromRedux;
 
-function Main({offersList, currentCity, sortingStatus} : ConnectedComponentProps): JSX.Element {
+function Main({offersList, currentCity, sortingStatus, offersLoading, offersSuccess, offersError} : ConnectedComponentProps): JSX.Element {
   const offers = offersList.filter((offer) => offer.city.name === currentCity.name);
   sortOffers(sortingStatus, offers);
+
+  let content = <Loading isOffersLoading={offersLoading}/>;
+  if (offersSuccess) {
+    content = <CitiesBoard offers={offers} currentCity={currentCity}/>;
+  }
+  if (offersError) {
+    content = <LoadingFailed/>;
+  }
 
   return (
     <div className="page page--gray page--main">
@@ -26,7 +39,7 @@ function Main({offersList, currentCity, sortingStatus} : ConnectedComponentProps
       <main className="page__main page__main--index">
         <h1 className="visually-hidden">Cities</h1>
         <SiteCitiesTabs/>
-        <CitiesBoard offers={offers} currentCity={currentCity}/>
+        {content}
       </main>
     </div>
   );

@@ -1,5 +1,5 @@
 import { ThunkActionResult } from '../types/action';
-import { loadOffers, redirectToRoute, requireAutorization, requireLogout } from './action';
+import { loadOffersSuccess, loadOffersFailed, redirectToRoute, requestOffers, requireAutorization, requireLogout } from './action';
 import { APIRoute, AppRoute, AuthorizationStatus } from '../const';
 import { Offer } from '../types/offer';
 import { AuthData } from '../types/auth-data';
@@ -8,9 +8,15 @@ import { adaptOfferToClient } from '../utils/adapter';
 
 export const fetchOfferAction = (): ThunkActionResult =>
   async (dispatch, _getState, api) => {
-    const {data} = await api.get<Offer[]>(APIRoute.Hotels);
-    const adaptedData = data.map((point) => adaptOfferToClient(point));
-    dispatch(loadOffers(adaptedData));
+    try {
+      dispatch(requestOffers(true));
+      const {data} = await api.get<Offer[]>(APIRoute.Hotels);
+      const adaptedData = data.map((point) => adaptOfferToClient(point));
+      dispatch(loadOffersSuccess(adaptedData));
+    }
+    catch(err) {
+      dispatch(loadOffersFailed(true));
+    }
   };
 
 export const checkAuthAction = (): ThunkActionResult =>

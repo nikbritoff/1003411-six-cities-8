@@ -7,7 +7,9 @@ import { AppRoute, AuthorizationStatus, SortingStatus } from '../const';
 
 export enum ActionType {
   ChangeCity = 'main/changeCity',
-  LoadOffers = 'data/loadOffers',
+  RequestOffers = 'data/requestOffers',
+  LoadOffersSuccsess = 'data/loadOffers',
+  LoadOffersFailed = 'data/loadOffersFailed',
   RequireAuthorization = 'user/requireAuthorization',
   RequireLogout = 'user/requireLogout',
   RedirectToRoute = 'mail/redirectToRoute',
@@ -19,9 +21,19 @@ export type ChangeCityAction = {
   payload: City;
 }
 
-export type LoadOffersAction = {
-  type: ActionType.LoadOffers;
+export type OffersRequestAction = {
+  type: ActionType.RequestOffers;
+  payload: boolean;
+}
+
+export type LoadOffersSuccessAction = {
+  type: ActionType.LoadOffersSuccsess;
   payload: Offer[];
+}
+
+export type LoadOffersFailedAction = {
+  type: ActionType.LoadOffersFailed;
+  payload: boolean;
 }
 
 export type RequireAuthorizationAction = {
@@ -46,7 +58,9 @@ export type ChangeSortingStatusAction = {
 
 export type Actions =
   ChangeCityAction |
-  LoadOffersAction |
+  OffersRequestAction |
+  LoadOffersSuccessAction |
+  LoadOffersFailedAction |
   RequireAuthorizationAction |
   RequireLogoutAction |
   RedirectToRouteAction |

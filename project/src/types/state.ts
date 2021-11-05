@@ -6,7 +6,10 @@ import { Offer } from './offer';
 export type State = {
   currentCity: City,
   offersList: Offer[],
+  offersLoading: boolean,
+  offersError: boolean,
+  offersSuccess: boolean,
   authorizationStatus: AuthorizationStatus,
-  isDataLoaded: boolean,
+  // isDataLoaded: boolean,
   sortingStatus: SortingStatus,
 }
