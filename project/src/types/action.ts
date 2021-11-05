@@ -52,5 +52,5 @@ export type Actions =
   RedirectToRouteAction |
   ChangeSortingStatusAction;
 
-export type ThunkActionRessult<R = Promise<void>> = ThunkAction<R, State, AxiosInstance, Actions>;
+export type ThunkActionResult<R = Promise<void>> = ThunkAction<R, State, AxiosInstance, Actions>;
 export type ThunkAppDispatch = ThunkDispatch<State, AxiosInstance, Actions>;
