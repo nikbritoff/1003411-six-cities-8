@@ -4,35 +4,12 @@ import { APIRoute, AppRoute, AuthorizationStatus } from '../const';
 import { Offer } from '../types/offer';
 import { AuthData } from '../types/auth-data';
 import { dropToken, saveToken, Token } from '../services/token';
-import { BackendOffer } from '../types/backend-offer';
-
-const adaptToClient = (offer: BackendOffer): Offer => {
-  const adaptedOffer = {
-    ...offer,
-    host: {
-      avatarUrl: offer.host.avatar_url,
-      id: offer.host.id,
-      isPro: offer.host.is_pro,
-      name: offer.host.name,
-    },
-    isFavorite: offer.is_favorite,
-    isPremium: offer.is_premium,
-    maxAdults: offer.max_adults,
-    previewImage: offer.preview_image,
-  };
-
-  delete adaptedOffer['is_favorite'];
-  delete adaptedOffer['is_premium'];
-  delete adaptedOffer['max_adults'];
-  delete adaptedOffer['preview_image'];
-
-  return adaptedOffer as Offer;
-};
+import { adaptOfferToClient } from '../utils/adapter';
 
 export const fetchOfferAction = (): ThunkActionRessult =>
   async (dispatch, _getState, api) => {
     const {data} = await api.get<Offer[]>(APIRoute.Hotels);
-    const adaptedData = data.map((point) => adaptToClient(point));
+    const adaptedData = data.map((point) => adaptOfferToClient(point));
     dispatch(loadOffers(adaptedData));
   };
 
