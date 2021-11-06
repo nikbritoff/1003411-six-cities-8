@@ -1,0 +1,25 @@
+.loading-failed {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+}
+
+.loading-failed--info {
+  display: block;
+  padding: 20px;
+  margin-bottom: 20px;
+  line-height: 1.1875;
+  text-align: center;
+}
+
+.loading-failed--info-title {
+  font-size: 22px;
+  color: black;
+}
+
+.loading-failed--info-text {
+  font-size: 14px;
+}

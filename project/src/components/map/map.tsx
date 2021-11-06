@@ -5,7 +5,7 @@ import useMap from '../../hooks/useMap/useMap';
 import { URL_MARKER_DEFAULT, URL_MARKER_CURRENT } from '../../const';
 import { Offer } from '../../types/offer';
 import { City } from '../../types/city';
-import {TileLayer} from 'leaflet';
+import { LayerGroup} from 'leaflet';
 
 type MapProps = {
   city: City,
@@ -30,14 +30,8 @@ function Map({city, offers, selectedPoint}: MapProps): JSX.Element {
   const map = useMap(mapRef, city);
 
   useEffect(() => {
+    const markersLayer = new LayerGroup();
     if (map) {
-      map.setView(
-        {
-          lat: city.location.latitude,
-          lng: city.location.longitude,
-        },
-        city.location.zoom,
-      );
       offers.forEach((point) => {
         const marker = new Marker({
           lat: point.location.latitude,
@@ -48,23 +42,32 @@ function Map({city, offers, selectedPoint}: MapProps): JSX.Element {
           .setIcon(
             selectedPoint !== undefined && point.id === selectedPoint ? currentCustomIcon : defaultCustomIcon,
           )
-          .addTo(map);
+          .addTo(markersLayer);
+
       });
+
+      markersLayer.addTo(map);
     }
     return () => {
-      if (map) {
-        map.eachLayer((mark) => mark.remove());
-        const layer = new TileLayer(
-          'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
-          {
-            attribution:
-              '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-          },
-        );
-        map.addLayer(layer);
+      if (markersLayer && map) {
+        markersLayer.clearLayers();
+        map.addLayer(markersLayer);
       }
     };
   }, [map, offers, selectedPoint, city]);
+
+
+  useEffect(() => {
+    if (map) {
+      map.setView(
+        {
+          lat: city.location.latitude,
+          lng: city.location.longitude,
+        },
+        city.location.zoom,
+      );
+    }
+  }, [city, map]);
 
   return (
     <section className="cities__map map">

@@ -1,20 +1,16 @@
-import { Switch, Route, BrowserRouter } from 'react-router-dom';
-import { AppRoute, AuthorizationStatus } from '../../const';
+import { Switch, Route, Router as BrowserRouter } from 'react-router-dom';
+import { AppRoute } from '../../const';
 import Main from '../../screens/main/main';
 import Login from '../../screens/login/login';
 import Favorites from '../../screens/favorites/favorites';
 import Property from '../../screens/property/property';
 import NotFound from '../../screens/not-found/not-found';
 import PrivateRoute from '../private-route/private-route';
-import { Offer } from '../../types/offer';
+import browserHistory from '../../browser-history';
 
-type AppScreenProps = {
-  offers: Offer[],
-}
-
-function App({offers}: AppScreenProps): JSX.Element {
+function App(): JSX.Element {
   return (
-    <BrowserRouter>
+    <BrowserRouter history={browserHistory}>
       <Switch>
         <Route exact path={AppRoute.Main}>
           <Main/>
@@ -26,11 +22,13 @@ function App({offers}: AppScreenProps): JSX.Element {
           exact
           path={AppRoute.Favorites}
           render={() => <Favorites offers={[]}/>}
-          authorizationStatus={AuthorizationStatus.Auth}
         >
         </PrivateRoute>
-        <Route exact path={AppRoute.Room}>
-          <Property/>
+        <Route
+          exact
+          path={AppRoute.Room}
+          render={() => <Property/>}
+        >
         </Route>
         <Route>
           <NotFound/>
