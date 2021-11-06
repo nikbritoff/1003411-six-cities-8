@@ -84,7 +84,6 @@ export type Actions =
   AutorizationSuccsessAction |
   AutorizationErrorAction |
   RequireAuthorizationAction |
-  // RequireLogoutAction |
   RedirectToRouteAction |
   ChangeSortingStatusAction |
   RequireLogoutAction;

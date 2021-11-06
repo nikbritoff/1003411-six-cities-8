@@ -15,7 +15,6 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 type ConnectedComponentProps = PropsFromRedux;
 
 function Header({authorizationStatus}: ConnectedComponentProps): JSX.Element  {
-  console.log(authorizationStatus);
   return (
     <header className="header">
       <div className="container">
@@ -38,6 +37,5 @@ function Header({authorizationStatus}: ConnectedComponentProps): JSX.Element  {
   );
 }
 
-// export default Header;
 export  { Header };
 export default connector(Header);

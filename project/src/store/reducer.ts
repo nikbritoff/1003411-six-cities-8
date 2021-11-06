@@ -99,8 +99,3 @@ const reducer = (state: State = initialState, action: Actions): State => {
 };
 
 export {reducer};
-
-
-// export const requestAuthorization= (loginLoading: boolean): AutorizationSuccsess => ({
-
-// });
