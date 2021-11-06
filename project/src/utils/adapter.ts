@@ -1,5 +1,7 @@
 import { Offer } from '../types/offer';
 import { BackendOffer } from '../types/backend-offer';
+import { BackendUserInfo } from '../types/backend-user-info';
+import { UserInfo } from '../types/user-info';
 
 export const adaptOfferToClient = (offer: BackendOffer): Offer => {
   const adaptedOffer = {
@@ -22,4 +24,17 @@ export const adaptOfferToClient = (offer: BackendOffer): Offer => {
   delete adaptedOffer['preview_image'];
 
   return adaptedOffer as Offer;
+};
+
+export const adaptUserInfoToClient = (user: BackendUserInfo): UserInfo => {
+  const adaptedUser = {
+    ...user,
+    avatarUrl: user.avatar_url,
+    isPro: user.is_pro,
+  };
+
+  delete adaptedUser['avatar_url'];
+  delete adaptedUser['is_pro'];
+
+  return adaptedUser as UserInfo;
 };

@@ -4,13 +4,17 @@ import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { AxiosInstance } from 'axios';
 import  { State } from '../types/state';
 import { AppRoute, AuthorizationStatus, SortingStatus } from '../const';
+import { UserInfo } from './user-info';
 
 export enum ActionType {
   ChangeCity = 'main/changeCity',
   RequestOffers = 'data/requestOffers',
-  LoadOffersSuccsess = 'data/loadOffers',
+  LoadOffersSuccsess = 'data/loadOffersSuccsess',
   LoadOffersFailed = 'data/loadOffersFailed',
+  AutorizationSuccsess = 'user/autorizationSuccsess',
+  AutorizationError = 'user/autorizationError',
   RequireAuthorization = 'user/requireAuthorization',
+  RequestAutorization = 'user/requestAuthorization',
   RequireLogout = 'user/requireLogout',
   RedirectToRoute = 'mail/redirectToRoute',
   ChangeSortingStatus = 'data/changeSortingStatus',
@@ -33,6 +37,21 @@ export type LoadOffersSuccessAction = {
 
 export type LoadOffersFailedAction = {
   type: ActionType.LoadOffersFailed;
+  payload: boolean;
+}
+
+export type RequestAutorization = {
+  type: ActionType.RequestAutorization;
+  payload: boolean;
+}
+
+export type AutorizationSuccsessAction = {
+  type: ActionType.AutorizationSuccsess;
+  payload: UserInfo;
+}
+
+export type AutorizationErrorAction = {
+  type: ActionType.AutorizationError;
   payload: boolean;
 }
 
@@ -61,10 +80,14 @@ export type Actions =
   OffersRequestAction |
   LoadOffersSuccessAction |
   LoadOffersFailedAction |
+  RequestAutorization |
+  AutorizationSuccsessAction |
+  AutorizationErrorAction |
   RequireAuthorizationAction |
-  RequireLogoutAction |
+  // RequireLogoutAction |
   RedirectToRouteAction |
-  ChangeSortingStatusAction;
+  ChangeSortingStatusAction |
+  RequireLogoutAction;
 
 export type ThunkActionResult<R = Promise<void>> = ThunkAction<R, State, AxiosInstance, Actions>;
 export type ThunkAppDispatch = ThunkDispatch<State, AxiosInstance, Actions>;

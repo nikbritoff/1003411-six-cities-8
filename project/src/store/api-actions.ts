@@ -1,10 +1,11 @@
 import { ThunkActionResult } from '../types/action';
-import { loadOffersSuccess, loadOffersFailed, redirectToRoute, requestOffers, requireAutorization, requireLogout } from './action';
+import { loadOffersSuccess, loadOffersFailed, redirectToRoute, requestOffers, requireAutorization, requireLogout, requestAuthorization, AutorizationError, AutorizationSuccsess } from './action';
 import { APIRoute, AppRoute, AuthorizationStatus } from '../const';
 import { Offer } from '../types/offer';
 import { AuthData } from '../types/auth-data';
-import { dropToken, saveToken, Token } from '../services/token';
-import { adaptOfferToClient } from '../utils/adapter';
+import { dropToken, saveToken } from '../services/token';
+import { adaptOfferToClient, adaptUserInfoToClient } from '../utils/adapter';
+import { BackendUserInfo } from '../types/backend-user-info';
 
 export const fetchOfferAction = (): ThunkActionResult =>
   async (dispatch, _getState, api) => {
@@ -19,25 +20,45 @@ export const fetchOfferAction = (): ThunkActionResult =>
     }
   };
 
-export const checkAuthAction = (): ThunkActionResult =>
-  async (dispatch, _getState, api) => {
-    await api.get(APIRoute.Login)
-      .then(() => {
-        dispatch(requireAutorization(AuthorizationStatus.Auth));
-      });
-  };
-
 export const loginAction = ({login: email, password}: AuthData): ThunkActionResult =>
   async (dispatch, _getState, api) => {
-    const {data: {token}} = await api.post<{token: Token}>(APIRoute.Login, {email, password});
-    saveToken(token);
-    dispatch(requireAutorization(AuthorizationStatus.Auth));
-    dispatch(redirectToRoute(AppRoute.Main));
+    try {
+      dispatch(requestAuthorization(true));
+      const {data} = await api.post<BackendUserInfo>(APIRoute.Login, {email, password});
+      const adaptedUser = adaptUserInfoToClient(data);
+      dispatch(requireAutorization(AuthorizationStatus.Auth));
+      dispatch(AutorizationSuccsess(adaptedUser));
+      saveToken(data.token);
+      dispatch(requireAutorization(AuthorizationStatus.Auth));
+      dispatch(redirectToRoute(AppRoute.Main));
+    }
+    catch {
+      dispatch(AutorizationError(true));
+      dispatch(requireAutorization(AuthorizationStatus.NoAuth));
+    }
+  };
+
+export const checkAuthAction = (): ThunkActionResult =>
+  async (dispatch, _getState, api) => {
+    try {
+      const {data} = await api.get(APIRoute.Login);
+      const adaptedUser = adaptUserInfoToClient(data);
+      dispatch(requireAutorization(AuthorizationStatus.Auth));
+      dispatch(AutorizationSuccsess(adaptedUser));
+    }
+    catch {
+      dispatch(requireAutorization(AuthorizationStatus.NoAuth));
+    }
   };
 
 export const logoutAction = (): ThunkActionResult =>
   async (dispatch, _getState, api) => {
-    api.delete(APIRoute.Logout);
-    dropToken();
-    dispatch(requireLogout());
+    try {
+      api.delete(APIRoute.Logout);
+      dropToken();
+      dispatch(requireLogout());
+    }
+    catch {
+      dispatch(requireAutorization(AuthorizationStatus.Unknown));
+    }
   };

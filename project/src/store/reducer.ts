@@ -8,7 +8,17 @@ const initialState = {
   offersLoading: false,
   offersSuccess: false,
   offersError: false,
+  loginLoading: false,
+  loginSuccsess: false,
+  loginError: false,
   authorizationStatus: AuthorizationStatus.Unknown,
+  userInfo: {
+    avatarUrl: '',
+    email: '',
+    id:  null,
+    isPro: false,
+    name: '',
+  },
   sortingStatus: SortingStatus.Popular,
 };
 
@@ -39,16 +49,49 @@ const reducer = (state: State = initialState, action: Actions): State => {
         offersSuccess: false,
         offersError: true,
       };
+    case ActionType.RequestAutorization:
+      return {
+        ...state,
+        loginLoading: true,
+        loginSuccsess: false,
+        loginError: false,
+      };
+    case ActionType.AutorizationSuccsess:
+      return {
+        ...state,
+        loginLoading: false,
+        loginSuccsess: true,
+        loginError: false,
+        userInfo: action.payload,
+      };
+    case ActionType.AutorizationError:
+      return {
+        ...state,
+        loginLoading: false,
+        loginSuccsess: false,
+        loginError: true,
+      };
     case ActionType.RequireAuthorization:
       return {
         ...state,
         authorizationStatus: action.payload,
-        // isDataLoaded: true,
       };
     case ActionType.ChangeSortingStatus:
       return {
         ...state,
         sortingStatus: action.payload,
+      };
+    case ActionType.RequireLogout:
+      return {
+        ...state,
+        authorizationStatus: AuthorizationStatus.NoAuth,
+        userInfo: {
+          avatarUrl: '',
+          email: '',
+          id:  null,
+          isPro: false,
+          name: '',
+        },
       };
     default:
       return state;
@@ -56,3 +99,8 @@ const reducer = (state: State = initialState, action: Actions): State => {
 };
 
 export {reducer};
+
+
+// export const requestAuthorization= (loginLoading: boolean): AutorizationSuccsess => ({
+
+// });

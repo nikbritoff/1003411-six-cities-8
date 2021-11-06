@@ -1,9 +1,20 @@
 import { useRef, FormEvent } from 'react';
+import { State } from '../../types/state';
 import { connect, ConnectedProps } from 'react-redux';
 import { loginAction } from '../../store/api-actions';
 import { ThunkAppDispatch } from '../../types/action';
 import { AuthData } from '../../types/auth-data';
 import Header from '../../components/header/header';
+import { Link } from 'react-router-dom';
+import { AppRoute } from '../../const';
+import { css } from '@emotion/react';
+import BeatLoader from 'react-spinners/BeatLoader';
+import LoginFailed from '../../components/login-failed/login-failed';
+
+const mapStateToProps = ({loginLoading, loginError}: State) => ({
+  loginLoading,
+  loginError,
+});
 
 const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
   onSubmit(authData: AuthData) {
@@ -11,13 +22,22 @@ const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
   },
 });
 
-const connector = connect(null, mapDispatchToProps);
+const connector = connect(mapStateToProps, mapDispatchToProps);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-function SignIn({onSubmit}: PropsFromRedux): JSX.Element {
+function SignIn({onSubmit, loginLoading, loginError}: PropsFromRedux): JSX.Element {
   const loginRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
+
+  const errorComponent = loginError ? <LoginFailed/> : '';
+
+  const override = css`
+  display: inline;
+  margin: 0 auto;
+  position: absolute;
+  right: 70px;
+`;
 
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
@@ -64,14 +84,31 @@ function SignIn({onSubmit}: PropsFromRedux): JSX.Element {
                   required={false}
                 />
               </div>
-              <button className="login__submit form__submit button" type="submit">Sign in</button>
+              <button
+                className="login__submit form__submit button"
+                type="submit"
+                disabled={loginLoading}
+              >
+                Sign in
+                <BeatLoader
+                  css={override}
+                  size={10}
+                  color={'#ffffff'}
+                  loading={loginLoading}
+                  speedMultiplier={1}
+                />
+              </button>
+              {errorComponent}
             </form>
           </section>
           <section className="locations locations--login locations--current">
             <div className="locations__item">
-              <a className="locations__item-link"  href="/#">
+              <Link
+                className="locations__item-link"
+                to={AppRoute.Main}
+              >
                 <span>Amsterdam</span>
-              </a>
+              </Link>
             </div>
           </section>
         </div>
