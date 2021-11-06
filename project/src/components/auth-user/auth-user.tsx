@@ -12,7 +12,6 @@ const mapStateToProps = ({userInfo}: State) => ({
 const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
   onClickHandler() {
     dispatch(logoutAction());
-    console.log('logout');
   },
 });
 
@@ -46,6 +45,5 @@ function AuthUser({userInfo, onClickHandler}: PropsFromRedux): JSX.Element  {
   );
 }
 
-// export default AuthUser;
 export { AuthUser };
 export default connector(AuthUser);
