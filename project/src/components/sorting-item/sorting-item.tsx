@@ -1,27 +1,13 @@
 import cn from 'classnames';
-import { ConnectedProps, connect } from 'react-redux';
-import { Dispatch } from 'redux';
 import { SortingStatus } from '../../const';
-import { changeSortingStatus } from '../../store/action';
-import { Actions } from '../../types/action';
 
 type SortingItemProps = {
   sortingType: SortingStatus,
   sortingStatus: SortingStatus,
+  onChangeSorting: (sortingStatus: SortingStatus) => void,
 }
 
-const mapDispatchToProps = (dispatch: Dispatch<Actions>) => ({
-  onChangeSorting(sorting: SortingStatus) {
-    dispatch(changeSortingStatus(sorting));
-  },
-});
-
-const connector = connect( null, mapDispatchToProps);
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
-type ConnectedComponentProps = PropsFromRedux & SortingItemProps;
-
-function SortingItem({sortingType, sortingStatus, onChangeSorting}: ConnectedComponentProps): JSX.Element  {
+function SortingItem({sortingType, sortingStatus, onChangeSorting}: SortingItemProps): JSX.Element  {
   return(
     <li
       className={cn(
@@ -35,5 +21,4 @@ function SortingItem({sortingType, sortingStatus, onChangeSorting}: ConnectedCom
   );
 }
 
-export { SortingItem };
-export default connector(SortingItem);
+export default SortingItem;
