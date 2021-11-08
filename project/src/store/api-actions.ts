@@ -8,20 +8,20 @@ import { adaptOfferToClient, adaptUserInfoToClient } from '../utils/adapter';
 import { BackendUserInfo } from '../types/backend-user-info';
 
 export const fetchOfferAction = (): ThunkActionResult =>
-  async (dispatch, _getState, api) => {
+  async (dispatch, _, api) => {
     try {
       dispatch(requestOffers(true));
       const {data} = await api.get<Offer[]>(APIRoute.Hotels);
       const adaptedData = data.map((point) => adaptOfferToClient(point));
       dispatch(loadOffersSuccess(adaptedData));
     }
-    catch(err) {
+    catch {
       dispatch(loadOffersFailed(true));
     }
   };
 
 export const loginAction = ({login: email, password}: AuthData): ThunkActionResult =>
-  async (dispatch, _getState, api) => {
+  async (dispatch, _, api) => {
     try {
       dispatch(requestAuthorization(true));
       const {data} = await api.post<BackendUserInfo>(APIRoute.Login, {email, password});
@@ -29,17 +29,15 @@ export const loginAction = ({login: email, password}: AuthData): ThunkActionResu
       dispatch(requireAutorization(AuthorizationStatus.Auth));
       dispatch(AutorizationSuccsess(adaptedUser));
       saveToken(data.token);
-      dispatch(requireAutorization(AuthorizationStatus.Auth));
       dispatch(redirectToRoute(AppRoute.Main));
     }
     catch {
       dispatch(AutorizationError(true));
-      dispatch(requireAutorization(AuthorizationStatus.NoAuth));
     }
   };
 
 export const checkAuthAction = (): ThunkActionResult =>
-  async (dispatch, _getState, api) => {
+  async (dispatch, _, api) => {
     try {
       const {data} = await api.get(APIRoute.Login);
       const adaptedUser = adaptUserInfoToClient(data);
@@ -52,7 +50,7 @@ export const checkAuthAction = (): ThunkActionResult =>
   };
 
 export const logoutAction = (): ThunkActionResult =>
-  async (dispatch, _getState, api) => {
+  async (dispatch, _, api) => {
     try {
       api.delete(APIRoute.Logout);
       dropToken();
