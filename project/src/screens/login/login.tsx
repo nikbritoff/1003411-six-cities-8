@@ -1,4 +1,4 @@
-import { useRef, FormEvent } from 'react';
+import { FormEvent, useState, ChangeEvent } from 'react';
 import { State } from '../../types/state';
 import { connect, ConnectedProps } from 'react-redux';
 import { loginAction } from '../../store/api-actions';
@@ -10,6 +10,7 @@ import { AppRoute } from '../../const';
 import { css } from '@emotion/react';
 import BeatLoader from 'react-spinners/BeatLoader';
 import LoginFailed from '../../components/login-failed/login-failed';
+import cn from 'classnames';
 
 const mapStateToProps = ({loginLoading, loginError}: State) => ({
   loginLoading,
@@ -26,9 +27,52 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
+const formFields = {
+  email: 'E-mail',
+  password: 'Password',
+};
+
+type FieldProps = {
+  value: string,
+  error: boolean,
+  errorText: string,
+  regex: RegExp,
+};
+
+type FormStateProps = {
+  [key: string]: FieldProps,
+}
+
+
 function SignIn({onSubmit, loginLoading, loginError}: PropsFromRedux): JSX.Element {
-  const loginRef = useRef<HTMLInputElement | null>(null);
-  const passwordRef = useRef<HTMLInputElement | null>(null);
+  const [formState, setFormState] = useState<FormStateProps>({
+    email: {
+      value: '',
+      error: false,
+      errorText: 'Некорректный email',
+      regex: /\b[\w.-]+@[\w.-]+\.\w{2,4}\b/gi,
+    },
+    password: {
+      value: '',
+      error: false,
+      errorText: 'Некорректный пароль',
+      regex: /\w{3,}/gi,
+    },
+  });
+
+  const handleChange = ({target}: ChangeEvent<HTMLInputElement>) => {
+    const {name, value} = target;
+    const rule = formState[name].regex;
+
+    setFormState({
+      ...formState,
+      [name]: {
+        ...formState[name],
+        value: value,
+        error: rule.test(value),
+      },
+    });
+  };
 
   const errorComponent = loginError ? <LoginFailed/> : '';
 
@@ -41,11 +85,18 @@ function SignIn({onSubmit, loginLoading, loginError}: PropsFromRedux): JSX.Eleme
 
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
+    let isValid = true;
 
-    if (loginRef.current !== null && passwordRef.current !== null) {
+    (Object.values(formState).forEach((field) => {
+      if (field.error) {
+        isValid = false;
+      }
+    }));
+
+    if (isValid) {
       onSubmit({
-        login: loginRef.current.value,
-        password: passwordRef.current.value,
+        login: formState.email.value,
+        password: formState.password.value,
       });
     }
   };
@@ -63,27 +114,29 @@ function SignIn({onSubmit, loginLoading, loginError}: PropsFromRedux): JSX.Eleme
               method="post"
               onSubmit={handleSubmit}
             >
-              <div className="login__input-wrapper form__input-wrapper">
-                <label className="visually-hidden">E-mail</label>
-                <input
-                  ref={loginRef}
-                  className="login__input form__input"
-                  type="email"
-                  name="email"
-                  placeholder="Email"
-                  required={false}
-                />
-              </div>
-              <div className="login__input-wrapper form__input-wrapper">
-                <label className="visually-hidden">Password</label>
-                <input
-                  ref={passwordRef}
-                  className="login__input form__input"
-                  type="password" name="password"
-                  placeholder="Password"
-                  required={false}
-                />
-              </div>
+              {Object.entries(formFields).map(([name, label]) => {
+                const inputClass = cn('login__input', 'form__input');
+                return (
+                  <div
+                    className="login__input-wrapper form__input-wrapper"
+                    key={name}
+                  >
+                    <label className="visually-hidden">{label}</label>
+                    <input
+                      className={inputClass}
+                      type={name}
+                      name={name}
+                      placeholder={label}
+                      // required
+                      value={formState[name].value}
+                      onChange={handleChange}
+                    />
+                    {formState[name].error
+                      ? <p>{formState[name].errorText}</p>
+                      : ''}
+                  </div>
+                );
+              })}
               <button
                 className="login__submit form__submit button"
                 type="submit"

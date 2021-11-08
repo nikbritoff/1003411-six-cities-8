@@ -33,13 +33,13 @@ function AuthUser({userInfo, onClickHandler}: PropsFromRedux): JSX.Element  {
         </Link>
       </li>
       <li className="header__nav-item">
-        <a
+        <Link
           className="header__nav-link"
-          href="/#"
-          onClick={() => onClickHandler()}
+          to={AppRoute.Main}
+          onClick={onClickHandler}
         >
           <span className="header__signout">Sign out</span>
-        </a>
+        </Link>
       </li>
     </>
   );
