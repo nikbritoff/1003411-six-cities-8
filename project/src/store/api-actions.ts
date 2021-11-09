@@ -6,6 +6,7 @@ import { AuthData } from '../types/auth-data';
 import { dropToken, saveToken } from '../services/token';
 import { adaptOfferToClient, adaptUserInfoToClient } from '../utils/adapter';
 import { BackendUserInfo } from '../types/backend-user-info';
+import { toast } from 'react-toastify';
 
 export const fetchOfferAction = (): ThunkActionResult =>
   async (dispatch, _, api) => {
@@ -33,6 +34,9 @@ export const loginAction = ({login: email, password}: AuthData): ThunkActionResu
     }
     catch {
       dispatch(AutorizationError(true));
+      toast.error('Autorization error! Try later.', {
+        position: 'top-left',
+      });
     }
   };
 

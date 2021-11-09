@@ -1,0 +1,24 @@
+.spinner {
+  display: inline;
+  margin: 0 auto;
+  position: absolute;
+  right: 70px;
+}
+
+.container {
+  position: relative;
+}
+
+.error {
+  border-color: #BC2734;
+}
+
+.text {
+  position: absolute;
+  color: #BC2734;
+  font-family: inherit;
+  top: 54px;
+  left: 15px;
+  font-size: 14px;
+  margin: 0;
+}

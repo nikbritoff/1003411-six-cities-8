@@ -27,8 +27,8 @@ function App(): JSX.Element {
         <Route
           exact
           path={AppRoute.Room}
-          render={() => <Property/>}
         >
+          <Property />
         </Route>
         <Route>
           <NotFound/>
