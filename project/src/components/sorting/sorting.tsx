@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { SortingStatus } from '../../const';
 import { State } from '../../types/state';
-import SortingItem from '../sorting-item/sorting-item';
 import cn from 'classnames';
 import { Dispatch } from 'redux';
 import { Actions } from '../../types/action';
@@ -49,8 +48,17 @@ function Sorting({sortingStatus, onChangeSorting} : PropsFromRedux): JSX.Element
           {'places__options--opened' : isOpen})}
         onClick={handleSortingListClick}
       >
-        {sortingOptions.map((sortingOption: SortingStatus) =>
-          <SortingItem key={sortingOption} sortingType={sortingOption} sortingStatus={sortingStatus} onChangeSorting={onChangeSorting}/>)}
+        {sortingOptions.map((sortingOption: SortingStatus) => (
+          <li
+            className={cn(
+              'places__option',
+              {'places__option--active' : sortingOption === sortingStatus})}
+            onClick={() => onChangeSorting(sortingOption)}
+            tabIndex={0}
+            key={sortingOption}
+          >
+            {sortingOption}
+          </li>))}
       </ul>
     </form>
   );
