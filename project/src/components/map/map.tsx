@@ -15,14 +15,14 @@ type MapProps = {
 
 const defaultCustomIcon = leaflet.icon({
   iconUrl: URL_MARKER_DEFAULT,
-  iconSize: [40, 40],
-  iconAnchor: [20, 40],
+  iconSize: [27, 39],
+  iconAnchor: [14, 39],
 });
 
 const currentCustomIcon = leaflet.icon({
   iconUrl: URL_MARKER_CURRENT,
-  iconSize: [40, 40],
-  iconAnchor: [20, 40],
+  iconSize: [27, 39],
+  iconAnchor: [14, 39],
 });
 
 function Map({city, offers, selectedPoint}: MapProps): JSX.Element {
@@ -70,9 +70,7 @@ function Map({city, offers, selectedPoint}: MapProps): JSX.Element {
   }, [city, map]);
 
   return (
-    <section className="cities__map map">
-      <div style={{height: '100%'}} ref={mapRef}></div>
-    </section>
+    <div style={{height: '100%'}} ref={mapRef}></div>
   );
 }
 
