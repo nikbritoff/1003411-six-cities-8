@@ -1,18 +1,17 @@
-import { Route, Redirect } from 'react-router';
 import { useSelector } from 'react-redux';
-import { RouteProps } from 'react-router-dom';
+import { Redirect, Route, RouteProps } from 'react-router';
 import { AppRoute, AuthorizationStatus } from '../../const';
 import { getAuthStatus } from '../../store/user-data/selectors';
 
-type PrivateRouteProps = RouteProps & {
+type AuthRouteProps = RouteProps & {
   render: () => JSX.Element;
 }
 
-function PrivateRoute({
+function AuthRoute ({
   exact,
   path,
   render,
-}: PrivateRouteProps): JSX.Element {
+}: AuthRouteProps): JSX.Element {
   const authorizationStatus = useSelector(getAuthStatus);
 
   return (
@@ -22,10 +21,10 @@ function PrivateRoute({
       render = {() => (
         authorizationStatus === AuthorizationStatus.Auth
           ? render()
-          : <Redirect to={AppRoute.Login}/>
+          : <Redirect to={AppRoute.Main}/>
       )}
     />
   );
 }
 
-export default PrivateRoute;
+export default AuthRoute;
