@@ -7,13 +7,14 @@ import { sortOffers } from '../../utils/common';
 import Loading from '../../components/loading/loading';
 import LoadingFailed from '../../components/loading-failed/loading-failed';
 import CitiesBoardEmpty from '../../components/cities-board-empty/cities-board-empty';
+import { getCurrentCity, getSortingStatus, getOffersError, getOffersList, getOffersLoading } from '../../store/main-data/selectors';
 
-const mapStateToProps = ({currentCity, offersList, sortingStatus, offersLoading, offersError}: State) => ({
-  currentCity,
-  offersList,
-  sortingStatus,
-  offersLoading,
-  offersError,
+const mapStateToProps = (state: State) => ({
+  currentCity: getCurrentCity(state),
+  sortingStatus: getSortingStatus(state),
+  offersList: getOffersList(state),
+  offersLoading: getOffersLoading(state),
+  offersError: getOffersError(state),
 });
 
 const connector = connect(mapStateToProps);

@@ -2,16 +2,15 @@ import { CITIES } from '../../const';
 import CityTab from '../city-tab/city-tab';
 import { connect, ConnectedProps } from 'react-redux';
 import { Dispatch} from 'redux';
-import { Actions } from '../../types/action';
 import { State } from '../../types/state';
 import { changeCity } from '../../store/action';
 import { City } from '../../types/city';
 
-const mapStateToProps = ({currentCity}: State) => ({
-  currentCity,
+const mapStateToProps = ({MAIN}: State) => ({
+  currentCity: MAIN.currentCity,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<Actions>) => ({
+const mapDispatchToProps = (dispatch: Dispatch) => ({
   onChangeCity(city: City) {
     dispatch(changeCity(city));
   },

@@ -4,9 +4,10 @@ import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
 import { ThunkAppDispatch } from '../../types/action';
 import { logoutAction } from '../../store/api-actions';
+import { getUserData } from '../../store/user-data/selectors';
 
-const mapStateToProps = ({userInfo}: State) => ({
-  userInfo,
+const mapStateToProps = (state: State) => ({
+  userInfo: getUserData(state),
 });
 
 const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({

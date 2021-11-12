@@ -26,7 +26,7 @@ function App(): JSX.Element {
         </PrivateRoute>
         <Route
           exact
-          path={AppRoute.Room}
+          path={AppRoute.Property}
         >
           <Property />
         </Route>

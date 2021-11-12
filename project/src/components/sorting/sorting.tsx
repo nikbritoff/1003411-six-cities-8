@@ -4,16 +4,15 @@ import { SortingStatus } from '../../const';
 import { State } from '../../types/state';
 import cn from 'classnames';
 import { Dispatch } from 'redux';
-import { Actions } from '../../types/action';
 import { changeSortingStatus } from '../../store/action';
 
 const sortingOptions: SortingStatus[] = Object.values(SortingStatus).map((value) => value);
 
-const mapStateToProps = ({sortingStatus}: State) => ({
-  sortingStatus,
+const mapStateToProps = ({MAIN}: State) => ({
+  sortingStatus: MAIN.sortingStatus,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<Actions>) =>({
+const mapDispatchToProps = (dispatch: Dispatch) =>({
   onChangeSorting(sorting: SortingStatus) {
     dispatch(changeSortingStatus(sorting));
   },

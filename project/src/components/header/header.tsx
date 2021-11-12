@@ -5,8 +5,8 @@ import { AuthorizationStatus } from '../../const';
 import AuthUser from '../auth-user/auth-user';
 import NoAuthUser from '../no-auth-user/no-auth-user';
 
-const mapStateToProps = ({authorizationStatus}: State) => ({
-  authorizationStatus,
+const mapStateToProps = ({USER}: State) => ({
+  authorizationStatus: USER.authorizationStatus,
 });
 
 const connector = connect(mapStateToProps);

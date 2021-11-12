@@ -2,6 +2,8 @@ import { Offer } from '../types/offer';
 import { BackendOffer } from '../types/backend-offer';
 import { BackendUserInfo } from '../types/backend-user-info';
 import { UserInfo } from '../types/user-info';
+import { BackendReview } from '../types/backend-revies';
+import { Review } from '../types/review';
 
 export const adaptOfferToClient = (offer: BackendOffer): Offer => {
   const adaptedOffer = {
@@ -37,4 +39,18 @@ export const adaptUserInfoToClient = (user: BackendUserInfo): UserInfo => {
   delete adaptedUser['is_pro'];
 
   return adaptedUser as UserInfo;
+};
+
+export const adaptReviewToClient = (review: BackendReview): Review => {
+  const adaptedReview = {
+    ...review,
+    user: {
+      avatarUrl : review.user.avatar_url,
+      id: review.user.id,
+      isPro: review.user.is_pro,
+      name: review.user.name,
+    },
+  };
+
+  return adaptedReview as Review;
 };

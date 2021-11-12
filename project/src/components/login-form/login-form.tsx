@@ -8,9 +8,9 @@ import BeatLoader from 'react-spinners/BeatLoader';
 import cn from 'classnames';
 import styles from './login-form.module.css';
 
-const mapStateToProps = ({loginLoading, loginError}: State) => ({
-  loginLoading,
-  loginError,
+const mapStateToProps = ({USER}: State) => ({
+  loginLoading: USER.loginLoading,
+  loginError: USER.loginError,
 });
 
 const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({

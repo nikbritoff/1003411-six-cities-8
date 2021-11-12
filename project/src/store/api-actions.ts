@@ -1,12 +1,13 @@
 import { ThunkActionResult } from '../types/action';
-import { loadOffersSuccess, loadOffersFailed, redirectToRoute, requestOffers, requireAutorization, requireLogout, requestAuthorization, AutorizationError, AutorizationSuccsess } from './action';
+import { loadOffersSuccess, loadOffersFailed, redirectToRoute, requestOffers, requireAutorization, requireLogout, requestAuthorization, AutorizationError, AutorizationSuccsess, loadNearbySuccsess, requestNearby, loadNearbyError, requestProperty, loadPropertySuccess, loadPropertyError, requestReviews, loadReviewsSuccsess, loadReviewsError } from './action';
 import { APIRoute, AppRoute, AuthorizationStatus } from '../const';
 import { Offer } from '../types/offer';
 import { AuthData } from '../types/auth-data';
 import { dropToken, saveToken } from '../services/token';
-import { adaptOfferToClient, adaptUserInfoToClient } from '../utils/adapter';
+import { adaptOfferToClient, adaptReviewToClient, adaptUserInfoToClient } from '../utils/adapter';
 import { BackendUserInfo } from '../types/backend-user-info';
 import { toast } from 'react-toastify';
+import { Review } from '../types/review';
 
 export const fetchOfferAction = (): ThunkActionResult =>
   async (dispatch, _, api) => {
@@ -53,7 +54,7 @@ export const checkAuthAction = (): ThunkActionResult =>
     }
   };
 
-export const logoutAction = (): ThunkActionResult =>
+export const logoutAction = (): ThunkActionResult<void> =>
   async (dispatch, _, api) => {
     try {
       api.delete(APIRoute.Logout);
@@ -62,5 +63,44 @@ export const logoutAction = (): ThunkActionResult =>
     }
     catch {
       dispatch(requireAutorization(AuthorizationStatus.Unknown));
+    }
+  };
+
+export  const fetchPropertyAction = (id: number): ThunkActionResult =>
+  async (dispatch, _, api) => {
+    try {
+      dispatch(requestProperty(true));
+      const {data} = await api.get<Offer>(`${APIRoute.Hotels}/${id}`);
+      const adaptedProperty = adaptOfferToClient(data);
+      dispatch(loadPropertySuccess(adaptedProperty));
+    }
+    catch {
+      dispatch(loadPropertyError(true));
+    }
+  };
+
+export const fetchNearbyAction = (id: number): ThunkActionResult =>
+  async (dispatch, _, api) => {
+    try {
+      dispatch(requestNearby(true));
+      const {data} = await api.get<Offer[]>(`${APIRoute.Hotels}/${id}${APIRoute.Nearby}`);
+      const adaptedNearby = data.map((point) => adaptOfferToClient(point));
+      dispatch(loadNearbySuccsess(adaptedNearby));
+    }
+    catch {
+      dispatch(loadNearbyError(true));
+    }
+  };
+
+export const fetchReviewsAction = (id: number): ThunkActionResult =>
+  async (dispatch, _, api) => {
+    try {
+      dispatch(requestReviews(true));
+      const {data} = await api.get<Review[]>(`${APIRoute.Reviews}/${id}`);
+      const adaptedReviews = data.map((review) => adaptReviewToClient(review));
+      dispatch(loadReviewsSuccsess(adaptedReviews));
+    }
+    catch {
+      dispatch(loadReviewsError(true));
     }
   };

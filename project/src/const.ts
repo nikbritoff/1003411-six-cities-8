@@ -2,7 +2,7 @@ export enum AppRoute {
   Main = '/',
   Login = '/login',
   Favorites = '/favorites',
-  Room = '/offer/:id',
+  Property = '/offer/:id',
 }
 
 export enum AuthorizationStatus {
@@ -15,6 +15,8 @@ export enum APIRoute {
   Hotels = '/hotels',
   Login = '/login',
   Logout = '/logout',
+  Nearby = '/nearby',
+  Reviews = '/comments'
 }
 
 export enum SortingStatus {
