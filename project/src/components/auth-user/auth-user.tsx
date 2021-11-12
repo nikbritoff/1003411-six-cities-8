@@ -20,6 +20,7 @@ function AuthUser(): JSX.Element  {
           to={AppRoute.Favorites}
         >
           <div className="header__avatar-wrapper user__avatar-wrapper">
+            <img src={userInfo.avatarUrl} alt={userInfo.email}></img>
           </div>
           <span className="header__user-name user__name">{userInfo.email}</span>
         </Link>
