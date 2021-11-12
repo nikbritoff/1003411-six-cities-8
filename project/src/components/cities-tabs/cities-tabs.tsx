@@ -1,27 +1,18 @@
 import { CITIES } from '../../const';
 import CityTab from '../city-tab/city-tab';
-import { connect, ConnectedProps } from 'react-redux';
-import { Dispatch} from 'redux';
-import { State } from '../../types/state';
+import { useDispatch, useSelector } from 'react-redux';
 import { changeCity } from '../../store/action';
 import { City } from '../../types/city';
+import { getCurrentCity } from '../../store/main-data/selectors';
 
-const mapStateToProps = ({MAIN}: State) => ({
-  currentCity: MAIN.currentCity,
-});
+function SiteCitiesTabs(): JSX.Element  {
+  const dispatch = useDispatch();
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  onChangeCity(city: City) {
+  const currentCity = useSelector(getCurrentCity);
+  const onChangeCity = (city: City) => {
     dispatch(changeCity(city));
-  },
-});
+  };
 
-const connector = connect(mapStateToProps, mapDispatchToProps);
-
-type PropsFromRedux = ConnectedProps<typeof connector>;
-type ConnectedComponentProps = PropsFromRedux;
-
-function SiteCitiesTabs({currentCity, onChangeCity}: ConnectedComponentProps): JSX.Element  {
   return (
     <div className="tabs">
       <section className="locations container">
@@ -33,5 +24,4 @@ function SiteCitiesTabs({currentCity, onChangeCity}: ConnectedComponentProps): J
   );
 }
 
-export { SiteCitiesTabs };
-export default connector(SiteCitiesTabs);
+export default SiteCitiesTabs;

@@ -1,27 +1,11 @@
 import { FormEvent, useState, ChangeEvent } from 'react';
-import { State } from '../../types/state';
-import { connect, ConnectedProps } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { loginAction } from '../../store/api-actions';
-import { ThunkAppDispatch } from '../../types/action';
 import { AuthData } from '../../types/auth-data';
 import BeatLoader from 'react-spinners/BeatLoader';
 import cn from 'classnames';
 import styles from './login-form.module.css';
-
-const mapStateToProps = ({USER}: State) => ({
-  loginLoading: USER.loginLoading,
-  loginError: USER.loginError,
-});
-
-const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
-  onSubmit(authData: AuthData) {
-    dispatch(loginAction(authData));
-  },
-});
-
-const connector = connect(mapStateToProps, mapDispatchToProps);
-
-type PropsFromRedux = ConnectedProps<typeof connector>;
+import { getLoginLoading } from '../../store/user-data/selectors';
 
 const formFields = {
   email: 'E-mail',
@@ -40,8 +24,7 @@ type FormStateProps = {
   [key: string]: FieldProps,
 }
 
-
-function LoginForm({onSubmit, loginLoading, loginError}: PropsFromRedux): JSX.Element {
+function LoginForm(): JSX.Element {
   const [formState, setFormState] = useState<FormStateProps>({
     email: {
       value: '',
@@ -58,6 +41,13 @@ function LoginForm({onSubmit, loginLoading, loginError}: PropsFromRedux): JSX.El
       regex: /([a-zA-Z]+[0-9]+\w*)|([0-9]+[a-zA-Z]+\w*)/,
     },
   });
+
+  const dispatch = useDispatch();
+
+  const loginLoading = useSelector(getLoginLoading);
+  const sublitAuthData = (authData: AuthData) => {
+    dispatch(loginAction(authData));
+  };
 
   const handleChange = ({target}: ChangeEvent<HTMLInputElement>) => {
     const {name, value} = target;
@@ -80,7 +70,7 @@ function LoginForm({onSubmit, loginLoading, loginError}: PropsFromRedux): JSX.El
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
 
-    onSubmit({
+    sublitAuthData({
       login: formState.email.value,
       password: formState.password.value,
     });
@@ -135,5 +125,4 @@ function LoginForm({onSubmit, loginLoading, loginError}: PropsFromRedux): JSX.El
   );
 }
 
-export { LoginForm };
-export default connector(LoginForm);
+export default LoginForm;

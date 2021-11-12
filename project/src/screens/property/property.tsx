@@ -6,8 +6,7 @@ import PropertyReviewsList from '../../components/property-reviews-list/property
 import PropertyNewReview from '../../components/property-new-review/property-new-review';
 import NearPlacesList from '../../components/near-places-list/near-places-list';
 import { useParams } from 'react-router';
-import { connect, ConnectedProps, useDispatch } from 'react-redux';
-// import {  useDispatch, useSelector } from 'react-redux';
+import {  useDispatch, useSelector } from 'react-redux';
 import Loading from '../../components/loading/loading';
 import LoadingFailed from '../../components/loading-failed/loading-failed';
 import { convertRating } from '../../utils/common';
@@ -15,31 +14,11 @@ import NotFound from '../not-found/not-found';
 import Map from '../../components/map/map';
 import { fetchNearbyAction, fetchPropertyAction, fetchReviewsAction } from '../../store/api-actions';
 import { useEffect } from 'react';
-// import { getNearby, getNearbyError, getNearbyLoading, getProperty, getPropertyError, getPropertyLoading, getReviews, getReviewsError, getReviewsLoading } from '../../store/property-data/selectors';
-// import { getAuthStatus } from '../../store/user-data/selectors';
+import { getNearby, getNearbyError, getNearbyLoading, getProperty, getPropertyError, getPropertyLoading, getReviews, getReviewsError, getReviewsLoading } from '../../store/property-data/selectors';
+import { getAuthStatus } from '../../store/user-data/selectors';
 import { AuthorizationStatus } from '../../const';
-import { State } from '../../types/state';
-import { NameSpace } from '../../store/root-reducer';
 
-const mapStateToProps = (state: State) => ({
-  authStatus: state[NameSpace.user].authorizationStatus,
-  propertyLoading: state[NameSpace.property].propertyLoading,
-  propertyError: state[NameSpace.property].propertyError,
-  nearbyLoading: state[NameSpace.property].nearbyLoading,
-  nearbyError: state[NameSpace.property].nearbyError,
-  reviewsLoading: state[NameSpace.property].reviewsLoading,
-  reviewsError: state[NameSpace.property].reviewsError,
-  propertyOffer: state[NameSpace.property].property,
-  nerbyOffers: state[NameSpace.property].nearby,
-  reviews: state[NameSpace.property].reviews,
-});
-
-const connector = connect(mapStateToProps);
-
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
-// function Property(): JSX.Element {
-function Property(props: PropsFromRedux): JSX.Element {
+function Property(): JSX.Element {
   const {id} = useParams<{ id: string }>();
   const dispatch = useDispatch();
 
@@ -49,19 +28,18 @@ function Property(props: PropsFromRedux): JSX.Element {
     dispatch(fetchReviewsAction(Number(id)));
   }, [id, dispatch]);
 
-  // const authStatus = useSelector(getAuthStatus);
+  const authStatus = useSelector(getAuthStatus);
 
-  // const propertyLoading = useSelector(getPropertyLoading);
-  // const propertyError = useSelector(getPropertyError);
-  // const nearbyLoading = useSelector(getNearbyLoading);
-  // const nearbyError = useSelector(getNearbyError);
-  // const reviewsLoading = useSelector(getReviewsLoading);
-  // const reviewsError = useSelector(getReviewsError);
+  const propertyLoading = useSelector(getPropertyLoading);
+  const propertyError = useSelector(getPropertyError);
+  const nearbyLoading = useSelector(getNearbyLoading);
+  const nearbyError = useSelector(getNearbyError);
+  const reviewsLoading = useSelector(getReviewsLoading);
+  const reviewsError = useSelector(getReviewsError);
 
-  // const propertyOffer = useSelector(getProperty);
-  // const nerbyOffers = useSelector(getNearby);
-  // const reviews = useSelector(getReviews);
-  const {authStatus, propertyLoading, propertyError, nearbyLoading, nearbyError, reviewsLoading, reviewsError, propertyOffer, nerbyOffers, reviews} = props;
+  const propertyOffer = useSelector(getProperty);
+  const nerbyOffers = useSelector(getNearby);
+  const reviews = useSelector(getReviews);
 
 
   const mapOffers = [...nerbyOffers, propertyOffer];
@@ -171,6 +149,4 @@ function Property(props: PropsFromRedux): JSX.Element {
   );
 }
 
-// export default Property;
-export  {Property};
-export default connector(Property);
+export default Property;

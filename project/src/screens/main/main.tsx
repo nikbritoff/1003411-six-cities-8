@@ -1,28 +1,19 @@
 import Header from '../../components/header/header';
 import SiteCitiesTabs from '../../components/cities-tabs/cities-tabs';
 import CitiesBoard from '../../components/cities-board/cities-board';
-import { State } from '../../types/state';
-import { connect, ConnectedProps } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { sortOffers } from '../../utils/common';
 import Loading from '../../components/loading/loading';
 import LoadingFailed from '../../components/loading-failed/loading-failed';
 import CitiesBoardEmpty from '../../components/cities-board-empty/cities-board-empty';
 import { getCurrentCity, getSortingStatus, getOffersError, getOffersList, getOffersLoading } from '../../store/main-data/selectors';
 
-const mapStateToProps = (state: State) => ({
-  currentCity: getCurrentCity(state),
-  sortingStatus: getSortingStatus(state),
-  offersList: getOffersList(state),
-  offersLoading: getOffersLoading(state),
-  offersError: getOffersError(state),
-});
-
-const connector = connect(mapStateToProps);
-
-type PropsFromRedux = ConnectedProps<typeof connector>;
-type ConnectedComponentProps = PropsFromRedux;
-
-function Main({offersList, currentCity, sortingStatus, offersLoading, offersError} : ConnectedComponentProps): JSX.Element {
+function Main(): JSX.Element {
+  const currentCity = useSelector(getCurrentCity);
+  const sortingStatus = useSelector(getSortingStatus);
+  const offersList = useSelector(getOffersList);
+  const offersLoading = useSelector(getOffersLoading);
+  const offersError = useSelector(getOffersError);
   const offers = offersList.filter((offer) => offer.city.name === currentCity.name);
   sortOffers(sortingStatus, offers);
 
@@ -66,5 +57,4 @@ function Main({offersList, currentCity, sortingStatus, offersLoading, offersErro
   );
 }
 
-export { Main };
-export default connector(Main);
+export default Main;
