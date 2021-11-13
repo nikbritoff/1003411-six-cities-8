@@ -1,25 +1,17 @@
-import { State } from '../../types/state';
-import { connect, ConnectedProps } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
-import { ThunkAppDispatch } from '../../types/action';
 import { logoutAction } from '../../store/api-actions';
+import { getUserData } from '../../store/user-data/selectors';
 
-const mapStateToProps = ({userInfo}: State) => ({
-  userInfo,
-});
+function AuthUser(): JSX.Element  {
+  const dispatch = useDispatch();
 
-const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
-  onClickHandler() {
+  const userInfo = useSelector(getUserData);
+  const handleSignOutClick = () => {
     dispatch(logoutAction());
-  },
-});
+  };
 
-const connector = connect(mapStateToProps, mapDispatchToProps);
-
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
-function AuthUser({userInfo, onClickHandler}: PropsFromRedux): JSX.Element  {
   return (
     <>
       <li className="header__nav-item user">
@@ -28,22 +20,22 @@ function AuthUser({userInfo, onClickHandler}: PropsFromRedux): JSX.Element  {
           to={AppRoute.Favorites}
         >
           <div className="header__avatar-wrapper user__avatar-wrapper">
+            <img src={userInfo.avatarUrl} alt={userInfo.email}></img>
           </div>
           <span className="header__user-name user__name">{userInfo.email}</span>
         </Link>
       </li>
       <li className="header__nav-item">
-        <a
+        <Link
           className="header__nav-link"
-          href="/#"
-          onClick={() => onClickHandler()}
+          to={AppRoute.Main}
+          onClick={handleSignOutClick}
         >
           <span className="header__signout">Sign out</span>
-        </a>
+        </Link>
       </li>
     </>
   );
 }
 
-export { AuthUser };
-export default connector(AuthUser);
+export default AuthUser;

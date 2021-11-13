@@ -5,24 +5,87 @@ import PropertyInsideList from '../../components/property-inside-list/property-i
 import PropertyReviewsList from '../../components/property-reviews-list/property-reviews-list';
 import PropertyNewReview from '../../components/property-new-review/property-new-review';
 import NearPlacesList from '../../components/near-places-list/near-places-list';
+import { useParams } from 'react-router';
+import {  useDispatch, useSelector } from 'react-redux';
+import Loading from '../../components/loading/loading';
+import LoadingFailed from '../../components/loading-failed/loading-failed';
+import { convertRating } from '../../utils/common';
+import NotFound from '../not-found/not-found';
+import Map from '../../components/map/map';
+import { fetchNearbyAction, fetchPropertyAction, fetchReviewsAction } from '../../store/api-actions';
+import { useEffect } from 'react';
+import { getNearby, getNearbyError, getNearbyLoading, getProperty, getPropertyError, getPropertyLoading, getReviews, getReviewsError, getReviewsLoading } from '../../store/property-data/selectors';
+import { getAuthStatus } from '../../store/user-data/selectors';
+import { AuthorizationStatus } from '../../const';
 
-function Property(): JSX.Element  {
+function Property(): JSX.Element {
+  const {id} = useParams<{ id: string }>();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchPropertyAction(Number(id)));
+    dispatch(fetchNearbyAction(Number(id)));
+    dispatch(fetchReviewsAction(Number(id)));
+  }, [id, dispatch]);
+
+  const authStatus = useSelector(getAuthStatus);
+
+  const propertyLoading = useSelector(getPropertyLoading);
+  const propertyError = useSelector(getPropertyError);
+  const nearbyLoading = useSelector(getNearbyLoading);
+  const nearbyError = useSelector(getNearbyError);
+  const reviewsLoading = useSelector(getReviewsLoading);
+  const reviewsError = useSelector(getReviewsError);
+
+  const propertyOffer = useSelector(getProperty);
+  const nerbyOffers = useSelector(getNearby);
+  const reviews = useSelector(getReviews);
+
+
+  const mapOffers = [...nerbyOffers, propertyOffer];
+
+  if (propertyLoading || nearbyLoading || reviewsLoading) {
+    return (
+      <div className="page">
+        <Header/>
+        <main className="page__main page__main--property">
+          <Loading isOffersLoading={propertyLoading}/>
+        </main>
+      </div>
+    );
+  }
+
+  if (propertyError || nearbyError || reviewsError) {
+    return (
+      <div className="page">
+        <Header/>
+        <main className="page__main page__main--property">
+          <LoadingFailed/>
+        </main>
+      </div>
+    );
+  }
+
+  if (!propertyOffer) {
+    return <NotFound/>;
+  }
+
   return (
     <div className="page">
       <Header/>
       <main className="page__main page__main--property">
         <section className="property">
           <div className="property__gallery-container container">
-            <PropertyGallery/>
+            <PropertyGallery images={propertyOffer.images} type={propertyOffer.type}/>
           </div>
           <div className="property__container container">
             <div className="property__wrapper">
-              <div className="property__mark">
-                <span>Premium</span>
-              </div>
+              {propertyOffer.isPremium
+                ? <div className="property__mark"><span>Premium</span></div>
+                : null}
               <div className="property__name-wrapper">
                 <h1 className="property__name">
-                  Beautiful &amp; luxurious studio at great location
+                  {propertyOffer.title}
                 </h1>
                 <button className="property__bookmark-button button" type="button">
                   <svg className="property__bookmark-icon" width="31" height="33">
@@ -33,19 +96,19 @@ function Property(): JSX.Element  {
               </div>
               <div className="property__rating rating">
                 <div className="property__stars rating__stars">
-                  <span style={{width: '80%'}}></span>
+                  <span style={{width: `${convertRating(propertyOffer.rating)}%`}}></span>
                   <span className="visually-hidden">Rating</span>
                 </div>
-                <span className="property__rating-value rating__value">4.8</span>
+                <span className="property__rating-value rating__value">{propertyOffer.rating}</span>
               </div>
-              <PropertyFeaturesList/>
+              <PropertyFeaturesList type={propertyOffer.type} bedroms={propertyOffer.bedrooms} maxAdults={propertyOffer.maxAdults}/>
               <div className="property__price">
-                <b className="property__price-value">&euro;120</b>
+                <b className="property__price-value">&euro;{propertyOffer.price}</b>
                 <span className="property__price-text">&nbsp;night</span>
               </div>
               <div className="property__inside">
                 <h2 className="property__inside-title">What&apos;s inside</h2>
-                <PropertyInsideList/>
+                <PropertyInsideList goods={propertyOffer.goods}/>
               </div>
               <div className="property__host">
                 <h2 className="property__host-title">Meet the host</h2>
@@ -54,34 +117,31 @@ function Property(): JSX.Element  {
                     <img className="property__avatar user__avatar" src="img/avatar-angelina.jpg" width="74" height="74" alt="Host avatar"/>
                   </div>
                   <span className="property__user-name">
-                    Angelina
+                    {propertyOffer.host.name}
                   </span>
-                  <span className="property__user-status">
-                    Pro
-                  </span>
+                  {propertyOffer.host.isPro && <span className="property__user-status">Pro</span>}
                 </div>
                 <div className="property__description">
                   <p className="property__text">
-                    A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam. The building is green and from 18th century.
-                  </p>
-                  <p className="property__text">
-                    An independent House, strategically located between Rembrand Square and National Opera, but where the bustle of the city comes to rest in this alley flowery and colorful.
+                    {propertyOffer.description}
                   </p>
                 </div>
               </div>
               <section className="property__reviews reviews">
-                <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">1</span></h2>
+                <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{reviews.length}</span></h2>
                 <PropertyReviewsList/>
-                <PropertyNewReview/>
+                {authStatus === AuthorizationStatus.Auth && <PropertyNewReview id={Number(id)}/>}
               </section>
             </div>
           </div>
-          <section className="property__map map"></section>
+          <section className="property__map map">
+            <Map city={propertyOffer.city} offers={mapOffers} selectedPoint={Number(id)}/>
+          </section>
         </section>
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
-            <NearPlacesList/>
+            <NearPlacesList nearOffers={nerbyOffers}/>
           </section>
         </div>
       </main>

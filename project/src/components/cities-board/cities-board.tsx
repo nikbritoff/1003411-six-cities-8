@@ -29,7 +29,9 @@ function CitiesBoard({offers, currentCity}: CitiesBoardProps): JSX.Element {
           <PlacesList list={offers} handleMouseMove={handleMouseMove} handleMouseMoveOut={handleMouseMoveOut}/>
         </section>
         <div className="cities__right-section">
-          <Map city={currentCity} offers={offers} selectedPoint={selectedOfferID}/>
+          <section className="cities__map map">
+            <Map city={currentCity} offers={offers} selectedPoint={selectedOfferID}/>
+          </section>
         </div>
       </div>
     </div>
