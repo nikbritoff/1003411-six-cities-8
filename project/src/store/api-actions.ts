@@ -1,5 +1,5 @@
 import { ThunkActionResult } from '../types/action';
-import { loadOffersSuccess, loadOffersFailed, redirectToRoute, requestOffers, requireAutorization, requireLogout, requestAuthorization, AutorizationError, AutorizationSuccsess, loadNearbySuccsess, requestNearby, loadNearbyError, requestProperty, loadPropertySuccess, loadPropertyError, requestReviews, loadReviewsSuccsess, loadReviewsError } from './action';
+import { loadOffersSuccess, loadOffersFailed, redirectToRoute, requestOffers, requireAutorization, requireLogout, requestAuthorization, AutorizationError, AutorizationSuccsess, loadNearbySuccsess, requestNearby, loadNearbyError, requestProperty, loadPropertySuccess, loadPropertyError, requestReviews, loadReviewsSuccsess, loadReviewsError, uploadNewReview } from './action';
 import { APIRoute, AppRoute, AuthorizationStatus } from '../const';
 import { Offer } from '../types/offer';
 import { AuthData } from '../types/auth-data';
@@ -8,6 +8,8 @@ import { adaptOfferToClient, adaptReviewToClient, adaptUserInfoToClient } from '
 import { BackendUserInfo } from '../types/backend-user-info';
 import { toast } from 'react-toastify';
 import { Review } from '../types/review';
+import { NewReviewData } from '../types/new-review-data';
+import { BackendNewReview } from '../types/backend-new-review';
 
 export const fetchOfferAction = (): ThunkActionResult =>
   async (dispatch, _, api) => {
@@ -102,5 +104,18 @@ export const fetchReviewsAction = (id: number): ThunkActionResult =>
     }
     catch {
       dispatch(loadReviewsError(true));
+    }
+  };
+
+export const uploadNewReviewAction = ({id, comment, rating}: NewReviewData): ThunkActionResult =>
+  async (dispatch, _, api) => {
+    try {
+      dispatch(uploadNewReview(true));
+      await api.post<BackendNewReview>(`${APIRoute.Reviews}/${id}`, {comment, rating});
+      dispatch(uploadNewReview(false));
+    }
+    catch {
+      toast.error('Sumbit error! Try later.');
+      dispatch(uploadNewReview(false));
     }
   };

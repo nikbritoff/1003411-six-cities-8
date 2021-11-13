@@ -35,6 +35,7 @@ export type PropertyData = {
   reviews: Review[],
   reviewsLoading: boolean,
   reviewsError: boolean,
+  uploadNewReview: boolean,
 }
 
 export type State = RootState;

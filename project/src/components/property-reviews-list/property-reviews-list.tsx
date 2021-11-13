@@ -1,12 +1,33 @@
 import dayjs from 'dayjs';
+import { useSelector } from 'react-redux';
+import { getReviews } from '../../store/property-data/selectors';
 import { Review } from '../../types/review';
 import { convertRating } from '../../utils/common';
 
-type PropertyReviewsListProps = {
-  reviews: Review[],
-}
+const MAX_REVIEWS_RENDER = 10;
 
-function PropertyReviewsList({reviews}: PropertyReviewsListProps): JSX.Element {
+const compareDates = (a: Review, b: Review) => {
+  const dateA = new Date(a.date);
+  const dateB = new Date(b.date);
+
+  if (dateA < dateB) {
+    return 1;
+  }
+
+  if (dateA > dateB) {
+    return -1;
+  }
+
+  return 0;
+};
+
+function PropertyReviewsList(): JSX.Element {
+  const reviewsFromBackend = useSelector(getReviews);
+  const sortedReviews = [...reviewsFromBackend].sort((a, b) => compareDates(a, b));
+  const reviews = sortedReviews.length > MAX_REVIEWS_RENDER
+    ? sortedReviews.splice(0, MAX_REVIEWS_RENDER)
+    : sortedReviews;
+
   return (
     <ul className="reviews__list">
       {reviews.map((review: Review) => {

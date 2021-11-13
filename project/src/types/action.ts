@@ -29,6 +29,9 @@ export enum ActionType {
   RequestReviews = 'property/requestReviews',
   LoadReviewsSuccess = 'property/loadReviewsSuccess',
   LoadReviewsError = 'property/loadReviewsError',
+
+  UploadNewReview = 'propert/uploadNewReview',
+  UploadNewReviewSuccess ='property/uploadNewReviewSuccess',
 }
 
 export type ThunkActionResult<R = Promise<void>> = ThunkAction<R, State, AxiosInstance, Action>;

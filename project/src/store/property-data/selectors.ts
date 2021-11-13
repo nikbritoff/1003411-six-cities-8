@@ -12,3 +12,4 @@ export const getNearbyError = (state: State): boolean => state[NameSpace.propert
 export const getReviews = (state: State):Review[] => state[NameSpace.property].reviews;
 export const getReviewsLoading = (state: State): boolean => state[NameSpace.property].reviewsLoading;
 export const getReviewsError = (state: State): boolean => state[NameSpace.property].reviewsError;
+export const getNewReviewUpload = (state: State): boolean => state[NameSpace.property].uploadNewReview;

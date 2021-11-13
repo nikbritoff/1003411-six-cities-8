@@ -1,6 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { PropertyData } from '../../types/state';
-import { loadNearbyError, loadNearbySuccsess, loadPropertyError, loadPropertySuccess, loadReviewsError, loadReviewsSuccsess, requestNearby, requestProperty, requestReviews } from '../action';
+import { loadNearbyError, loadNearbySuccsess, loadPropertyError, loadPropertySuccess, loadReviewsError, loadReviewsSuccsess, requestNearby, requestProperty, requestReviews, uploadNewReview } from '../action';
 
 const initialState: PropertyData = {
   property: {
@@ -45,6 +45,7 @@ const initialState: PropertyData = {
   reviews: [],
   reviewsLoading: false,
   reviewsError: false,
+  uploadNewReview: false,
 };
 
 const propertyData = createReducer(initialState, (builder) => {
@@ -84,6 +85,9 @@ const propertyData = createReducer(initialState, (builder) => {
     .addCase(loadReviewsError, (state, action) => {
       state.reviewsError = action.payload;
       state.reviewsLoading = false;
+    })
+    .addCase(uploadNewReview, (state, action) => {
+      state.uploadNewReview = action.payload;
     });
 });
 

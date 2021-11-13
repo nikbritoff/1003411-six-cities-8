@@ -3,10 +3,11 @@ import { ChangeEvent } from 'react';
 type RatingStarProps = {
   title: string,
   id: number,
+  newReviewUpload: boolean,
   handleChange: ({target}: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void,
 }
 
-function RatingStar({title, id, handleChange}: RatingStarProps): JSX.Element {
+function RatingStar({title, id, newReviewUpload, handleChange}: RatingStarProps): JSX.Element {
   const elementID = `${id}-star${id > 1 ? 's' : ''}`;
   return (
     <>
@@ -16,6 +17,7 @@ function RatingStar({title, id, handleChange}: RatingStarProps): JSX.Element {
         id={elementID}
         type="radio"
         onChange={handleChange}
+        disabled={newReviewUpload}
       />
       <label
         htmlFor={elementID}

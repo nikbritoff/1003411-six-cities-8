@@ -5,6 +5,7 @@ import { AppRoute, AuthorizationStatus, SortingStatus } from '../const';
 import { UserInfo } from '../types/user-info';
 import { createAction } from '@reduxjs/toolkit';
 import { Review } from '../types/review';
+import { BackendNewReview } from '../types/backend-new-review';
 
 // Main
 
@@ -146,5 +147,19 @@ export const loadReviewsError = createAction(
   ActionType.LoadReviewsError,
   (loadError: boolean) => ({
     payload: loadError,
+  }),
+);
+
+export const uploadNewReview = createAction(
+  ActionType.UploadNewReview,
+  (upload: boolean) => ({
+    payload: upload,
+  }),
+);
+
+export const uploadNewReviewSuccsess = createAction(
+  ActionType.UploadNewReviewSuccess,
+  (review: BackendNewReview) => ({
+    payload: review,
   }),
 );

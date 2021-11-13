@@ -45,7 +45,7 @@ function LoginForm(): JSX.Element {
   const dispatch = useDispatch();
 
   const loginLoading = useSelector(getLoginLoading);
-  const sublitAuthData = (authData: AuthData) => {
+  const submitAuthData = (authData: AuthData) => {
     dispatch(loginAction(authData));
   };
 
@@ -70,7 +70,7 @@ function LoginForm(): JSX.Element {
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
 
-    sublitAuthData({
+    submitAuthData({
       login: formState.email.value,
       password: formState.password.value,
     });
