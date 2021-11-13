@@ -9,7 +9,6 @@ import { BackendUserInfo } from '../types/backend-user-info';
 import { toast } from 'react-toastify';
 import { Review } from '../types/review';
 import { NewReviewData } from '../types/new-review-data';
-import { BackendNewReview } from '../types/backend-new-review';
 
 export const fetchOfferAction = (): ThunkActionResult =>
   async (dispatch, _, api) => {
@@ -111,7 +110,9 @@ export const uploadNewReviewAction = ({id, comment, rating}: NewReviewData): Thu
   async (dispatch, _, api) => {
     try {
       dispatch(uploadNewReview(true));
-      await api.post<BackendNewReview>(`${APIRoute.Reviews}/${id}`, {comment, rating});
+      const {data} = await api.post<Review[]>(`${APIRoute.Reviews}/${id}`, {comment, rating});
+      const adaptedReviews = data.map((review: Review) => adaptReviewToClient(review));
+      dispatch(loadReviewsSuccsess(adaptedReviews));
       dispatch(uploadNewReview(false));
     }
     catch {

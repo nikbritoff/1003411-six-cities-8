@@ -110,7 +110,7 @@ function PropertyNewReview({id}: PropertyNewReviewProps): JSX.Element {
           type="submit"
           disabled={!isFormValid || newReviewUpload}
         >
-          {newReviewUpload ? 'Submiting..' : 'Sublit'}
+          {newReviewUpload ? 'Submiting..' : 'Submit'}
         </button>
       </div>
     </form>
