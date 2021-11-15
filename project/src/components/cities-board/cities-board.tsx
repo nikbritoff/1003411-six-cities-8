@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import Sorting from '../sorting/sorting';
-import PlacesList from '../../components/places-list/places-list';
 import Map from '../../components/map/map';
 import { City } from '../../types/city';
 import { Offer } from '../../types/offer';
+import PlaceCard from '../offer-card/offer-card';
 
 type CitiesBoardProps = {
   currentCity: City,
@@ -26,7 +26,18 @@ function CitiesBoard({offers, currentCity}: CitiesBoardProps): JSX.Element {
           <h2 className="visually-hidden">Places</h2>
           <b className="places__found">{offers.length} places to stay in {currentCity.name}</b>
           <Sorting/>
-          <PlacesList list={offers} handleMouseMove={handleMouseMove} handleMouseMoveOut={handleMouseMoveOut}/>
+          <div className="cities__places-list places__list tabs__content">
+            {offers.map((offer: Offer): JSX.Element => (
+              <PlaceCard
+                key={offer.id}
+                offer={offer}
+                cardClassName={'cities__place-card'}
+                cardImageClassName={'cities__image-wrapper'}
+                handleMouseMove={handleMouseMove}
+                handleMouseMoveOut={handleMouseMoveOut}
+              />
+            ))}
+          </div>
         </section>
         <div className="cities__right-section">
           <section className="cities__map map">

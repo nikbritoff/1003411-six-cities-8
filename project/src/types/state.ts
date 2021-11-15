@@ -6,8 +6,6 @@ import { Review } from './review';
 import { UserInfo } from './user-info';
 
 export type MainData = {
-  currentCity: City,
-  sortingStatus: SortingStatus,
   offersList: Offer[],
   offersLoading: boolean,
   offersError: boolean,
@@ -29,13 +27,19 @@ export type PropertyData = {
   property: Offer,
   propertyLoading: boolean,
   propertyError: boolean,
-  nearby: Offer[],
-  nearbyLoading: boolean,
-  nearbyError: boolean,
+}
+
+export type ReviewsState = {
   reviews: Review[],
   reviewsLoading: boolean,
   reviewsError: boolean,
   uploadNewReview: boolean,
+}
+
+export type Nearby = {
+  nearby: Offer[],
+  nearbyLoading: boolean,
+  nearbyError: boolean,
 }
 
 export type State = RootState;

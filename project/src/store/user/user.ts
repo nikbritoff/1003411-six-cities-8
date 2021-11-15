@@ -1,7 +1,7 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { AuthorizationStatus } from '../../const';
 import { UserData } from '../../types/state';
-import { AutorizationError, AutorizationSuccsess, requestAuthorization, requireAutorization, requireLogout } from '../action';
+import { AutorizationFailed, AutorizationSuccess, requestAuthorization, requireAutorization, requireLogout } from '../action';
 
 const initialState: UserData = {
   loginLoading: false,
@@ -16,18 +16,18 @@ const initialState: UserData = {
   },
 };
 
-const userData = createReducer(initialState, (builder) => {
+const user = createReducer(initialState, (builder) => {
   builder
     .addCase(requestAuthorization, (state, action) => {
       state.loginLoading = action.payload;
       state.loginError = false;
     })
-    .addCase(AutorizationSuccsess, (state, action) => {
+    .addCase(AutorizationSuccess, (state, action) => {
       state.userInfo = action.payload;
       state.loginLoading = false;
       state.loginError = false;
     })
-    .addCase(AutorizationError, (state, action) => {
+    .addCase(AutorizationFailed, (state, action) => {
       state.loginError = action.payload;
       state.loginLoading = false;
     })
@@ -46,4 +46,4 @@ const userData = createReducer(initialState, (builder) => {
     });
 });
 
-export { userData };
+export {user};

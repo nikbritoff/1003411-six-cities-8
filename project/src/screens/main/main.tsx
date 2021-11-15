@@ -6,7 +6,21 @@ import { sortOffers } from '../../utils/common';
 import Loading from '../../components/loading/loading';
 import LoadingFailed from '../../components/loading-failed/loading-failed';
 import CitiesBoardEmpty from '../../components/cities-board-empty/cities-board-empty';
-import { getCurrentCity, getSortingStatus, getOffersError, getOffersList, getOffersLoading } from '../../store/main-data/selectors';
+import { getOffersError, getOffersList, getOffersLoading } from '../../store/offers/selectors';
+import { getCurrentCity, getSortingStatus } from '../../store/app-state/selectors';
+
+function ErrorPage({children}: {children: React.ReactNode}) {
+  return (
+    <div className="page page--gray page--main">
+      <Header/>
+      <main className="page__main page__main--index">
+        <h1 className="visually-hidden">Cities</h1>
+        <SiteCitiesTabs/>
+        {children}
+      </main>
+    </div>
+  );
+}
 
 function Main(): JSX.Element {
   const currentCity = useSelector(getCurrentCity);
@@ -19,27 +33,17 @@ function Main(): JSX.Element {
 
   if (offersError) {
     return (
-      <div className="page page--gray page--main">
-        <Header/>
-        <main className="page__main page__main--index">
-          <h1 className="visually-hidden">Cities</h1>
-          <SiteCitiesTabs/>
-          <LoadingFailed/>
-        </main>
-      </div>
+      <ErrorPage>
+        <LoadingFailed/>
+      </ErrorPage>
     );
   }
 
   if (offersLoading) {
     return (
-      <div className="page page--gray page--main">
-        <Header/>
-        <main className="page__main page__main--index">
-          <h1 className="visually-hidden">Cities</h1>
-          <SiteCitiesTabs/>
-          <Loading isOffersLoading={offersLoading}/>
-        </main>
-      </div>
+      <ErrorPage>
+        <Loading isOffersLoading={offersLoading}/>
+      </ErrorPage>
     );
   }
 

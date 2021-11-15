@@ -1,5 +1,5 @@
 import { ThunkActionResult } from '../types/action';
-import { loadOffersSuccess, loadOffersFailed, redirectToRoute, requestOffers, requireAutorization, requireLogout, requestAuthorization, AutorizationError, AutorizationSuccsess, loadNearbySuccsess, requestNearby, loadNearbyError, requestProperty, loadPropertySuccess, loadPropertyError, requestReviews, loadReviewsSuccsess, loadReviewsError, uploadNewReview } from './action';
+import { loadOffersSuccess, loadOffersFailed, redirectToRoute, requestOffers, requireAutorization, requireLogout, requestAuthorization, AutorizationFailed, AutorizationSuccess, loadNearbySuccsess, requestNearby, loadNearbyFailed, requestProperty, loadPropertySuccess, loadPropertyFailed, requestReviews, loadReviewsSuccsess, loadReviewsError, uploadNewReview } from './action';
 import { APIRoute, AppRoute, AuthorizationStatus } from '../const';
 import { Offer } from '../types/offer';
 import { AuthData } from '../types/auth-data';
@@ -9,6 +9,11 @@ import { BackendUserInfo } from '../types/backend-user-info';
 import { toast } from 'react-toastify';
 import { Review } from '../types/review';
 import { NewReviewData } from '../types/new-review-data';
+
+const errorMessages = {
+  autorization: 'Autorization error! Try later.',
+  postReview: 'Submit error! Try later.',
+};
 
 export const fetchOfferAction = (): ThunkActionResult =>
   async (dispatch, _, api) => {
@@ -30,13 +35,13 @@ export const loginAction = ({login: email, password}: AuthData): ThunkActionResu
       const {data} = await api.post<BackendUserInfo>(APIRoute.Login, {email, password});
       const adaptedUser = adaptUserInfoToClient(data);
       dispatch(requireAutorization(AuthorizationStatus.Auth));
-      dispatch(AutorizationSuccsess(adaptedUser));
+      dispatch(AutorizationSuccess(adaptedUser));
       saveToken(data.token);
       dispatch(redirectToRoute(AppRoute.Main));
     }
     catch {
-      dispatch(AutorizationError(true));
-      toast.error('Autorization error! Try later.', {
+      dispatch(AutorizationFailed(true));
+      toast.error(errorMessages.autorization, {
         position: 'top-left',
       });
     }
@@ -48,7 +53,7 @@ export const checkAuthAction = (): ThunkActionResult =>
       const {data} = await api.get(APIRoute.Login);
       const adaptedUser = adaptUserInfoToClient(data);
       dispatch(requireAutorization(AuthorizationStatus.Auth));
-      dispatch(AutorizationSuccsess(adaptedUser));
+      dispatch(AutorizationSuccess(adaptedUser));
     }
     catch {
       dispatch(requireAutorization(AuthorizationStatus.NoAuth));
@@ -67,7 +72,7 @@ export const logoutAction = (): ThunkActionResult<void> =>
     }
   };
 
-export  const fetchPropertyAction = (id: number): ThunkActionResult =>
+export  const fetchPropertyAction = (id: string): ThunkActionResult =>
   async (dispatch, _, api) => {
     try {
       dispatch(requestProperty(true));
@@ -76,11 +81,11 @@ export  const fetchPropertyAction = (id: number): ThunkActionResult =>
       dispatch(loadPropertySuccess(adaptedProperty));
     }
     catch {
-      dispatch(loadPropertyError(true));
+      dispatch(loadPropertyFailed(true));
     }
   };
 
-export const fetchNearbyAction = (id: number): ThunkActionResult =>
+export const fetchNearbyAction = (id: string): ThunkActionResult =>
   async (dispatch, _, api) => {
     try {
       dispatch(requestNearby(true));
@@ -89,11 +94,11 @@ export const fetchNearbyAction = (id: number): ThunkActionResult =>
       dispatch(loadNearbySuccsess(adaptedNearby));
     }
     catch {
-      dispatch(loadNearbyError(true));
+      dispatch(loadNearbyFailed(true));
     }
   };
 
-export const fetchReviewsAction = (id: number): ThunkActionResult =>
+export const fetchReviewsAction = (id: string): ThunkActionResult =>
   async (dispatch, _, api) => {
     try {
       dispatch(requestReviews(true));
@@ -106,7 +111,7 @@ export const fetchReviewsAction = (id: number): ThunkActionResult =>
     }
   };
 
-export const uploadNewReviewAction = ({id, comment, rating}: NewReviewData): ThunkActionResult =>
+export const postReviewAction = ({id, comment, rating}: NewReviewData): ThunkActionResult =>
   async (dispatch, _, api) => {
     try {
       dispatch(uploadNewReview(true));
@@ -116,7 +121,7 @@ export const uploadNewReviewAction = ({id, comment, rating}: NewReviewData): Thu
       dispatch(uploadNewReview(false));
     }
     catch {
-      toast.error('Sumbit error! Try later.');
+      toast.error(errorMessages.postReview);
       dispatch(uploadNewReview(false));
     }
   };

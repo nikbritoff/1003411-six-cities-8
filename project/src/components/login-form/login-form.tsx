@@ -5,7 +5,7 @@ import { AuthData } from '../../types/auth-data';
 import BeatLoader from 'react-spinners/BeatLoader';
 import cn from 'classnames';
 import styles from './login-form.module.css';
-import { getLoginLoading } from '../../store/user-data/selectors';
+import { getLoginLoading } from '../../store/user/selectors';
 
 const formFields = {
   email: 'E-mail',

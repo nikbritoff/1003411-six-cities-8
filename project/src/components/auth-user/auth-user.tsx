@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
 import { logoutAction } from '../../store/api-actions';
-import { getUserData } from '../../store/user-data/selectors';
+import { getUserData } from '../../store/user/selectors';
 
 function AuthUser(): JSX.Element  {
   const dispatch = useDispatch();

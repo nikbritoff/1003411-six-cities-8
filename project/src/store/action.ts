@@ -53,14 +53,14 @@ export const requestAuthorization = createAction(
   }),
 );
 
-export const AutorizationSuccsess = createAction(
+export const AutorizationSuccess = createAction(
   ActionType.AutorizationSuccess,
   (user: UserInfo) => ({
     payload: user,
   }),
 );
 
-export const AutorizationError = createAction(
+export const AutorizationFailed = createAction(
   ActionType.AutorizationError,
   (loginFailed: boolean) => ({
     payload: loginFailed,
@@ -101,7 +101,7 @@ export const loadPropertySuccess = createAction(
   }),
 );
 
-export const loadPropertyError = createAction(
+export const loadPropertyFailed = createAction(
   ActionType.LoadPropertyError,
   (loadError: boolean) => ({
     payload: loadError,
@@ -122,7 +122,7 @@ export const loadNearbySuccsess = createAction(
   }),
 );
 
-export const loadNearbyError = createAction(
+export const loadNearbyFailed = createAction(
   ActionType.Load,
   (loadError: boolean) => ({
     payload: loadError,

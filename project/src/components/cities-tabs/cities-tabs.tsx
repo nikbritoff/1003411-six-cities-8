@@ -3,7 +3,7 @@ import CityTab from '../city-tab/city-tab';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeCity } from '../../store/action';
 import { City } from '../../types/city';
-import { getCurrentCity } from '../../store/main-data/selectors';
+import { getCurrentCity } from '../../store/app-state/selectors';
 
 function SiteCitiesTabs(): JSX.Element  {
   const dispatch = useDispatch();

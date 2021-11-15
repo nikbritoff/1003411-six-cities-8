@@ -8,8 +8,8 @@ import { changeSortingStatus } from '../../store/action';
 
 const sortingOptions: SortingStatus[] = Object.values(SortingStatus).map((value) => value);
 
-const mapStateToProps = ({MAIN}: State) => ({
-  sortingStatus: MAIN.sortingStatus,
+const mapStateToProps = ({APP}: State) => ({
+  sortingStatus: APP.sortingStatus,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) =>({
