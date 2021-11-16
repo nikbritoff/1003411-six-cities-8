@@ -3,7 +3,7 @@ import Sorting from '../sorting/sorting';
 import Map from '../../components/map/map';
 import { City } from '../../types/city';
 import { Offer } from '../../types/offer';
-import PlaceCard from '../offer-card/offer-card';
+import OfferCard from '../offer-card/offer-card';
 
 type CitiesBoardProps = {
   currentCity: City,
@@ -28,7 +28,7 @@ function CitiesBoard({offers, currentCity}: CitiesBoardProps): JSX.Element {
           <Sorting/>
           <div className="cities__places-list places__list tabs__content">
             {offers.map((offer: Offer): JSX.Element => (
-              <PlaceCard
+              <OfferCard
                 key={offer.id}
                 offer={offer}
                 cardClassName={'cities__place-card'}

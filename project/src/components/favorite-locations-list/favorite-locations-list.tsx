@@ -27,7 +27,13 @@ function FavoriteLocationsList({ list }: Offers): JSX.Element {
   const locationsList = getFavoriteLocationsList({ list });
   return (
     <ul className="favorites__list">
-      {Object.keys(locationsList).map((destination: string) => <FavoriteLocationItems key={destination} destination={destination} offers={locationsList[destination]} />)}
+      {Object.keys(locationsList).map((destination: string) => (
+        <FavoriteLocationItems
+          key={destination}
+          destination={destination}
+          offers={locationsList[destination]}
+        />),
+      )}
     </ul>
   );
 }

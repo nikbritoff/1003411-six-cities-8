@@ -12,7 +12,7 @@ import { fetchNearbyAction, fetchPropertyAction, fetchReviewsAction } from '../.
 import React, { useEffect } from 'react';
 import { getProperty, getPropertyError, getPropertyLoading } from '../../store/property/selectors';
 import CardMark from '../../components/card-mark/card-mark';
-import PlaceCard from '../../components/offer-card/offer-card';
+import OfferCard from '../../components/offer-card/offer-card';
 import Host from '../../components/host/host';
 import Rating from '../../components/rating/rating';
 import { getReviewsError } from '../../store/reviews/selectors';
@@ -125,7 +125,7 @@ function Property(): JSX.Element {
               <h2 className="near-places__title">Other places in the neighbourhood</h2>
               <div className="near-places__list places__list">
                 {nearbyOffers.map((nearby): JSX.Element => (
-                  <PlaceCard
+                  <OfferCard
                     key={nearby.id}
                     offer={nearby}
                     cardClassName={'near-places__card'}

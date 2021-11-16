@@ -8,12 +8,12 @@ type CardProps = {
   offer: Offer;
   cardClassName: string;
   cardImageClassName: string,
-// Вот эти обработчики нужны тыолько если карточка cardClassName === 'cities__place-card'
+// Вот эти обработчики нужны только если карточка cardClassName === 'cities__place-card'
   handleMouseMove: (id: number) => void,
   handleMouseMoveOut: () => void,
 }
 
-function PlaceCard({offer, cardClassName, cardImageClassName, handleMouseMove, handleMouseMoveOut}: CardProps): JSX.Element {
+function OfferCard({offer, cardClassName, cardImageClassName, handleMouseMove, handleMouseMoveOut}: CardProps): JSX.Element {
   return (
     <article
       className={cn('place-card', cardClassName)}
@@ -74,4 +74,4 @@ function PlaceCard({offer, cardClassName, cardImageClassName, handleMouseMove, h
   );
 }
 
-export default PlaceCard;
+export default OfferCard;

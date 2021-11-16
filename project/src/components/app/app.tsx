@@ -25,7 +25,7 @@ function App(): JSX.Element {
         <PrivateRoute
           exact
           path={AppRoute.Favorites}
-          render={() => <Favorites offers={[]}/>}
+          render={() => <Favorites/>}
         >
         </PrivateRoute>
         <Route
