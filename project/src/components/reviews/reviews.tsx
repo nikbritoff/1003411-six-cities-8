@@ -1,11 +1,11 @@
 import dayjs from 'dayjs';
 import { useSelector } from 'react-redux';
 import { AuthorizationStatus } from '../../const';
-import { getReviews } from '../../store/reviews/selectors';
-// import { getReviews } from '../../store/property-data/selectors';
+import { getReviews, getReviewsError } from '../../store/reviews/selectors';
 import { getAuthStatus } from '../../store/user/selectors';
 import { Review } from '../../types/review';
 import { convertRating } from '../../utils/common';
+import LoadingFailed from '../loading-failed/loading-failed';
 import ReviewForm from '../review-form/review-form';
 
 const MAX_REVIEWS_RENDER = 10;

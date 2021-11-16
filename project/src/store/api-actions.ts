@@ -1,5 +1,5 @@
 import { ThunkActionResult } from '../types/action';
-import { loadOffersSuccess, loadOffersFailed, redirectToRoute, requestOffers, requireAutorization, requireLogout, requestAuthorization, AutorizationFailed, AutorizationSuccess, loadNearbySuccsess, requestNearby, loadNearbyFailed, requestProperty, loadPropertySuccess, loadPropertyFailed, requestReviews, loadReviewsSuccsess, loadReviewsError, uploadNewReview } from './action';
+import { loadOffersSuccess, loadOffersFailed, redirectToRoute, requestOffers, requireAutorization, requireLogout, requestAuthorization, AutorizationFailed, AutorizationSuccess, loadNearbySuccsess, requestNearby, loadNearbyFailed, requestProperty, loadPropertySuccess, loadPropertyFailed, requestReviews, loadReviewsSuccsess, loadReviewsFailed, postingNewReview, postNewReviewSuccsess } from './action';
 import { APIRoute, AppRoute, AuthorizationStatus } from '../const';
 import { Offer } from '../types/offer';
 import { AuthData } from '../types/auth-data';
@@ -9,10 +9,13 @@ import { BackendUserInfo } from '../types/backend-user-info';
 import { toast } from 'react-toastify';
 import { Review } from '../types/review';
 import { NewReviewData } from '../types/new-review-data';
+import { AxiosError } from 'axios';
 
 const errorMessages = {
   autorization: 'Autorization error! Try later.',
   postReview: 'Submit error! Try later.',
+  reviews: 'Reviews load failed. Try later.',
+  nearby: 'Load other places in the neighbourhood failed. Try later.',
 };
 
 export const fetchOfferAction = (): ThunkActionResult =>
@@ -80,8 +83,12 @@ export  const fetchPropertyAction = (id: string): ThunkActionResult =>
       const adaptedProperty = adaptOfferToClient(data);
       dispatch(loadPropertySuccess(adaptedProperty));
     }
-    catch {
+    catch(err) {
+      // Здесь не уверен в правильности реализации
       dispatch(loadPropertyFailed(true));
+      if ((err as AxiosError).response?.status === 404) {
+        dispatch(redirectToRoute(AppRoute.NotFoud));
+      }
     }
   };
 
@@ -95,6 +102,7 @@ export const fetchNearbyAction = (id: string): ThunkActionResult =>
     }
     catch {
       dispatch(loadNearbyFailed(true));
+      toast.warn(errorMessages.nearby);
     }
   };
 
@@ -107,21 +115,23 @@ export const fetchReviewsAction = (id: string): ThunkActionResult =>
       dispatch(loadReviewsSuccsess(adaptedReviews));
     }
     catch {
-      dispatch(loadReviewsError(true));
+      dispatch(loadReviewsFailed(true));
+      toast.warn(errorMessages.reviews);
     }
   };
 
 export const postReviewAction = ({id, comment, rating}: NewReviewData): ThunkActionResult =>
   async (dispatch, _, api) => {
     try {
-      dispatch(uploadNewReview(true));
+      dispatch(postingNewReview(true));
       const {data} = await api.post<Review[]>(`${APIRoute.Reviews}/${id}`, {comment, rating});
       const adaptedReviews = data.map((review: Review) => adaptReviewToClient(review));
       dispatch(loadReviewsSuccsess(adaptedReviews));
-      dispatch(uploadNewReview(false));
+      dispatch(postingNewReview(false));
+      dispatch(postNewReviewSuccsess());
     }
     catch {
       toast.error(errorMessages.postReview);
-      dispatch(uploadNewReview(false));
+      dispatch(postingNewReview(false));
     }
   };

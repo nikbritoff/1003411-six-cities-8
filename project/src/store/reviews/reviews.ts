@@ -1,12 +1,13 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { ReviewsState } from '../../types/state';
-import { loadReviewsError, loadReviewsSuccsess, requestReviews, uploadNewReview } from '../action';
+import { loadReviewsFailed, loadReviewsSuccsess, requestReviews, postingNewReview, postNewReviewSuccsess } from '../action';
 
 const initialState: ReviewsState = {
   reviews: [],
   reviewsLoading: false,
   reviewsError: false,
-  uploadNewReview: false,
+  postingNewReview: false,
+  postNewReviewSuccess: false,
 };
 
 const reviews = createReducer(initialState, (builder) => {
@@ -19,12 +20,17 @@ const reviews = createReducer(initialState, (builder) => {
       state.reviewsLoading = false;
       state.reviewsError = false;
     })
-    .addCase(loadReviewsError, (state, action) => {
+    .addCase(loadReviewsFailed, (state, action) => {
       state.reviewsError = action.payload;
       state.reviewsLoading = false;
     })
-    .addCase(uploadNewReview, (state, action) => {
-      state.uploadNewReview = action.payload;
+    .addCase(postingNewReview, (state, action) => {
+      state.postingNewReview = action.payload;
+      state.postNewReviewSuccess = false;
+    })
+    .addCase(postNewReviewSuccsess, (state) => {
+      state.postNewReviewSuccess = true;
+      state.postingNewReview = false;
     });
 });
 

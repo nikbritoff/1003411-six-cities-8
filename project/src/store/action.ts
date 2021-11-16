@@ -61,7 +61,7 @@ export const AutorizationSuccess = createAction(
 );
 
 export const AutorizationFailed = createAction(
-  ActionType.AutorizationError,
+  ActionType.AutorizationFailed,
   (loginFailed: boolean) => ({
     payload: loginFailed,
   }),
@@ -102,7 +102,7 @@ export const loadPropertySuccess = createAction(
 );
 
 export const loadPropertyFailed = createAction(
-  ActionType.LoadPropertyError,
+  ActionType.LoadPropertyFailed,
   (loadError: boolean) => ({
     payload: loadError,
   }),
@@ -123,7 +123,7 @@ export const loadNearbySuccsess = createAction(
 );
 
 export const loadNearbyFailed = createAction(
-  ActionType.Load,
+  ActionType.LoadNearbyFailed,
   (loadError: boolean) => ({
     payload: loadError,
   }),
@@ -143,23 +143,18 @@ export const loadReviewsSuccsess = createAction(
   }),
 );
 
-export const loadReviewsError = createAction(
-  ActionType.LoadReviewsError,
+export const loadReviewsFailed = createAction(
+  ActionType.LoadReviewsFailed,
   (loadError: boolean) => ({
     payload: loadError,
   }),
 );
 
-export const uploadNewReview = createAction(
-  ActionType.UploadNewReview,
+export const postingNewReview = createAction(
+  ActionType.PostNewReview,
   (upload: boolean) => ({
     payload: upload,
   }),
 );
 
-export const uploadNewReviewSuccsess = createAction(
-  ActionType.UploadNewReviewSuccess,
-  (review: BackendNewReview) => ({
-    payload: review,
-  }),
-);
+export const postNewReviewSuccsess = createAction(ActionType.PostNewReviewSuccess);

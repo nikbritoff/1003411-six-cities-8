@@ -33,7 +33,8 @@ export type ReviewsState = {
   reviews: Review[],
   reviewsLoading: boolean,
   reviewsError: boolean,
-  uploadNewReview: boolean,
+  postingNewReview: boolean,
+  postNewReviewSuccess: boolean,
 }
 
 export type Nearby = {

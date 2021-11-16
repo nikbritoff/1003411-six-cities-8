@@ -4,7 +4,7 @@ import { RATING_TITLES } from '../../const';
 import { useDispatch, useSelector } from 'react-redux';
 import { NewReviewData } from '../../types/new-review-data';
 import { postReviewAction } from '../../store/api-actions';
-import { getNewReviewPosting } from '../../store/reviews/selectors';
+import { getNewReviewPosting, getNewReviewPostSuccess } from '../../store/reviews/selectors';
 
 const REVIEW_MIN_LENGTH = 50;
 const REVIEW_MAX_LENGTH = 300;
@@ -44,14 +44,15 @@ const initialState = {
 function ReviewForm({id}: ReviewFormProps): JSX.Element {
   const dispatch = useDispatch();
   const isReviewPosting = useSelector(getNewReviewPosting);
+  const isReviewPostedSuccess = useSelector(getNewReviewPostSuccess);
 
   const [formState, setFormState] = useState<FormStateProps>(initialState);
 
   useEffect(() => {
-    if (isReviewPosting) {
+    if (isReviewPostedSuccess) {
       setFormState(initialState);
     }
-  }, [isReviewPosting]);
+  }, [isReviewPostedSuccess]);
 
   const submitNewReviewData = (newReviewData: NewReviewData) => {
     dispatch(postReviewAction(newReviewData));

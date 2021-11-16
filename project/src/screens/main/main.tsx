@@ -2,12 +2,11 @@ import Header from '../../components/header/header';
 import SiteCitiesTabs from '../../components/cities-tabs/cities-tabs';
 import CitiesBoard from '../../components/cities-board/cities-board';
 import { useSelector } from 'react-redux';
-import { sortOffers } from '../../utils/common';
 import Loading from '../../components/loading/loading';
 import LoadingFailed from '../../components/loading-failed/loading-failed';
 import CitiesBoardEmpty from '../../components/cities-board-empty/cities-board-empty';
-import { getOffersError, getOffersList, getOffersLoading } from '../../store/offers/selectors';
-import { getCurrentCity, getSortingStatus } from '../../store/app-state/selectors';
+import { getOffersError, getOffersLoading, selectCurrentOffers } from '../../store/offers/selectors';
+import { getCurrentCity } from '../../store/app-state/selectors';
 
 function ErrorPage({children}: {children: React.ReactNode}) {
   return (
@@ -24,12 +23,9 @@ function ErrorPage({children}: {children: React.ReactNode}) {
 
 function Main(): JSX.Element {
   const currentCity = useSelector(getCurrentCity);
-  const sortingStatus = useSelector(getSortingStatus);
-  const offersList = useSelector(getOffersList);
   const offersLoading = useSelector(getOffersLoading);
   const offersError = useSelector(getOffersError);
-  const offers = offersList.filter((offer) => offer.city.name === currentCity.name);
-  sortOffers(sortingStatus, offers);
+  const offers = useSelector(selectCurrentOffers);
 
   if (offersError) {
     return (
