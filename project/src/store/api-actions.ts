@@ -72,6 +72,8 @@ export const logoutAction = (): ThunkActionResult<void> =>
       api.delete(APIRoute.Logout);
       dropToken();
       dispatch(requireLogout());
+      dispatch(loadFavoritesSuccess([]));
+      dispatch(fetchOfferAction());
     }
     catch {
       dispatch(requireAutorization(AuthorizationStatus.Unknown));
