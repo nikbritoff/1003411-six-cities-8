@@ -43,4 +43,10 @@ export type Nearby = {
   nearbyError: boolean,
 }
 
+export type Favorites = {
+  favorites: Offer[],
+  favoritesLoading: boolean,
+  favoritesError: boolean,
+}
+
 export type State = RootState;

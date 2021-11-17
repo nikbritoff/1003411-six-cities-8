@@ -3,6 +3,12 @@ import { Link } from 'react-router-dom';
 import cn from 'classnames';
 import CardMark from '../card-mark/card-mark';
 import Rating from '../rating/rating';
+import { useDispatch, useSelector } from 'react-redux';
+import { FavoriteStatusData } from '../../types/favorite-status';
+import { postFavoriteStatus } from '../../store/api-actions';
+import { redirectToRoute } from '../../store/action';
+import { AppRoute, AuthorizationStatus } from '../../const';
+import { getAuthStatus } from '../../store/user/selectors';
 
 type CardProps = {
   offer: Offer;
@@ -14,6 +20,17 @@ type CardProps = {
 }
 
 function OfferCard({offer, cardClassName, cardImageClassName, handleMouseMove, handleMouseMoveOut}: CardProps): JSX.Element {
+  const dispatch = useDispatch();
+  const authStatus = useSelector(getAuthStatus);
+
+  const postOfferNewFavoriteStatus = (favoriteStatusData: FavoriteStatusData) => {
+    if (authStatus === AuthorizationStatus.Auth) {
+      dispatch(postFavoriteStatus(favoriteStatusData));
+    } else {
+      dispatch(redirectToRoute(AppRoute.Login));
+    }
+  };
+
   return (
     <article
       className={cn('place-card', cardClassName)}
@@ -48,6 +65,13 @@ function OfferCard({offer, cardClassName, cardImageClassName, handleMouseMove, h
                 {'place-card__bookmark-button--active' : offer.isFavorite})
             }
             type="button"
+            onClick={() => {
+              postOfferNewFavoriteStatus({
+                id: String(offer.id),
+                isFavorite: offer.isFavorite,
+                offerType: cardClassName,
+              });
+            }}
           >
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use xlinkHref="#icon-bookmark"></use>

@@ -8,7 +8,7 @@ import {  useDispatch, useSelector } from 'react-redux';
 import Loading from '../../components/loading/loading';
 import LoadingFailed from '../../components/loading-failed/loading-failed';
 import Map from '../../components/map/map';
-import { fetchNearbyAction, fetchPropertyAction, fetchReviewsAction } from '../../store/api-actions';
+import { fetchNearbyAction, fetchPropertyAction, fetchReviewsAction, postFavoriteStatus } from '../../store/api-actions';
 import React, { useEffect } from 'react';
 import { getProperty, getPropertyError, getPropertyLoading } from '../../store/property/selectors';
 import CardMark from '../../components/card-mark/card-mark';
@@ -18,6 +18,10 @@ import Rating from '../../components/rating/rating';
 import { getReviewsError } from '../../store/reviews/selectors';
 import { getNearby, getNearbyError } from '../../store/nearby-offers/selectors';
 import cn from 'classnames';
+import { FavoriteStatusData } from '../../types/favorite-status';
+import { getAuthStatus } from '../../store/user/selectors';
+import { AppRoute, AuthorizationStatus } from '../../const';
+import { redirectToRoute } from '../../store/action';
 
 function ErrorPage({children}: {children: React.ReactNode}) {
   return (
@@ -39,6 +43,7 @@ function Property(): JSX.Element {
   const isReviewsError = useSelector(getReviewsError);
   const propertyOffer = useSelector(getProperty);
   const nearbyOffers = useSelector(getNearby);
+  const authStatus = useSelector(getAuthStatus);
 
   const mapOffers = [...nearbyOffers, propertyOffer];
 
@@ -47,6 +52,14 @@ function Property(): JSX.Element {
     dispatch(fetchNearbyAction(id));
     dispatch(fetchReviewsAction(id));
   }, [id, dispatch]);
+
+  const postOfferNewFavoriteStatus = (favoriteStatusData: FavoriteStatusData) => {
+    if (authStatus === AuthorizationStatus.Auth) {
+      dispatch(postFavoriteStatus(favoriteStatusData));
+    } else {
+      dispatch(redirectToRoute(AppRoute.Login));
+    }
+  };
 
   if (isPropertyLoading) {
     return (
@@ -80,14 +93,19 @@ function Property(): JSX.Element {
                 </h1>
                 <button
                   className={cn('property__bookmark-button', 'button',
-                    {'property__bookmark-button--active': propertyOffer.isPremium})}
+                    {'property__bookmark-button--active': propertyOffer.isFavorite})}
                   type="button"
+                  onClick={() => postOfferNewFavoriteStatus({
+                    id: id,
+                    isFavorite: propertyOffer.isFavorite,
+                    offerType: 'property',
+                  })}
                 >
                   <svg className="property__bookmark-icon" width="31" height="33">
                     <use xlinkHref="#icon-bookmark"></use>
                   </svg>
                   <span className="visually-hidden">
-                    {propertyOffer.isPremium ? 'In bookmarks' : 'To bookmarks'}
+                    {propertyOffer.isFavorite ? 'In bookmarks' : 'To bookmarks'}
                   </span>
                 </button>
               </div>

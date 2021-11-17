@@ -5,7 +5,6 @@ import { AppRoute, AuthorizationStatus, SortingStatus } from '../const';
 import { UserInfo } from '../types/user-info';
 import { createAction } from '@reduxjs/toolkit';
 import { Review } from '../types/review';
-import { BackendNewReview } from '../types/backend-new-review';
 
 // Main
 
@@ -158,3 +157,16 @@ export const postingNewReview = createAction(
 );
 
 export const postNewReviewSuccsess = createAction(ActionType.PostNewReviewSuccess);
+
+
+// Favorites
+
+export const requestFavorites = createAction(ActionType.RequestFavorites);
+
+export const loadFavoritesSuccess = createAction(
+  ActionType.LoadFavoritesSuccess,
+  (favorites: Offer[]) => ({
+    payload: favorites,
+  }));
+
+export const loadFavoritesError = createAction(ActionType.LoadFavoritesFailed);
