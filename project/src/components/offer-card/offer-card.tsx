@@ -46,7 +46,7 @@ function OfferCard({
       {offer.isPremium && <CardMark className={'place-card__mark'}/>}
 
       <div className={cn('place-card__image-wrapper', cardImageClassName)}>
-        <a href="/#">
+        <Link to={`/offer/${offer.id}`}>
           <img
             className="place-card__image"
             src={offer.previewImage}
@@ -54,7 +54,7 @@ function OfferCard({
             height="200"
             alt={offer.title}
           />
-        </a>
+        </Link>
       </div>
 
       <div className="place-card__info">
