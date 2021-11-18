@@ -5,25 +5,25 @@ import { property } from './property/property';
 import { appState } from './app-state/app-state';
 import { reviews } from './reviews/reviews';
 import { nearbyOffers } from './nearby-offers/nearby-offers';
-import { favoritesOffers } from './favorites-offers/favorites-offers';
+import { favorites } from './favorites/favorites';
 
 export enum NameSpace {
-  app = 'APP',
-  offersState = 'OFFERS',
-  userState = 'USER',
-  propertyState = 'PROPERTY',
-  reviewsState = 'REVIEWS',
-  nearby = 'NEARBY',
-  favorites = 'FAVORITES',
+  App = 'APP',
+  Offers = 'OFFERS',
+  User = 'USER',
+  Property = 'PROPERTY',
+  Reviews = 'REVIEWS',
+  Nearby = 'NEARBY',
+  Favorites = 'FAVORITES',
 }
 export const rootReducer = combineReducers({
-  [NameSpace.app]: appState,
-  [NameSpace.offersState]: offers,
-  [NameSpace.userState]: user,
-  [NameSpace.propertyState]: property,
-  [NameSpace.reviewsState]: reviews,
-  [NameSpace.nearby]: nearbyOffers,
-  [NameSpace.favorites]: favoritesOffers,
+  [NameSpace.App]: appState,
+  [NameSpace.Offers]: offers,
+  [NameSpace.User]: user,
+  [NameSpace.Property]: property,
+  [NameSpace.Reviews]: reviews,
+  [NameSpace.Nearby]: nearbyOffers,
+  [NameSpace.Favorites]: favorites,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

@@ -8,7 +8,7 @@ const initialState: Favorites = {
   favoritesError: false,
 };
 
-const favoritesOffers = createReducer(initialState, (builder) => {
+const favorites = createReducer(initialState, (builder) => {
   builder
     .addCase(requestFavorites, (state) => {
       state.favoritesLoading = true;
@@ -24,4 +24,4 @@ const favoritesOffers = createReducer(initialState, (builder) => {
     });
 });
 
-export {favoritesOffers};
+export {favorites};

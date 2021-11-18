@@ -21,7 +21,7 @@ const errorMessages = {
   changeFavoriteStatus: 'Change offer favorite status failed. Try later.',
 };
 
-export const fetchOfferAction = (): ThunkActionResult =>
+export const fetchOfferAction = (): ThunkActionResult => (
   async (dispatch, _, api) => {
     try {
       dispatch(requestOffers(true));
@@ -32,9 +32,10 @@ export const fetchOfferAction = (): ThunkActionResult =>
     catch {
       dispatch(loadOffersFailed(true));
     }
-  };
+  }
+);
 
-export const loginAction = ({login: email, password}: AuthData): ThunkActionResult =>
+export const loginAction = ({login: email, password}: AuthData): ThunkActionResult => (
   async (dispatch, _, api) => {
     try {
       dispatch(requestAuthorization(true));
@@ -51,9 +52,10 @@ export const loginAction = ({login: email, password}: AuthData): ThunkActionResu
         position: 'top-left',
       });
     }
-  };
+  }
+);
 
-export const checkAuthAction = (): ThunkActionResult =>
+export const checkAuthAction = (): ThunkActionResult => (
   async (dispatch, _, api) => {
     try {
       const {data} = await api.get(APIRoute.Login);
@@ -64,9 +66,10 @@ export const checkAuthAction = (): ThunkActionResult =>
     catch {
       dispatch(requireAutorization(AuthorizationStatus.NoAuth));
     }
-  };
+  }
+);
 
-export const logoutAction = (): ThunkActionResult<void> =>
+export const logoutAction = (): ThunkActionResult<void> => (
   async (dispatch, _, api) => {
     try {
       api.delete(APIRoute.Logout);
@@ -78,9 +81,10 @@ export const logoutAction = (): ThunkActionResult<void> =>
     catch {
       dispatch(requireAutorization(AuthorizationStatus.Unknown));
     }
-  };
+  }
+);
 
-export  const fetchPropertyAction = (id: string): ThunkActionResult =>
+export  const fetchPropertyAction = (id: string): ThunkActionResult => (
   async (dispatch, _, api) => {
     try {
       dispatch(requestProperty(true));
@@ -95,9 +99,10 @@ export  const fetchPropertyAction = (id: string): ThunkActionResult =>
         dispatch(redirectToRoute(AppRoute.NotFoud));
       }
     }
-  };
+  }
+);
 
-export const fetchNearbyAction = (id: string): ThunkActionResult =>
+export const fetchNearbyAction = (id: string): ThunkActionResult => (
   async (dispatch, _, api) => {
     try {
       dispatch(requestNearby(true));
@@ -109,9 +114,10 @@ export const fetchNearbyAction = (id: string): ThunkActionResult =>
       dispatch(loadNearbyFailed(true));
       toast.warn(errorMessages.nearby);
     }
-  };
+  }
+);
 
-export const fetchReviewsAction = (id: string): ThunkActionResult =>
+export const fetchReviewsAction = (id: string): ThunkActionResult => (
   async (dispatch, _, api) => {
     try {
       dispatch(requestReviews(true));
@@ -123,9 +129,10 @@ export const fetchReviewsAction = (id: string): ThunkActionResult =>
       dispatch(loadReviewsFailed(true));
       toast.warn(errorMessages.reviews);
     }
-  };
+  }
+);
 
-export const postReviewAction = ({id, comment, rating}: NewReviewData): ThunkActionResult =>
+export const postReviewAction = ({id, comment, rating}: NewReviewData): ThunkActionResult => (
   async (dispatch, _, api) => {
     try {
       dispatch(postingNewReview(true));
@@ -139,7 +146,8 @@ export const postReviewAction = ({id, comment, rating}: NewReviewData): ThunkAct
       toast.error(errorMessages.postReview);
       dispatch(postingNewReview(false));
     }
-  };
+  }
+);
 
 export const fetchFavoritesAction = (): ThunkActionResult => (
   async (dispatch, _, api) => {
@@ -161,7 +169,7 @@ export const postFavoriteStatus = ({isFavorite, id, offerType = 'place-card'}: F
       const statusCode = isFavorite ? 0 : 1;
       const {data} = await api.post<Offer>(`${APIRoute.Favorites}/${id}/${statusCode}`);
       const adaptedFavorite = adaptOfferToClient(data);
-      const offers = getState()[NameSpace.offersState].offersList;
+      const offers = getState()[NameSpace.Offers].offersList;
       const index = offers.findIndex((offer) => offer.id === Number(id));
       const updatedOffers = [...offers.slice(0, index), adaptedFavorite, ...offers.slice(index + 1)];
       dispatch(loadOffersSuccess(updatedOffers));

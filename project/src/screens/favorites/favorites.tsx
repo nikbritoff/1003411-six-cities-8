@@ -3,7 +3,7 @@ import FavoriteLocationsList from '../../components/favorite-locations-list/favo
 import Footer from '../../components/footer/footer';
 import FavoritesEmpty from '../../components/favorites-empty/favorites-empty';
 import { useDispatch, useSelector } from 'react-redux';
-import { getFavorites, getFavoritesError, getFavoritesLoading } from '../../store/favorites-offers/selectors';
+import { getFavorites, getFavoritesError, getFavoritesLoading } from '../../store/favorites/selectors';
 import { useEffect } from 'react';
 import { fetchFavoritesAction } from '../../store/api-actions';
 import Loading from '../../components/loading/loading';
@@ -64,7 +64,7 @@ function Favorites(): JSX.Element  {
         <div className="page__favorites-container container">
           <section className="favorites">
             <h1 className="favorites__title">Saved listing</h1>
-            <FavoriteLocationsList list={favoriteOffers}/>
+            <FavoriteLocationsList/>
           </section>
         </div>
       </main>
