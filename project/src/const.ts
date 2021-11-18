@@ -3,6 +3,7 @@ export enum AppRoute {
   Login = '/login',
   Favorites = '/favorites',
   Property = '/offer/:id',
+  NotFoud = '/404'
 }
 
 export enum AuthorizationStatus {
@@ -16,7 +17,8 @@ export enum APIRoute {
   Login = '/login',
   Logout = '/logout',
   Nearby = '/nearby',
-  Reviews = '/comments'
+  Reviews = '/comments',
+  Favorites = '/favorite',
 }
 
 export enum SortingStatus {
@@ -33,6 +35,12 @@ export const RATING_TITLES = [
   'good',
   'perfect',
 ];
+
+export enum OfferType {
+  nearby = 'near-places__card',
+  property = 'property',
+  favorite = 'favorites__card',
+}
 
 export const CITIES = [
   {

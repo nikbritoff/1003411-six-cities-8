@@ -4,34 +4,38 @@ import  { State } from '../types/state';
 import { Action } from 'redux';
 
 export enum ActionType {
-  ChangeCity = 'main/changeCity',
-  ChangeSortingStatus = 'main/changeSortingStatus',
+  ChangeCity = 'app/changeCity',
+  ChangeSortingStatus = 'app/changeSortingStatus',
 
-  RequestOffers = 'main/requestOffers',
-  LoadOffersSuccess = 'main/loadOffersSuccess',
-  LoadOffersFailed = 'main/loadOffersFailed',
+  RequestOffers = 'offers/request',
+  LoadOffersSuccess = 'offers/loadSuccess',
+  LoadOffersFailed = 'offers/loadFailed',
 
   AutorizationSuccess = 'user/autorizationSuccess',
-  AutorizationError = 'user/autorizationError',
+  AutorizationFailed = 'user/autorizationFailed',
   RequireAuthorization = 'user/requireAuthorization',
   RequestAutorization = 'user/requestAuthorization',
   RequireLogout = 'user/requireLogout',
   RedirectToRoute = 'main/redirectToRoute',
 
-  RequestProperty = 'property/requestProperty',
-  LoadPropertySuccess = 'property/loadPropertySuccess',
-  LoadPropertyError = 'property/loadPropertyError',
+  RequestProperty = 'property/request',
+  LoadPropertySuccess = 'property/loadSuccess',
+  LoadPropertyFailed = 'property/loadFailed',
 
-  RequestNearby = 'nearby/requestNearby',
-  LoadNearbySuccess = 'nearby/loadNearby',
-  Load = 'nearby/loadNearbyError',
+  RequestNearby = 'nearby/request',
+  LoadNearbySuccess = 'nearby/loadSuccess',
+  LoadNearbyFailed = 'nearby/loadFailed',
 
-  RequestReviews = 'property/requestReviews',
-  LoadReviewsSuccess = 'property/loadReviewsSuccess',
-  LoadReviewsError = 'property/loadReviewsError',
+  RequestReviews = 'reviews/request',
+  LoadReviewsSuccess = 'reviews/loadSuccess',
+  LoadReviewsFailed = 'reviews/loadFailed',
+  PostNewReview = 'reviews/postNewReview',
+  PostNewReviewSuccess ='reviews/postNewReviewSuccess',
 
-  UploadNewReview = 'propert/uploadNewReview',
-  UploadNewReviewSuccess ='property/uploadNewReviewSuccess',
+  RequestFavorites = 'favorite/request',
+  LoadFavoritesSuccess = 'favorite/loadSuccess',
+  LoadFavoritesFailed = 'favorite/loadFailed',
+  ChangeFavorite = 'favorite/change',
 }
 
 export type ThunkActionResult<R = Promise<void>> = ThunkAction<R, State, AxiosInstance, Action>;

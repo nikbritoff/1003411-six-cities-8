@@ -5,7 +5,6 @@ import { AppRoute, AuthorizationStatus, SortingStatus } from '../const';
 import { UserInfo } from '../types/user-info';
 import { createAction } from '@reduxjs/toolkit';
 import { Review } from '../types/review';
-import { BackendNewReview } from '../types/backend-new-review';
 
 // Main
 
@@ -53,15 +52,15 @@ export const requestAuthorization = createAction(
   }),
 );
 
-export const AutorizationSuccsess = createAction(
+export const AutorizationSuccess = createAction(
   ActionType.AutorizationSuccess,
   (user: UserInfo) => ({
     payload: user,
   }),
 );
 
-export const AutorizationError = createAction(
-  ActionType.AutorizationError,
+export const AutorizationFailed = createAction(
+  ActionType.AutorizationFailed,
   (loginFailed: boolean) => ({
     payload: loginFailed,
   }),
@@ -101,8 +100,8 @@ export const loadPropertySuccess = createAction(
   }),
 );
 
-export const loadPropertyError = createAction(
-  ActionType.LoadPropertyError,
+export const loadPropertyFailed = createAction(
+  ActionType.LoadPropertyFailed,
   (loadError: boolean) => ({
     payload: loadError,
   }),
@@ -122,8 +121,8 @@ export const loadNearbySuccsess = createAction(
   }),
 );
 
-export const loadNearbyError = createAction(
-  ActionType.Load,
+export const loadNearbyFailed = createAction(
+  ActionType.LoadNearbyFailed,
   (loadError: boolean) => ({
     payload: loadError,
   }),
@@ -143,23 +142,40 @@ export const loadReviewsSuccsess = createAction(
   }),
 );
 
-export const loadReviewsError = createAction(
-  ActionType.LoadReviewsError,
+export const loadReviewsFailed = createAction(
+  ActionType.LoadReviewsFailed,
   (loadError: boolean) => ({
     payload: loadError,
   }),
 );
 
-export const uploadNewReview = createAction(
-  ActionType.UploadNewReview,
+export const postingNewReview = createAction(
+  ActionType.PostNewReview,
   (upload: boolean) => ({
     payload: upload,
   }),
 );
 
-export const uploadNewReviewSuccsess = createAction(
-  ActionType.UploadNewReviewSuccess,
-  (review: BackendNewReview) => ({
-    payload: review,
+export const postNewReviewSuccsess = createAction(ActionType.PostNewReviewSuccess);
+
+
+// Favorites
+
+export const requestFavorites = createAction(ActionType.RequestFavorites);
+
+export const loadFavoritesSuccess = createAction(
+  ActionType.LoadFavoritesSuccess,
+  (favorites: Offer[]) => ({
+    payload: favorites,
+  }),
+);
+
+export const loadFavoritesError = createAction(ActionType.LoadFavoritesFailed);
+
+
+export const changeFavorite = createAction(
+  ActionType.ChangeFavorite,
+  (favorite: Offer) => ({
+    payload: favorite,
   }),
 );

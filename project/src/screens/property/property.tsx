@@ -2,72 +2,79 @@ import Header from '../../components/header/header';
 import PropertyGallery from '../../components/property-gallery/property-gallery';
 import PropertyFeaturesList from '../../components/property-features-list/property-features-list';
 import PropertyInsideList from '../../components/property-inside-list/property-inside-list';
-import PropertyReviewsList from '../../components/property-reviews-list/property-reviews-list';
-import PropertyNewReview from '../../components/property-new-review/property-new-review';
-import NearPlacesList from '../../components/near-places-list/near-places-list';
+import Reviews from '../../components/reviews/reviews';
 import { useParams } from 'react-router';
 import {  useDispatch, useSelector } from 'react-redux';
 import Loading from '../../components/loading/loading';
 import LoadingFailed from '../../components/loading-failed/loading-failed';
-import { convertRating } from '../../utils/common';
-import NotFound from '../not-found/not-found';
 import Map from '../../components/map/map';
-import { fetchNearbyAction, fetchPropertyAction, fetchReviewsAction } from '../../store/api-actions';
-import { useEffect } from 'react';
-import { getNearby, getNearbyError, getNearbyLoading, getProperty, getPropertyError, getPropertyLoading, getReviews, getReviewsError, getReviewsLoading } from '../../store/property-data/selectors';
-import { getAuthStatus } from '../../store/user-data/selectors';
-import { AuthorizationStatus } from '../../const';
+import { fetchNearbyAction, fetchPropertyAction, fetchReviewsAction, postFavoriteStatus } from '../../store/api-actions';
+import React, { useEffect } from 'react';
+import { getProperty, getPropertyError, getPropertyLoading } from '../../store/property/selectors';
+import CardMark from '../../components/card-mark/card-mark';
+import OfferCard from '../../components/offer-card/offer-card';
+import Host from '../../components/host/host';
+import Rating from '../../components/rating/rating';
+import { getReviewsError } from '../../store/reviews/selectors';
+import { getNearby, getNearbyError } from '../../store/nearby-offers/selectors';
+import cn from 'classnames';
+import { FavoriteStatusData } from '../../types/favorite-status';
+import { getAuthStatus } from '../../store/user/selectors';
+import { AppRoute, AuthorizationStatus } from '../../const';
+import { redirectToRoute } from '../../store/action';
+
+function ErrorPage({children}: {children: React.ReactNode}) {
+  return (
+    <div className="page">
+      <Header/>
+      <main className="page__main page__main--property">
+        {children}
+      </main>
+    </div>
+  );
+}
 
 function Property(): JSX.Element {
   const {id} = useParams<{ id: string }>();
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(fetchPropertyAction(Number(id)));
-    dispatch(fetchNearbyAction(Number(id)));
-    dispatch(fetchReviewsAction(Number(id)));
-  }, [id, dispatch]);
-
+  const isPropertyLoading = useSelector(getPropertyLoading);
+  const isPropertyError = useSelector(getPropertyError);
+  const isNearbyError = useSelector(getNearbyError);
+  const isReviewsError = useSelector(getReviewsError);
+  const propertyOffer = useSelector(getProperty);
+  const nearbyOffers = useSelector(getNearby);
   const authStatus = useSelector(getAuthStatus);
 
-  const propertyLoading = useSelector(getPropertyLoading);
-  const propertyError = useSelector(getPropertyError);
-  const nearbyLoading = useSelector(getNearbyLoading);
-  const nearbyError = useSelector(getNearbyError);
-  const reviewsLoading = useSelector(getReviewsLoading);
-  const reviewsError = useSelector(getReviewsError);
+  const mapOffers = [...nearbyOffers, propertyOffer];
 
-  const propertyOffer = useSelector(getProperty);
-  const nerbyOffers = useSelector(getNearby);
-  const reviews = useSelector(getReviews);
+  useEffect(() => {
+    dispatch(fetchPropertyAction(id));
+    dispatch(fetchNearbyAction(id));
+    dispatch(fetchReviewsAction(id));
+  }, [id, dispatch]);
 
+  const postOfferNewFavoriteStatus = (favoriteStatusData: FavoriteStatusData) => {
+    if (authStatus === AuthorizationStatus.Auth) {
+      dispatch(postFavoriteStatus(favoriteStatusData));
+    } else {
+      dispatch(redirectToRoute(AppRoute.Login));
+    }
+  };
 
-  const mapOffers = [...nerbyOffers, propertyOffer];
-
-  if (propertyLoading || nearbyLoading || reviewsLoading) {
+  if (isPropertyLoading) {
     return (
-      <div className="page">
-        <Header/>
-        <main className="page__main page__main--property">
-          <Loading isOffersLoading={propertyLoading}/>
-        </main>
-      </div>
+      <ErrorPage>
+        <Loading isOffersLoading={isPropertyLoading}/>
+      </ErrorPage>
     );
   }
 
-  if (propertyError || nearbyError || reviewsError) {
+  if (isPropertyError) {
     return (
-      <div className="page">
-        <Header/>
-        <main className="page__main page__main--property">
-          <LoadingFailed/>
-        </main>
-      </div>
+      <ErrorPage>
+        <LoadingFailed/>
+      </ErrorPage>
     );
-  }
-
-  if (!propertyOffer) {
-    return <NotFound/>;
   }
 
   return (
@@ -75,75 +82,78 @@ function Property(): JSX.Element {
       <Header/>
       <main className="page__main page__main--property">
         <section className="property">
-          <div className="property__gallery-container container">
-            <PropertyGallery images={propertyOffer.images} type={propertyOffer.type}/>
-          </div>
+          <PropertyGallery images={propertyOffer.images} type={propertyOffer.type}/>
+
           <div className="property__container container">
             <div className="property__wrapper">
-              {propertyOffer.isPremium
-                ? <div className="property__mark"><span>Premium</span></div>
-                : null}
+              {propertyOffer.isPremium && <CardMark className={'property__mark'}/>}
               <div className="property__name-wrapper">
                 <h1 className="property__name">
                   {propertyOffer.title}
                 </h1>
-                <button className="property__bookmark-button button" type="button">
+                <button
+                  className={cn('property__bookmark-button', 'button',
+                    {'property__bookmark-button--active': propertyOffer.isFavorite})}
+                  type="button"
+                  onClick={() => postOfferNewFavoriteStatus({
+                    id: id,
+                    isFavorite: propertyOffer.isFavorite,
+                    statusCode: Number(!propertyOffer.isFavorite),
+                  })}
+                >
                   <svg className="property__bookmark-icon" width="31" height="33">
                     <use xlinkHref="#icon-bookmark"></use>
                   </svg>
-                  <span className="visually-hidden">To bookmarks</span>
+                  <span className="visually-hidden">
+                    {propertyOffer.isFavorite ? 'In bookmarks' : 'To bookmarks'}
+                  </span>
                 </button>
               </div>
+
               <div className="property__rating rating">
-                <div className="property__stars rating__stars">
-                  <span style={{width: `${convertRating(propertyOffer.rating)}%`}}></span>
-                  <span className="visually-hidden">Rating</span>
-                </div>
+                <Rating className={'property__stars'} rating={propertyOffer.rating}/>
                 <span className="property__rating-value rating__value">{propertyOffer.rating}</span>
               </div>
-              <PropertyFeaturesList type={propertyOffer.type} bedroms={propertyOffer.bedrooms} maxAdults={propertyOffer.maxAdults}/>
+
+              <PropertyFeaturesList
+                type={propertyOffer.type}
+                bedroms={propertyOffer.bedrooms}
+                maxAdults={propertyOffer.maxAdults}
+              />
+
               <div className="property__price">
                 <b className="property__price-value">&euro;{propertyOffer.price}</b>
                 <span className="property__price-text">&nbsp;night</span>
               </div>
-              <div className="property__inside">
-                <h2 className="property__inside-title">What&apos;s inside</h2>
-                <PropertyInsideList goods={propertyOffer.goods}/>
-              </div>
-              <div className="property__host">
-                <h2 className="property__host-title">Meet the host</h2>
-                <div className="property__host-user user">
-                  <div className="property__avatar-wrapper property__avatar-wrapper--pro user__avatar-wrapper">
-                    <img className="property__avatar user__avatar" src="img/avatar-angelina.jpg" width="74" height="74" alt="Host avatar"/>
-                  </div>
-                  <span className="property__user-name">
-                    {propertyOffer.host.name}
-                  </span>
-                  {propertyOffer.host.isPro && <span className="property__user-status">Pro</span>}
-                </div>
-                <div className="property__description">
-                  <p className="property__text">
-                    {propertyOffer.description}
-                  </p>
-                </div>
-              </div>
-              <section className="property__reviews reviews">
-                <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{reviews.length}</span></h2>
-                <PropertyReviewsList/>
-                {authStatus === AuthorizationStatus.Auth && <PropertyNewReview id={Number(id)}/>}
-              </section>
+
+              <PropertyInsideList goods={propertyOffer.goods}/>
+              <Host host={propertyOffer.host} description={propertyOffer.description}/>
+              {!isReviewsError && <Reviews id={id}/>}
             </div>
           </div>
+
           <section className="property__map map">
             <Map city={propertyOffer.city} offers={mapOffers} selectedPoint={Number(id)}/>
           </section>
         </section>
-        <div className="container">
-          <section className="near-places places">
-            <h2 className="near-places__title">Other places in the neighbourhood</h2>
-            <NearPlacesList nearOffers={nerbyOffers}/>
-          </section>
-        </div>
+
+        {!isNearbyError &&
+          <div className="container">
+            <section className="near-places places">
+              <h2 className="near-places__title">Other places in the neighbourhood</h2>
+              <div className="near-places__list places__list">
+                {nearbyOffers.map((nearby): JSX.Element => (
+                  <OfferCard
+                    key={nearby.id}
+                    offer={nearby}
+                    cardClassName={'near-places__card'}
+                    cardImageClassName={'near-places__image-wrapper'}
+                  />
+                ))}
+              </div>
+            </section>
+          </div>}
+
       </main>
     </div>
   );

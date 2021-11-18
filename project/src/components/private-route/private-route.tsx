@@ -2,7 +2,7 @@ import { Route, Redirect } from 'react-router';
 import { useSelector } from 'react-redux';
 import { RouteProps } from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from '../../const';
-import { getAuthStatus } from '../../store/user-data/selectors';
+import { getAuthStatus } from '../../store/user/selectors';
 
 type PrivateRouteProps = RouteProps & {
   render: () => JSX.Element;

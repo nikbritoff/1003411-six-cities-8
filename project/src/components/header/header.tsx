@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { AuthorizationStatus } from '../../const';
 import AuthUser from '../auth-user/auth-user';
 import NoAuthUser from '../no-auth-user/no-auth-user';
-import { getAuthStatus } from '../../store/user-data/selectors';
+import { getAuthStatus } from '../../store/user/selectors';
 
 function Header(): JSX.Element  {
   const authorizationStatus = useSelector(getAuthStatus);

@@ -114,7 +114,7 @@ export const offers: Offer[] = [
         longitude: 3.895168,
         zoom: 10,
       },
-      name: 'Amsterdam',
+      name: 'Paris',
     },
     description: 'Dream.',
     goods: ['Heating', 'Kitchen', 'Cable TV', 'Iron'],
@@ -137,7 +137,7 @@ export const offers: Offer[] = [
     previewImage: 'img/apartment-03.jpg',
     price: 200,
     rating: 4,
-    title: 'Best',
+    title: 'BesBestBestBestBestBestBestBestBestBest BestBestBestBestt',
     type: 'apartment',
   },
 ];

@@ -4,7 +4,7 @@ import { BackendUserInfo } from '../types/backend-user-info';
 import { UserInfo } from '../types/user-info';
 import { BackendReview } from '../types/backend-revies';
 import { Review } from '../types/review';
-import { CommentStateProps } from '../components/property-new-review/property-new-review';
+import { FormStateProps } from '../components/review-form/review-form';
 import { BackendNewReview } from '../types/backend-new-review';
 
 export const adaptOfferToClient = (offer: BackendOffer): Offer => {
@@ -57,7 +57,7 @@ export const adaptReviewToClient = (review: BackendReview): Review => {
   return adaptedReview as Review;
 };
 
-export const adaptNewReviewToBackend = (review: CommentStateProps): BackendNewReview => {
+export const adaptNewReviewToBackend = (review: FormStateProps): BackendNewReview => {
   const adaptedNewReview = {
     rating: Number(review.rating.value),
     comment: review.review.value,

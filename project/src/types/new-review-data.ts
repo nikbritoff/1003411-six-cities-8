@@ -1,5 +1,5 @@
 export type NewReviewData = {
   comment: string,
-  rating: number,
-  id: number,
+  rating: string,
+  id: string,
 }

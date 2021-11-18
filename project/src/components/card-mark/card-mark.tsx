@@ -1,6 +1,13 @@
-function CardMark(): JSX.Element {
+type CardMarkProps = {
+  className: string,
+}
+
+function CardMark({className}: CardMarkProps): JSX.Element {
   return (
-    <div className="place-card__mark"><span>Premium</span></div>
+    // <div className="place-card__mark">
+    <div className={className}>
+      <span>Premium</span>
+    </div>
   );
 }
 
