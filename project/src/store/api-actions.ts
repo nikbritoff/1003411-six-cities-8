@@ -93,7 +93,6 @@ export  const fetchPropertyAction = (id: string): ThunkActionResult => (
       dispatch(loadPropertySuccess(adaptedProperty));
     }
     catch(err) {
-      // Здесь не уверен в правильности реализации
       dispatch(loadPropertyFailed(true));
       if ((err as AxiosError).response?.status === 404) {
         dispatch(redirectToRoute(AppRoute.NotFoud));
@@ -110,9 +109,12 @@ export const fetchNearbyAction = (id: string): ThunkActionResult => (
       const adaptedNearby = data.map((point) => adaptOfferToClient(point));
       dispatch(loadNearbySuccsess(adaptedNearby));
     }
-    catch {
+    catch(err) {
       dispatch(loadNearbyFailed(true));
-      toast.warn(errorMessages.nearby);
+
+      if ((err as AxiosError).response?.status !== 404) {
+        toast.warn(errorMessages.nearby);
+      }
     }
   }
 );
@@ -125,9 +127,11 @@ export const fetchReviewsAction = (id: string): ThunkActionResult => (
       const adaptedReviews = data.map((review) => adaptReviewToClient(review));
       dispatch(loadReviewsSuccsess(adaptedReviews));
     }
-    catch {
+    catch(err) {
       dispatch(loadReviewsFailed(true));
-      toast.warn(errorMessages.reviews);
+      if ((err as AxiosError).response?.status !== 404) {
+        toast.warn(errorMessages.reviews);
+      }
     }
   }
 );
