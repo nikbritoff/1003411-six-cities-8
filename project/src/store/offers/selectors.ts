@@ -11,10 +11,8 @@ export const getOffersLoading = (state: State): boolean => state[NameSpace.Offer
 export const getOffersError = (state: State): boolean => state[NameSpace.Offers].offersError;
 
 export const selectCurrentOffers = createSelector([getOffersList, getSortingStatus, getCurrentCity],
-  (offers, sort, city) => (
-    sortOffers(
-      sort,
-      offers.filter((offer) => offer.city.name === city.name),
-    )
-  ),
+  (offers, sortType, city) => {
+    const filteredOffers = offers.filter((offer) => offer.city.name === city.name);
+    return sortOffers(sortType,filteredOffers);
+  },
 );
