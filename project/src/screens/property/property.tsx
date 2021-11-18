@@ -148,8 +148,6 @@ function Property(): JSX.Element {
                     offer={nearby}
                     cardClassName={'near-places__card'}
                     cardImageClassName={'near-places__image-wrapper'}
-                    handleMouseMove={function() {console.log('Enter');}}
-                    handleMouseMoveOut={function() {console.log('Leave');}}
                   />
                 ))}
               </div>

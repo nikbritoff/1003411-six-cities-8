@@ -24,8 +24,6 @@ function FavoriteLocationItems({destination, offers}: FavoriteLocationItemsProps
             cardClassName={'favorites__card'}
             cardImageClassName={'favorites__image-wrapper'}
             offer={offer}
-            handleMouseMove={function() {console.log('Enter');}}
-            handleMouseMoveOut={function() {console.log('Leave');}}
           />),
         )}
       </div>
