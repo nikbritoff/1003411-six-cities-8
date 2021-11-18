@@ -1,6 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { MainData } from '../../types/state';
-import { loadOffersFailed, loadOffersSuccess, requestOffers } from '../action';
+import { changeFavorite, loadOffersFailed, loadOffersSuccess, requestOffers } from '../action';
 
 const initialState: MainData = {
   offersList: [],
@@ -21,6 +21,12 @@ const offers = createReducer(initialState, (builder) => {
     .addCase(loadOffersFailed, (state, action) => {
       state.offersLoading = false;
       state.offersError = true;
+    })
+    .addCase(changeFavorite, (state, action) => {
+      const index = state.offersList.findIndex((offer) => offer.id === action.payload.id);
+      if (index !== -1) {
+        state.offersList[index].isFavorite = action.payload.isFavorite;
+      }
     });
 });
 

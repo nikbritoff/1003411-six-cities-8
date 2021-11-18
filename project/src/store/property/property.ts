@@ -1,6 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { PropertyData } from '../../types/state';
-import { loadPropertyFailed, loadPropertySuccess, requestProperty } from '../action';
+import { changeFavorite, loadPropertyFailed, loadPropertySuccess, requestProperty } from '../action';
 
 const initialState: PropertyData = {
   property: {
@@ -54,6 +54,9 @@ const property = createReducer(initialState, (builder) => {
     .addCase(loadPropertyFailed, (state, action) => {
       state.propertyError = action.payload;
       state.propertyLoading = false;
+    })
+    .addCase(changeFavorite, (state, action) => {
+      state.property.isFavorite =  action.payload.isFavorite;
     });
 });
 

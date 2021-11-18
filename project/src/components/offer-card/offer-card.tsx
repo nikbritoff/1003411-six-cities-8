@@ -74,7 +74,7 @@ function OfferCard({
               postOfferNewFavoriteStatus({
                 id: String(offer.id),
                 isFavorite: offer.isFavorite,
-                offerType: cardClassName,
+                statusCode: Number(!offer.isFavorite),
               });
             }}
           >

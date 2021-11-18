@@ -1,6 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { Favorites } from '../../types/state';
-import { loadFavoritesError, loadFavoritesSuccess, requestFavorites } from '../action';
+import { changeFavorite, loadFavoritesError, loadFavoritesSuccess, requestFavorites } from '../action';
 
 const initialState: Favorites = {
   favorites: [],
@@ -21,6 +21,10 @@ const favorites = createReducer(initialState, (builder) => {
     .addCase(loadFavoritesError, (state) => {
       state.favoritesLoading = false;
       state.favoritesError = true;
+    })
+    .addCase(changeFavorite, (state, action) => {
+      const filteredFavorited = state.favorites.filter((offer) => offer.id !== action.payload.id);
+      state.favorites = filteredFavorited;
     });
 });
 

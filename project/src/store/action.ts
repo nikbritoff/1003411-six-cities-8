@@ -167,6 +167,15 @@ export const loadFavoritesSuccess = createAction(
   ActionType.LoadFavoritesSuccess,
   (favorites: Offer[]) => ({
     payload: favorites,
-  }));
+  }),
+);
 
 export const loadFavoritesError = createAction(ActionType.LoadFavoritesFailed);
+
+
+export const changeFavorite = createAction(
+  ActionType.ChangeFavorite,
+  (favorite: Offer) => ({
+    payload: favorite,
+  }),
+);

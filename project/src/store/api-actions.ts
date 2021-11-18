@@ -1,6 +1,6 @@
 import { ThunkActionResult } from '../types/action';
-import { loadOffersSuccess, loadOffersFailed, redirectToRoute, requestOffers, requireAutorization, requireLogout, requestAuthorization, AutorizationFailed, AutorizationSuccess, loadNearbySuccsess, requestNearby, loadNearbyFailed, requestProperty, loadPropertySuccess, loadPropertyFailed, requestReviews, loadReviewsSuccsess, loadReviewsFailed, postingNewReview, postNewReviewSuccsess, requestFavorites, loadFavoritesError, loadFavoritesSuccess } from './action';
-import { APIRoute, AppRoute, AuthorizationStatus, OfferType } from '../const';
+import { loadOffersSuccess, loadOffersFailed, redirectToRoute, requestOffers, requireAutorization, requireLogout, requestAuthorization, AutorizationFailed, AutorizationSuccess, loadNearbySuccsess, requestNearby, loadNearbyFailed, requestProperty, loadPropertySuccess, loadPropertyFailed, requestReviews, loadReviewsSuccsess, loadReviewsFailed, postingNewReview, postNewReviewSuccsess, requestFavorites, loadFavoritesError, loadFavoritesSuccess, changeFavorite } from './action';
+import { APIRoute, AppRoute, AuthorizationStatus } from '../const';
 import { Offer } from '../types/offer';
 import { AuthData } from '../types/auth-data';
 import { dropToken, saveToken } from '../services/token';
@@ -11,7 +11,6 @@ import { Review } from '../types/review';
 import { NewReviewData } from '../types/new-review-data';
 import { AxiosError } from 'axios';
 import { FavoriteStatusData } from '../types/favorite-status';
-import { NameSpace } from './root-reducer';
 
 const errorMessages = {
   autorization: 'Autorization error! Try later.',
@@ -84,7 +83,7 @@ export const logoutAction = (): ThunkActionResult<void> => (
   }
 );
 
-export  const fetchPropertyAction = (id: string): ThunkActionResult => (
+export const fetchPropertyAction = (id: string): ThunkActionResult => (
   async (dispatch, _, api) => {
     try {
       dispatch(requestProperty(true));
@@ -167,39 +166,13 @@ export const fetchFavoritesAction = (): ThunkActionResult => (
   }
 );
 
-export const postFavoriteStatus = ({isFavorite, id, offerType = 'place-card'}: FavoriteStatusData): ThunkActionResult => (
-  async (dispatch, getState, api) => {
+export const postFavoriteStatus = ({isFavorite, id, statusCode}: FavoriteStatusData): ThunkActionResult => (
+  async (dispatch, _, api) => {
     try {
-      const statusCode = isFavorite ? 0 : 1;
       const {data} = await api.post<Offer>(`${APIRoute.Favorites}/${id}/${statusCode}`);
       const adaptedFavorite = adaptOfferToClient(data);
-      const offers = getState()[NameSpace.Offers].offersList;
-      const index = offers.findIndex((offer) => offer.id === Number(id));
-      const updatedOffers = [...offers.slice(0, index), adaptedFavorite, ...offers.slice(index + 1)];
-      dispatch(loadOffersSuccess(updatedOffers));
 
-      // Nearby
-      if (offerType === OfferType.nearby) {
-        const nearbyOffers = getState().NEARBY.nearby;
-        const nearbyIndex = nearbyOffers.findIndex((offer) => offer.id === Number(id));
-        const updatedNearbyOffers = [
-          ...nearbyOffers.slice(0, nearbyIndex),
-          adaptedFavorite,
-          ...nearbyOffers.slice(nearbyIndex + 1),
-        ];
-
-        dispatch(loadNearbySuccsess(updatedNearbyOffers));
-      }
-
-      // Property
-      if (offerType === OfferType.property) {
-        dispatch(loadPropertySuccess(adaptedFavorite));
-      }
-
-      // Favorites
-      if (offerType === OfferType.favorite) {
-        dispatch(fetchFavoritesAction());
-      }
+      dispatch(changeFavorite(adaptedFavorite));
     }
     catch {
       toast.warn(errorMessages.changeFavoriteStatus);

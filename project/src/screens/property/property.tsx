@@ -98,7 +98,7 @@ function Property(): JSX.Element {
                   onClick={() => postOfferNewFavoriteStatus({
                     id: id,
                     isFavorite: propertyOffer.isFavorite,
-                    offerType: 'property',
+                    statusCode: Number(!propertyOffer.isFavorite),
                   })}
                 >
                   <svg className="property__bookmark-icon" width="31" height="33">
