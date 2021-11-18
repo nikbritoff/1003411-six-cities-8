@@ -1,6 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { MainData } from '../../types/state';
-import { loadOffersSuccess, requestOffers } from '../action';
+import { loadOffersFailed, loadOffersSuccess, requestOffers } from '../action';
 
 const initialState: MainData = {
   offersList: [],
@@ -17,6 +17,10 @@ const offers = createReducer(initialState, (builder) => {
       state.offersList = action.payload;
       state.offersLoading = false;
       state.offersError = false;
+    })
+    .addCase(loadOffersFailed, (state, action) => {
+      state.offersLoading = false;
+      state.offersError = true;
     });
 });
 
