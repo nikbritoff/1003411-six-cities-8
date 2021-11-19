@@ -61,7 +61,7 @@ function Property(): JSX.Element {
     }
   };
 
-  if (isPropertyLoading) {
+  if (isPropertyLoading || !Object.keys(propertyOffer).length ) {
     return (
       <ErrorPage>
         <Loading isOffersLoading={isPropertyLoading}/>
@@ -126,7 +126,7 @@ function Property(): JSX.Element {
                 <span className="property__price-text">&nbsp;night</span>
               </div>
 
-              <PropertyInsideList goods={propertyOffer.goods}/>
+              {propertyOffer.goods && <PropertyInsideList goods={propertyOffer.goods}/>}
               <Host host={propertyOffer.host} description={propertyOffer.description}/>
               {!isReviewsError && <Reviews id={id}/>}
             </div>

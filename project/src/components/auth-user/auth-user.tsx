@@ -6,8 +6,8 @@ import { getUserData } from '../../store/user/selectors';
 
 function AuthUser(): JSX.Element  {
   const dispatch = useDispatch();
-
   const userInfo = useSelector(getUserData);
+
   const handleSignOutClick = () => {
     dispatch(logoutAction());
   };

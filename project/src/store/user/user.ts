@@ -1,19 +1,14 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { AuthorizationStatus } from '../../const';
 import { UserData } from '../../types/state';
+import { UserInfo } from '../../types/user-info';
 import { AutorizationFailed, AutorizationSuccess, requestAuthorization, requireAutorization, requireLogout } from '../action';
 
 const initialState: UserData = {
   loginLoading: false,
   loginError: false,
   authorizationStatus: AuthorizationStatus.Unknown,
-  userInfo: {
-    avatarUrl: '',
-    email: '',
-    id:  null,
-    isPro: false,
-    name: '',
-  },
+  userInfo: {} as UserInfo,
 };
 
 const user = createReducer(initialState, (builder) => {

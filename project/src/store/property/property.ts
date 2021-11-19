@@ -1,42 +1,10 @@
 import { createReducer } from '@reduxjs/toolkit';
+import { Offer } from '../../types/offer';
 import { PropertyData } from '../../types/state';
 import { changeFavorite, loadPropertyFailed, loadPropertySuccess, requestProperty } from '../action';
 
 const initialState: PropertyData = {
-  property: {
-    bedrooms: 0,
-    city: {
-      location: {
-        latitude: 0,
-        longitude: 0,
-        zoom: 0,
-      },
-      name: '',
-    },
-    description: '',
-    goods: [],
-    host: {
-      avatarUrl: '',
-      id: 0,
-      isPro: false,
-      name: '',
-    },
-    id: 0,
-    images: [],
-    location: {
-      latitude: 0,
-      longitude: 0,
-      zoom: 0,
-    },
-    isFavorite: false,
-    isPremium: false,
-    maxAdults: 0,
-    previewImage: '',
-    price: 0,
-    rating: 0,
-    title: '',
-    type: '',
-  },
+  property: {} as Offer,
   propertyLoading: false,
   propertyError: false,
 };
