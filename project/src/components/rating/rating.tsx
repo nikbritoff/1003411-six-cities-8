@@ -9,7 +9,7 @@ type RatingProps = {
 function Rating({className, rating}: RatingProps): JSX.Element {
   return (
     <div className={cn('rating__stars', className)}>
-      <span style={{width: `${convertRating(rating)}%`}}></span>
+      <span style={{width: `${convertRating(Math.round(rating))}%`}}></span>
       <span className="visually-hidden">Rating</span>
     </div>
   );
