@@ -1,71 +1,181 @@
-import {
-  ActionType,
-  ChangeCityAction,
-  ChangeSortingStatusAction,
-  LoadOffersSuccessAction,
-  RedirectToRouteAction,
-  OffersRequestAction,
-  LoadOffersFailedAction,
-  RequestAutorization,
-  AutorizationSuccsessAction,
-  AutorizationErrorAction,
-  RequireLogoutAction
-} from '../types/action';
+import { ActionType } from '../types/action';
 import { City } from '../types/city';
 import { Offer } from '../types/offer';
 import { AppRoute, AuthorizationStatus, SortingStatus } from '../const';
 import { UserInfo } from '../types/user-info';
+import { createAction } from '@reduxjs/toolkit';
+import { Review } from '../types/review';
 
-export const changeCity = (city: City): ChangeCityAction => ({
-  type: ActionType.ChangeCity,
-  payload: city,
-});
+// Main
 
-export const requestOffers = (offersLoading: boolean): OffersRequestAction => ({
-  type: ActionType.RequestOffers,
-  payload: offersLoading,
-});
+export const changeCity = createAction(
+  ActionType.ChangeCity,
+  (city: City) => ({
+    payload: city,
+  }),
+);
 
-export const loadOffersSuccess = (offers: Offer[]): LoadOffersSuccessAction => ({
-  type: ActionType.LoadOffersSuccsess,
-  payload: offers,
-});
+export const changeSortingStatus = createAction(
+  ActionType.ChangeSortingStatus,
+  (sortingStatus: SortingStatus) => ({
+    payload: sortingStatus,
+  }),
+);
 
-export const loadOffersFailed = (offersError: boolean): LoadOffersFailedAction => ({
-  type: ActionType.LoadOffersFailed,
-  payload: offersError,
-});
+export const requestOffers = createAction(
+  ActionType.RequestOffers,
+  (offersLoading: boolean) => ({
+    payload: offersLoading,
+  }),
+);
 
-export const requestAuthorization= (loginLoading: boolean): RequestAutorization => ({
-  type: ActionType.RequestAutorization,
-  payload: loginLoading,
-});
+export const loadOffersSuccess = createAction(
+  ActionType.LoadOffersSuccess,
+  (offers: Offer[]) => ({
+    payload: offers,
+  }),
+);
 
-export const AutorizationSuccsess = (user: UserInfo): AutorizationSuccsessAction => ({
-  type: ActionType.AutorizationSuccsess,
-  payload: user,
-});
+export const loadOffersFailed = createAction(
+  ActionType.LoadOffersFailed,
+  (offersError: boolean) => ({
+    payload: offersError,
+  }),
+);
 
-export const AutorizationError = (loginFailed: boolean): AutorizationErrorAction => ({
-  type: ActionType.AutorizationError,
-  payload: loginFailed,
-});
+// Autorization
 
-export const requireAutorization = (authStatus: AuthorizationStatus) => ({
-  type: ActionType.RequireAuthorization,
-  payload: authStatus,
-} as const);
+export const requestAuthorization = createAction(
+  ActionType.RequestAutorization,
+  (loadingLogin: boolean) => ({
+    payload: loadingLogin,
+  }),
+);
 
-export const requireLogout = (): RequireLogoutAction => ({
-  type: ActionType.RequireLogout,
-} as const);
+export const AutorizationSuccess = createAction(
+  ActionType.AutorizationSuccess,
+  (user: UserInfo) => ({
+    payload: user,
+  }),
+);
 
-export const redirectToRoute = (route: AppRoute): RedirectToRouteAction => ({
-  type: ActionType.RedirectToRoute,
-  payload: route,
-} as const);
+export const AutorizationFailed = createAction(
+  ActionType.AutorizationFailed,
+  (loginFailed: boolean) => ({
+    payload: loginFailed,
+  }),
+);
 
-export const changeSortingStatus = (sortingStatus: SortingStatus): ChangeSortingStatusAction => ({
-  type: ActionType.ChangeSortingStatus,
-  payload: sortingStatus,
-});
+export const requireAutorization = createAction(
+  ActionType.RequireAuthorization,
+  (authStatus: AuthorizationStatus) => ({
+    payload: authStatus,
+  }),
+);
+
+export const requireLogout = createAction(ActionType.RequireLogout);
+
+// Redirect
+
+export const redirectToRoute = createAction(
+  ActionType.RedirectToRoute,
+  (route: AppRoute) => ({
+    payload: route,
+  }),
+);
+
+// Propety
+
+export const requestProperty = createAction(
+  ActionType.RequestProperty,
+  (loadingProperty: boolean) => ({
+    payload: loadingProperty,
+  }),
+);
+
+export const loadPropertySuccess = createAction(
+  ActionType.LoadPropertySuccess,
+  (property: Offer) => ({
+    payload: property,
+  }),
+);
+
+export const loadPropertyFailed = createAction(
+  ActionType.LoadPropertyFailed,
+  (loadError: boolean) => ({
+    payload: loadError,
+  }),
+);
+
+export const requestNearby = createAction(
+  ActionType.RequestNearby,
+  (loadingNearby: boolean) => ({
+    payload: loadingNearby,
+  }),
+);
+
+export const loadNearbySuccsess = createAction(
+  ActionType.LoadNearbySuccess,
+  (nearby: Offer[]) => ({
+    payload: nearby,
+  }),
+);
+
+export const loadNearbyFailed = createAction(
+  ActionType.LoadNearbyFailed,
+  (loadError: boolean) => ({
+    payload: loadError,
+  }),
+);
+
+export const requestReviews = createAction(
+  ActionType.RequestReviews,
+  (loading: boolean) => ({
+    payload: loading,
+  }),
+);
+
+export const loadReviewsSuccsess = createAction(
+  ActionType.LoadReviewsSuccess,
+  (reviews: Review[]) => ({
+    payload: reviews,
+  }),
+);
+
+export const loadReviewsFailed = createAction(
+  ActionType.LoadReviewsFailed,
+  (loadError: boolean) => ({
+    payload: loadError,
+  }),
+);
+
+export const postingNewReview = createAction(
+  ActionType.PostNewReview,
+  (upload: boolean) => ({
+    payload: upload,
+  }),
+);
+
+export const postNewReviewSuccsess = createAction(ActionType.PostNewReviewSuccess);
+
+
+// Favorites
+
+export const requestFavorites = createAction(ActionType.RequestFavorites);
+
+export const loadFavoritesSuccess = createAction(
+  ActionType.LoadFavoritesSuccess,
+  (favorites: Offer[]) => ({
+    payload: favorites,
+  }),
+);
+
+export const loadFavoritesError = createAction(ActionType.LoadFavoritesFailed);
+
+
+export const changeFavorite = createAction(
+  ActionType.ChangeFavorite,
+  (favorite: Offer) => ({
+    payload: favorite,
+  }),
+);

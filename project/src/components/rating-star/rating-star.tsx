@@ -3,22 +3,26 @@ import { ChangeEvent } from 'react';
 type RatingStarProps = {
   title: string,
   id: number,
+  newReviewUpload: boolean,
+  currentValue: string,
   handleChange: ({target}: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void,
 }
 
-function RatingStar({title, id, handleChange}: RatingStarProps): JSX.Element {
-  const elementID = `${id}-star${id > 1 ? 's' : ''}`;
+function RatingStar({title, id, newReviewUpload, currentValue, handleChange}: RatingStarProps): JSX.Element {
   return (
     <>
-      <input className="form__rating-input visually-hidden"
+      <input
+        className="form__rating-input visually-hidden"
         name="rating"
+        checked={id === Number(currentValue)}
         value={id}
-        id={elementID}
+        id={`${id}-stars`}
         type="radio"
         onChange={handleChange}
+        disabled={newReviewUpload}
       />
       <label
-        htmlFor={elementID}
+        htmlFor={`${id}-stars`}
         className="reviews__rating-label form__rating-label"
         title={title}
       >

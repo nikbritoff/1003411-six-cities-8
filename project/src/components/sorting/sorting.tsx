@@ -2,22 +2,29 @@ import { useState } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { SortingStatus } from '../../const';
 import { State } from '../../types/state';
-import SortingItem from '../sorting-item/sorting-item';
 import cn from 'classnames';
+import { Dispatch } from 'redux';
+import { changeSortingStatus } from '../../store/action';
 
 const sortingOptions: SortingStatus[] = Object.values(SortingStatus).map((value) => value);
 
-const mapStateToProps = ({sortingStatus}: State) => ({
-  sortingStatus,
+const mapStateToProps = ({APP}: State) => ({
+  sortingStatus: APP.sortingStatus,
 });
 
-const connector = connect(mapStateToProps);
+const mapDispatchToProps = (dispatch: Dispatch) =>({
+  onChangeSorting(sorting: SortingStatus) {
+    dispatch(changeSortingStatus(sorting));
+  },
+});
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-function Sorting({sortingStatus} : PropsFromRedux): JSX.Element  {
-  const [isSortingListOpened, setSortingListOpened] = useState(false);
+function Sorting({sortingStatus, onChangeSorting} : PropsFromRedux): JSX.Element  {
+  const [isOpen, setOpen] = useState(false);
   const handleSortingListClick = () => {
-    setSortingListOpened(!isSortingListOpened);
+    setOpen(!isOpen);
   };
 
   return(
@@ -26,7 +33,7 @@ function Sorting({sortingStatus} : PropsFromRedux): JSX.Element  {
       <span
         className="places__sorting-type"
         tabIndex={0}
-        onClick={() => handleSortingListClick()}
+        onClick={handleSortingListClick}
       >
         {sortingStatus}
         <svg className="places__sorting-arrow" width="7" height="4">
@@ -37,11 +44,20 @@ function Sorting({sortingStatus} : PropsFromRedux): JSX.Element  {
         className={cn(
           'places__options',
           'places__options--custom',
-          {'places__options--opened' : isSortingListOpened})}
-        onClick={() => handleSortingListClick()}
+          {'places__options--opened' : isOpen})}
+        onClick={handleSortingListClick}
       >
-        {sortingOptions.map((sortingOption: SortingStatus) =>
-          <SortingItem key={sortingOption} sortingType={sortingOption} sortingStatus={sortingStatus}/>)}
+        {sortingOptions.map((sortingOption: SortingStatus) => (
+          <li
+            className={cn(
+              'places__option',
+              {'places__option--active' : sortingOption === sortingStatus})}
+            onClick={() => onChangeSorting(sortingOption)}
+            tabIndex={0}
+            key={sortingOption}
+          >
+            {sortingOption}
+          </li>))}
       </ul>
     </form>
   );

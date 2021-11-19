@@ -1,92 +1,42 @@
-import { City } from './city';
-import { Offer } from './offer';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { AxiosInstance } from 'axios';
 import  { State } from '../types/state';
-import { AppRoute, AuthorizationStatus, SortingStatus } from '../const';
-import { UserInfo } from './user-info';
+import { Action } from 'redux';
 
 export enum ActionType {
-  ChangeCity = 'main/changeCity',
-  RequestOffers = 'data/requestOffers',
-  LoadOffersSuccsess = 'data/loadOffersSuccsess',
-  LoadOffersFailed = 'data/loadOffersFailed',
-  AutorizationSuccsess = 'user/autorizationSuccsess',
-  AutorizationError = 'user/autorizationError',
+  ChangeCity = 'app/changeCity',
+  ChangeSortingStatus = 'app/changeSortingStatus',
+
+  RequestOffers = 'offers/request',
+  LoadOffersSuccess = 'offers/loadSuccess',
+  LoadOffersFailed = 'offers/loadFailed',
+
+  AutorizationSuccess = 'user/autorizationSuccess',
+  AutorizationFailed = 'user/autorizationFailed',
   RequireAuthorization = 'user/requireAuthorization',
   RequestAutorization = 'user/requestAuthorization',
   RequireLogout = 'user/requireLogout',
-  RedirectToRoute = 'mail/redirectToRoute',
-  ChangeSortingStatus = 'data/changeSortingStatus',
+  RedirectToRoute = 'main/redirectToRoute',
+
+  RequestProperty = 'property/request',
+  LoadPropertySuccess = 'property/loadSuccess',
+  LoadPropertyFailed = 'property/loadFailed',
+
+  RequestNearby = 'nearby/request',
+  LoadNearbySuccess = 'nearby/loadSuccess',
+  LoadNearbyFailed = 'nearby/loadFailed',
+
+  RequestReviews = 'reviews/request',
+  LoadReviewsSuccess = 'reviews/loadSuccess',
+  LoadReviewsFailed = 'reviews/loadFailed',
+  PostNewReview = 'reviews/postNewReview',
+  PostNewReviewSuccess ='reviews/postNewReviewSuccess',
+
+  RequestFavorites = 'favorite/request',
+  LoadFavoritesSuccess = 'favorite/loadSuccess',
+  LoadFavoritesFailed = 'favorite/loadFailed',
+  ChangeFavorite = 'favorite/change',
 }
 
-export type ChangeCityAction = {
-  type: ActionType.ChangeCity;
-  payload: City;
-}
-
-export type OffersRequestAction = {
-  type: ActionType.RequestOffers;
-  payload: boolean;
-}
-
-export type LoadOffersSuccessAction = {
-  type: ActionType.LoadOffersSuccsess;
-  payload: Offer[];
-}
-
-export type LoadOffersFailedAction = {
-  type: ActionType.LoadOffersFailed;
-  payload: boolean;
-}
-
-export type RequestAutorization = {
-  type: ActionType.RequestAutorization;
-  payload: boolean;
-}
-
-export type AutorizationSuccsessAction = {
-  type: ActionType.AutorizationSuccsess;
-  payload: UserInfo;
-}
-
-export type AutorizationErrorAction = {
-  type: ActionType.AutorizationError;
-  payload: boolean;
-}
-
-export type RequireAuthorizationAction = {
-  type: ActionType.RequireAuthorization;
-  payload: AuthorizationStatus;
-}
-
-export type RequireLogoutAction = {
-  type: ActionType.RequireLogout;
-}
-
-export type RedirectToRouteAction = {
-  type: ActionType.RedirectToRoute;
-  payload: AppRoute;
-}
-
-export type ChangeSortingStatusAction = {
-  type: ActionType.ChangeSortingStatus;
-  payload: SortingStatus;
-}
-
-
-export type Actions =
-  ChangeCityAction |
-  OffersRequestAction |
-  LoadOffersSuccessAction |
-  LoadOffersFailedAction |
-  RequestAutorization |
-  AutorizationSuccsessAction |
-  AutorizationErrorAction |
-  RequireAuthorizationAction |
-  RedirectToRouteAction |
-  ChangeSortingStatusAction |
-  RequireLogoutAction;
-
-export type ThunkActionResult<R = Promise<void>> = ThunkAction<R, State, AxiosInstance, Actions>;
-export type ThunkAppDispatch = ThunkDispatch<State, AxiosInstance, Actions>;
+export type ThunkActionResult<R = Promise<void>> = ThunkAction<R, State, AxiosInstance, Action>;
+export type ThunkAppDispatch = ThunkDispatch<State, AxiosInstance, Action>;

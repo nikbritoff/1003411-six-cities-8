@@ -1,36 +1,46 @@
 import Header from '../../components/header/header';
 import SiteCitiesTabs from '../../components/cities-tabs/cities-tabs';
 import CitiesBoard from '../../components/cities-board/cities-board';
-import { State } from '../../types/state';
-import { connect, ConnectedProps } from 'react-redux';
-import { sortOffers } from '../../utils/common';
+import { useSelector } from 'react-redux';
 import Loading from '../../components/loading/loading';
 import LoadingFailed from '../../components/loading-failed/loading-failed';
+import CitiesBoardEmpty from '../../components/cities-board-empty/cities-board-empty';
+import { getOffersError, getOffersLoading, selectCurrentOffers } from '../../store/offers/selectors';
+import { getCurrentCity } from '../../store/app-state/selectors';
 
-const mapStateToProps = ({currentCity, offersList, sortingStatus, offersLoading, offersSuccess, offersError}: State) => ({
-  currentCity,
-  offersList,
-  sortingStatus,
-  offersLoading,
-  offersError,
-  offersSuccess,
-});
+function ErrorPage({children}: {children: React.ReactNode}) {
+  return (
+    <div className="page page--gray page--main">
+      <Header/>
+      <main className="page__main page__main--index">
+        <h1 className="visually-hidden">Cities</h1>
+        <SiteCitiesTabs/>
+        {children}
+      </main>
+    </div>
+  );
+}
 
-const connector = connect(mapStateToProps);
+function Main(): JSX.Element {
+  const currentCity = useSelector(getCurrentCity);
+  const offersLoading = useSelector(getOffersLoading);
+  const offersError = useSelector(getOffersError);
+  const offers = useSelector(selectCurrentOffers);
 
-type PropsFromRedux = ConnectedProps<typeof connector>;
-type ConnectedComponentProps = PropsFromRedux;
-
-function Main({offersList, currentCity, sortingStatus, offersLoading, offersSuccess, offersError} : ConnectedComponentProps): JSX.Element {
-  const offers = offersList.filter((offer) => offer.city.name === currentCity.name);
-  sortOffers(sortingStatus, offers);
-
-  let content = <Loading isOffersLoading={offersLoading}/>;
-  if (offersSuccess) {
-    content = <CitiesBoard offers={offers} currentCity={currentCity}/>;
-  }
   if (offersError) {
-    content = <LoadingFailed/>;
+    return (
+      <ErrorPage>
+        <LoadingFailed/>
+      </ErrorPage>
+    );
+  }
+
+  if (offersLoading) {
+    return (
+      <ErrorPage>
+        <Loading isOffersLoading={offersLoading}/>
+      </ErrorPage>
+    );
   }
 
   return (
@@ -39,11 +49,12 @@ function Main({offersList, currentCity, sortingStatus, offersLoading, offersSucc
       <main className="page__main page__main--index">
         <h1 className="visually-hidden">Cities</h1>
         <SiteCitiesTabs/>
-        {content}
+        {offers.length === 0
+          ? <CitiesBoardEmpty currentCity={currentCity}/>
+          : <CitiesBoard offers={offers} currentCity={currentCity}/>}
       </main>
     </div>
   );
 }
 
-export { Main };
-export default connector(Main);
+export default Main;

@@ -12,7 +12,7 @@ function NotFound(): JSX.Element {
         <div className={styles.container}>
           <section className={styles['not-found']}>
             <h1 className={styles['not-found__title']}>404. Page not found</h1>
-            <Link className={styles['not-found__link']} to="/">Вернуться на главную</Link>
+            <Link className={styles['not-found__link']} to="/">Back to the home page</Link>
           </section>
         </div>
       </main>
