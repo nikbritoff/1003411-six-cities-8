@@ -4,8 +4,9 @@ import { AppRoute, AuthorizationStatus } from '../../const';
 import LoginForm from '../../components/login-form/login-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAuthStatus } from '../../store/user/selectors';
-import { redirectToRoute } from '../../store/action';
+import { changeCity, redirectToRoute } from '../../store/action';
 import { useEffect } from 'react';
+import { getRandomCity } from '../../utils/common';
 
 function SignIn(): JSX.Element {
   const dispatch = useDispatch();
@@ -16,6 +17,13 @@ function SignIn(): JSX.Element {
       dispatch(redirectToRoute(AppRoute.Main));
     }
   });
+
+  const randomCity = getRandomCity();
+
+  const clickCityHandler = () => {
+    dispatch(changeCity(randomCity));
+  };
+
 
   return (
     <div className="page page--gray page--login">
@@ -31,8 +39,9 @@ function SignIn(): JSX.Element {
               <Link
                 className="locations__item-link"
                 to={AppRoute.Main}
+                onClick={clickCityHandler}
               >
-                <span>Amsterdam</span>
+                <span>{randomCity.name}</span>
               </Link>
             </div>
           </section>

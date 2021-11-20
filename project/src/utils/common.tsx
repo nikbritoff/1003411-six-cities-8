@@ -1,4 +1,5 @@
-import { SortingStatus } from '../const';
+import { CITIES, SortingStatus } from '../const';
+import { City } from '../types/city';
 import { Offer } from '../types/offer';
 
 const MAX_PERCENT = 100;
@@ -19,4 +20,9 @@ export const sortOffers = (sortingStatus: SortingStatus, offersList: Offer[]): O
     default:
       return offersList;
   }
+};
+
+export const getRandomCity = (): City => {
+  const index = Math.floor(Math.random() * CITIES.length);
+  return CITIES[index];
 };
