@@ -36,12 +36,6 @@ export const RATING_TITLES = [
   'perfect',
 ];
 
-export enum OfferType {
-  nearby = 'near-places__card',
-  property = 'property',
-  favorite = 'favorites__card',
-}
-
 export const CITIES = [
   {
     location: {

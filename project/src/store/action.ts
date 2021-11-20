@@ -52,14 +52,14 @@ export const requestAuthorization = createAction(
   }),
 );
 
-export const AutorizationSuccess = createAction(
+export const autorizationSuccess = createAction(
   ActionType.AutorizationSuccess,
   (user: UserInfo) => ({
     payload: user,
   }),
 );
 
-export const AutorizationFailed = createAction(
+export const autorizationFailed = createAction(
   ActionType.AutorizationFailed,
   (loginFailed: boolean) => ({
     payload: loginFailed,

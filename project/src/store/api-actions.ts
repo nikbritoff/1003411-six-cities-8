@@ -1,5 +1,5 @@
 import { ThunkActionResult } from '../types/action';
-import { loadOffersSuccess, loadOffersFailed, redirectToRoute, requestOffers, requireAutorization, requireLogout, requestAuthorization, AutorizationFailed, AutorizationSuccess, loadNearbySuccsess, requestNearby, loadNearbyFailed, requestProperty, loadPropertySuccess, loadPropertyFailed, requestReviews, loadReviewsSuccsess, loadReviewsFailed, postingNewReview, postNewReviewSuccsess, requestFavorites, loadFavoritesError, loadFavoritesSuccess, changeFavorite } from './action';
+import { loadOffersSuccess, loadOffersFailed, redirectToRoute, requestOffers, requireAutorization, requireLogout, requestAuthorization, autorizationFailed, autorizationSuccess, loadNearbySuccsess, requestNearby, loadNearbyFailed, requestProperty, loadPropertySuccess, loadPropertyFailed, requestReviews, loadReviewsSuccsess, loadReviewsFailed, postingNewReview, postNewReviewSuccsess, requestFavorites, loadFavoritesError, loadFavoritesSuccess, changeFavorite } from './action';
 import { APIRoute, AppRoute, AuthorizationStatus } from '../const';
 import { Offer } from '../types/offer';
 import { AuthData } from '../types/auth-data';
@@ -41,12 +41,12 @@ export const loginAction = ({login: email, password}: AuthData): ThunkActionResu
       const {data} = await api.post<BackendUserInfo>(APIRoute.Login, {email, password});
       const adaptedUser = adaptUserInfoToClient(data);
       dispatch(requireAutorization(AuthorizationStatus.Auth));
-      dispatch(AutorizationSuccess(adaptedUser));
+      dispatch(autorizationSuccess(adaptedUser));
       saveToken(data.token);
       dispatch(redirectToRoute(AppRoute.Main));
     }
     catch {
-      dispatch(AutorizationFailed(true));
+      dispatch(autorizationFailed(true));
       toast.error(errorMessages.autorization, {
         position: 'top-left',
       });
@@ -60,7 +60,7 @@ export const checkAuthAction = (): ThunkActionResult => (
       const {data} = await api.get(APIRoute.Login);
       const adaptedUser = adaptUserInfoToClient(data);
       dispatch(requireAutorization(AuthorizationStatus.Auth));
-      dispatch(AutorizationSuccess(adaptedUser));
+      dispatch(autorizationSuccess(adaptedUser));
     }
     catch {
       dispatch(requireAutorization(AuthorizationStatus.NoAuth));
