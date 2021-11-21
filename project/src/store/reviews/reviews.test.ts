@@ -1,8 +1,8 @@
 import { ActionType } from '../../types/action';
-import { makeFakeReviews } from '../../utils/mock';
+import { makeFakeReviewsList } from '../../utils/mock';
 import { reviews } from './reviews';
 
-const mockReviews = makeFakeReviews();
+const mockReviews = makeFakeReviewsList();
 
 describe('Reducer: reviews', () => {
   it('without additional parameters should return initial state', () => {
@@ -24,12 +24,12 @@ describe('Reducer: reviews', () => {
       postingNewReview: false,
       postNewReviewSuccess: false,
     };
-    const loadReviewsSuccsessAction = {
+    const loadReviewsSuccessAction = {
       type: ActionType.LoadReviewsSuccess,
       payload: mockReviews,
     };
 
-    expect(reviews(state, loadReviewsSuccsessAction))
+    expect(reviews(state, loadReviewsSuccessAction))
       .toEqual({
         reviews: mockReviews,
         reviewsLoading: false,
@@ -116,11 +116,11 @@ describe('Reducer: reviews', () => {
       postingNewReview: false,
       postNewReviewSuccess: false,
     };
-    const postNewReviewSuccsessAction = {
+    const postNewReviewSuccessAction = {
       type: ActionType.PostNewReviewSuccess,
     };
 
-    expect(reviews(state, postNewReviewSuccsessAction))
+    expect(reviews(state, postNewReviewSuccessAction))
       .toEqual({
         reviews: [],
         reviewsLoading: false,

@@ -1,11 +1,11 @@
 import { ActionType } from '../../types/action';
-import { makeFakeOffers } from '../../utils/mock';
+import { makeFakeOffersList } from '../../utils/mock';
 import { offers } from './offers';
 
 const OFFERS_AMOUNT = 15;
 const FAVORITE_CHANGEABLE_OFFER_INDEX = 5;
 
-const mockOffers = makeFakeOffers(OFFERS_AMOUNT);
+const mockOffers = makeFakeOffersList(OFFERS_AMOUNT);
 const changeableMockOffer = mockOffers[FAVORITE_CHANGEABLE_OFFER_INDEX];
 const expectedMockOffers = mockOffers.slice().map((offer, index) => {
   if (index === FAVORITE_CHANGEABLE_OFFER_INDEX) {

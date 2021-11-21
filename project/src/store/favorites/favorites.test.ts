@@ -1,10 +1,10 @@
 import { ActionType } from '../../types/action';
-import { makeFakeOffers } from '../../utils/mock';
+import { makeFakeOffersList } from '../../utils/mock';
 import { favorites } from './favorites';
 
 const CHANGEABLE_OFFER_INDEX = 0;
 
-const mockFavorites = makeFakeOffers(5, true);
+const mockFavorites = makeFakeOffersList(5, true);
 const mockFavoriteOffer = mockFavorites[CHANGEABLE_OFFER_INDEX];
 
 describe('Reducer: favorites', () => {

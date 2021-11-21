@@ -1,11 +1,11 @@
 import { ActionType } from '../../types/action';
-import { makeFakeOffers } from '../../utils/mock';
+import { makeFakeOffersList } from '../../utils/mock';
 import { nearbyOffers } from './nearby-offers';
 
 const OFFERS_AMOUNT = 3;
 const FAVORITE_CHANGEABLE_OFFER_INDEX = 0;
 
-const mockNearby = makeFakeOffers(OFFERS_AMOUNT);
+const mockNearby = makeFakeOffersList(OFFERS_AMOUNT);
 const mockNearbyOffer = mockNearby[0];
 const expectedMockNearby = mockNearby.slice().map((offer, index) => {
   if (index === FAVORITE_CHANGEABLE_OFFER_INDEX) {

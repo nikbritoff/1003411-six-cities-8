@@ -1,10 +1,10 @@
 import { ActionType } from '../../types/action';
 import { Offer } from '../../types/offer';
-import { makeFakeOffers } from '../../utils/mock';
+import { makeFakeOffersList } from '../../utils/mock';
 import { property } from './property';
 
 
-const mockPropertyOffers = makeFakeOffers(1);
+const mockPropertyOffers = makeFakeOffersList(1);
 const mockPropertyOffer = mockPropertyOffers[0];
 const changeableMockOffer = mockPropertyOffers[0];
 changeableMockOffer.isFavorite = !changeableMockOffer.isFavorite;
