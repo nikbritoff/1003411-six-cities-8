@@ -1,5 +1,30 @@
 import { ThunkActionResult } from '../types/action';
-import { loadOffersSuccess, loadOffersFailed, redirectToRoute, requestOffers, requireAutorization, requireLogout, requestAuthorization, autorizationFailed, autorizationSuccess, loadNearbySuccsess, requestNearby, loadNearbyFailed, requestProperty, loadPropertySuccess, loadPropertyFailed, requestReviews, loadReviewsSuccsess, loadReviewsFailed, postingNewReview, postNewReviewSuccsess, requestFavorites, loadFavoritesError, loadFavoritesSuccess, changeFavorite } from './action';
+import {
+  loadOffersSuccess,
+  loadOffersFailed,
+  redirectToRoute,
+  requestOffers,
+  requireAutorization,
+  requireLogout,
+  requestAuthorization,
+  autorizationFailed,
+  autorizationSuccess,
+  loadNearbySuccess,
+  requestNearby,
+  loadNearbyFailed,
+  requestProperty,
+  loadPropertySuccess,
+  loadPropertyFailed,
+  requestReviews,
+  loadReviewsSuccess,
+  loadReviewsFailed,
+  postingNewReview,
+  postNewReviewSuccess,
+  requestFavorites,
+  loadFavoritesError,
+  loadFavoritesSuccess,
+  changeFavorite
+} from './action';
 import { APIRoute, AppRoute, AuthorizationStatus } from '../const';
 import { Offer } from '../types/offer';
 import { AuthData } from '../types/auth-data';
@@ -94,7 +119,7 @@ export const fetchPropertyAction = (id: string): ThunkActionResult => (
     catch(err) {
       dispatch(loadPropertyFailed(true));
       if ((err as AxiosError).response?.status === 404) {
-        dispatch(redirectToRoute(AppRoute.NotFoud));
+        dispatch(redirectToRoute(AppRoute.NotFound));
       }
     }
   }
@@ -106,7 +131,7 @@ export const fetchNearbyAction = (id: string): ThunkActionResult => (
       dispatch(requestNearby(true));
       const {data} = await api.get<Offer[]>(`${APIRoute.Hotels}/${id}${APIRoute.Nearby}`);
       const adaptedNearby = data.map((point) => adaptOfferToClient(point));
-      dispatch(loadNearbySuccsess(adaptedNearby));
+      dispatch(loadNearbySuccess(adaptedNearby));
     }
     catch(err) {
       dispatch(loadNearbyFailed(true));
@@ -124,7 +149,7 @@ export const fetchReviewsAction = (id: string): ThunkActionResult => (
       dispatch(requestReviews(true));
       const {data} = await api.get<Review[]>(`${APIRoute.Reviews}/${id}`);
       const adaptedReviews = data.map((review) => adaptReviewToClient(review));
-      dispatch(loadReviewsSuccsess(adaptedReviews));
+      dispatch(loadReviewsSuccess(adaptedReviews));
     }
     catch(err) {
       dispatch(loadReviewsFailed(true));
@@ -141,9 +166,8 @@ export const postReviewAction = ({id, comment, rating}: NewReviewData): ThunkAct
       dispatch(postingNewReview(true));
       const {data} = await api.post<Review[]>(`${APIRoute.Reviews}/${id}`, {comment, rating});
       const adaptedReviews = data.map((review: Review) => adaptReviewToClient(review));
-      dispatch(loadReviewsSuccsess(adaptedReviews));
-      dispatch(postingNewReview(false));
-      dispatch(postNewReviewSuccsess());
+      dispatch(loadReviewsSuccess(adaptedReviews));
+      dispatch(postNewReviewSuccess());
     }
     catch {
       toast.error(errorMessages.postReview);

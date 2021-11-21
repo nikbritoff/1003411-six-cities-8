@@ -4,4 +4,5 @@ export type UserInfo = {
   id:  number | null,
   isPro: boolean,
   name: string,
+  token: string,
 };

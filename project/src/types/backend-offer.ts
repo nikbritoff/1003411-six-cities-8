@@ -13,7 +13,7 @@ export type BackendOffer = {
   'host': {
     'avatar_url'?: string,
     'id'?: number,
-    'is_pro'?: true,
+    'is_pro'?: boolean,
     'name'?: string
   },
   'id': number,

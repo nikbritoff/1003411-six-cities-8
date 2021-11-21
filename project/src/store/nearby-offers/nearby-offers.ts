@@ -1,7 +1,7 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { Offer } from '../../types/offer';
 import { Nearby } from '../../types/state';
-import { changeFavorite, loadNearbyFailed, loadNearbySuccsess, requestNearby } from '../action';
+import { changeFavorite, loadNearbyFailed, loadNearbySuccess, requestNearby } from '../action';
 
 const initialState: Nearby = {
   nearby: [],
@@ -14,7 +14,7 @@ const nearbyOffers = createReducer(initialState, (builder) => {
     .addCase(requestNearby, (state, action) => {
       state.nearbyLoading = action.payload;
     })
-    .addCase(loadNearbySuccsess, (state, action) => {
+    .addCase(loadNearbySuccess, (state, action) => {
       state.nearby = action.payload;
       state.nearbyLoading = false;
       state.nearbyError = false;

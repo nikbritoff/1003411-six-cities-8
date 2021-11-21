@@ -1,6 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { ReviewsState } from '../../types/state';
-import { loadReviewsFailed, loadReviewsSuccsess, requestReviews, postingNewReview, postNewReviewSuccsess } from '../action';
+import { loadReviewsFailed, loadReviewsSuccess, requestReviews, postingNewReview, postNewReviewSuccess } from '../action';
 
 const initialState: ReviewsState = {
   reviews: [],
@@ -15,7 +15,7 @@ const reviews = createReducer(initialState, (builder) => {
     .addCase(requestReviews, (state, action) => {
       state.reviewsLoading = action.payload;
     })
-    .addCase(loadReviewsSuccsess,(state, action) => {
+    .addCase(loadReviewsSuccess,(state, action) => {
       state.reviews = action.payload;
       state.reviewsLoading = false;
       state.reviewsError = false;
@@ -28,7 +28,7 @@ const reviews = createReducer(initialState, (builder) => {
       state.postingNewReview = action.payload;
       state.postNewReviewSuccess = false;
     })
-    .addCase(postNewReviewSuccsess, (state) => {
+    .addCase(postNewReviewSuccess, (state) => {
       state.postNewReviewSuccess = true;
       state.postingNewReview = false;
     });

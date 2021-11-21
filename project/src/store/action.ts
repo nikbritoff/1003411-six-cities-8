@@ -114,7 +114,7 @@ export const requestNearby = createAction(
   }),
 );
 
-export const loadNearbySuccsess = createAction(
+export const loadNearbySuccess = createAction(
   ActionType.LoadNearbySuccess,
   (nearby: Offer[]) => ({
     payload: nearby,
@@ -135,7 +135,7 @@ export const requestReviews = createAction(
   }),
 );
 
-export const loadReviewsSuccsess = createAction(
+export const loadReviewsSuccess = createAction(
   ActionType.LoadReviewsSuccess,
   (reviews: Review[]) => ({
     payload: reviews,
@@ -156,8 +156,7 @@ export const postingNewReview = createAction(
   }),
 );
 
-export const postNewReviewSuccsess = createAction(ActionType.PostNewReviewSuccess);
-
+export const postNewReviewSuccess = createAction(ActionType.PostNewReviewSuccess);
 
 // Favorites
 
@@ -171,7 +170,6 @@ export const loadFavoritesSuccess = createAction(
 );
 
 export const loadFavoritesError = createAction(ActionType.LoadFavoritesFailed);
-
 
 export const changeFavorite = createAction(
   ActionType.ChangeFavorite,
