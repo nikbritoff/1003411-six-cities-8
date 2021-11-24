@@ -6,6 +6,7 @@ import {Provider} from 'react-redux';
 import { AuthorizationStatus } from '../../const';
 import Header from './header';
 import { makeFakeUserInfo } from '../../utils/mock';
+import { NameSpace } from '../../store/root-reducer';
 
 const mockStore = configureMockStore();
 const history = createMemoryHistory();
@@ -14,7 +15,7 @@ const history = createMemoryHistory();
 describe('Component: Header', () => {
   it('should render correctly when authorizationStatus: NoAuth', () => {
     const store = mockStore({
-      USER: {
+      [NameSpace.User]: {
         authorizationStatus: AuthorizationStatus.NoAuth,
       },
     });
@@ -32,7 +33,7 @@ describe('Component: Header', () => {
   it('should render correctly when authorizationStatus: Auth', () => {
     const mockUser = makeFakeUserInfo();
     const store = mockStore({
-      USER: {
+      [NameSpace.User]: {
         authorizationStatus: AuthorizationStatus.Auth,
         userInfo: mockUser,
       },

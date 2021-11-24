@@ -7,6 +7,8 @@ import { BackendOffer } from '../types/backend-offer';
 import { BackendReview } from '../types/backend-revies';
 
 const MAX_RATING = 5;
+const COMMENT_LENGTH_VALID = 100;
+const COMMENT_LENGTH_INVALID = 400;
 
 export const makeFakeOffer = (isFavorite = false): Offer => {
   const city = getRandomCity();
@@ -30,6 +32,38 @@ export const makeFakeOffer = (isFavorite = false): Offer => {
       zoom: 8,
     },
     isFavorite: isFavorite ? true : datatype.boolean(),
+    isPremium: datatype.boolean(),
+    maxAdults: datatype.number(),
+    previewImage: 'img/apartment-02.jpg',
+    price: datatype.number(),
+    rating: datatype.number(MAX_RATING),
+    title: random.words(),
+    type: random.word(),
+  };
+};
+
+export const makeFakeNotFavoriteOffer = (): Offer => {
+  const city = getRandomCity();
+
+  return {
+    bedrooms: datatype.number(),
+    city: city,
+    description: random.words(),
+    goods: ['Washing machine'],
+    host: {
+      avatarUrl: 'img/1.png',
+      id: datatype.number(),
+      isPro: datatype.boolean(),
+      name: name.firstName(),
+    },
+    id: datatype.number(),
+    images: ['img/3.png', 'img/4.png'],
+    location: {
+      latitude: city.location.latitude,
+      longitude: city.location.longitude,
+      zoom: 8,
+    },
+    isFavorite: false,
     isPremium: datatype.boolean(),
     maxAdults: datatype.number(),
     previewImage: 'img/apartment-02.jpg',
@@ -132,3 +166,6 @@ export const makeFakeUserInfo = ():UserInfo => ({
   name: name.firstName(),
   token: random.word(),
 });
+
+export const makeFakeValidComment = (): string => datatype.string(COMMENT_LENGTH_VALID);
+export const makeFakeInvalidComment = (): string => datatype.string(COMMENT_LENGTH_INVALID);
